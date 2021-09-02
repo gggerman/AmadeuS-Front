@@ -38,7 +38,6 @@ function SearchBar() {
       <form onSubmit={(e) => handleSubmit(e)}>
         <TextField
           type="text"
-          id="input-with-icon-textfield"
           onChange={(e) => handleChange(e)}
           value={name}
           InputProps={{
