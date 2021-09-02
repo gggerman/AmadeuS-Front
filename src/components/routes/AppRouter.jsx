@@ -1,21 +1,23 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import Detail from '../detail/Detail';
+import ProductDetail from '../productdetail/ProductDetail';
 import Home from '../home/Home';
-import Navbar from '../ui/Navbar';
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from '../../theme';
+
 
 const AppRouter = () => {
     return (
         <>
-            <Navbar />
-
             <div>
+            <ThemeProvider theme ={theme}>
                 <Switch>
                     <Route exact path='/' component={ Home } />
-                    <Route path='/detail/:id' component={ Detail } />                                      
+                    <Route path='/detail/:id' component={ ProductDetail } />                                      
                 
                     <Redirect to='/' />
                 </Switch>
+                </ThemeProvider>
             </div>
         </>
     )
