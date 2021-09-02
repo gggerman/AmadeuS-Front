@@ -9,6 +9,9 @@ const theme = createTheme({
             main: green[900] ,
             dark: grey[900],
             contrastText: grey[50]
+        },
+        secondary: {
+            main: green['A700']
         }
     }
 })

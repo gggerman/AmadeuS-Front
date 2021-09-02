@@ -1,9 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Button, Card, CardHeader, CardMedia, CardContent, CardActions, IconButton, Typography, Divider } from '@material-ui/core';
+import {Button, Card, CardMedia, CardContent, CardActions, IconButton, Typography, Divider } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-
 import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
         boxShadow:"0 10px 40px 0px rgba(0,117,49,0.3)",
     },
-    marginRight: "2vh"
+    marginRight: "2vh",
+    marginBottom:"2vh"
     
   },
   media: {
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 
-export default function ProductCard1() {
+export default function ProductCard({name, description, price, image}) { //recibe de Products las props
   const classes = useStyles();
   
 

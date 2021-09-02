@@ -1,19 +1,36 @@
 import React from 'react';
-import ProductCard1 from '../ProductCard1/ProductCard1';
-import ProductCard2 from '../ProductCard2/ProductCard2';
+import ProductCard from '../productcard/ProductCard';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles( (theme) => ({
+    grid: {
+        marginTop:'30vh',
+        margin: '0 auto',
+        maxWidth: '200vh'
+
+    }
+}))
 
 export default function Products (){
-    return (
-        <Grid container direction="row" alignItems= "center" justify="center"  style={{ minHeight: '100vh'}}  >
-                
-                    <ProductCard1 />
-                    <ProductCard1 />
-                    <ProductCard1 />
-                    
-        </Grid>
+const classes = useStyles();
+//aca llamariamos a useSelector
+//hariamos un map de los products de la db
 
+    return (
+            <Grid container direction="row" alignItems= "center" justifyContent="center" className ={classes.grid}   >
+                    
+                        <ProductCard />
+                        <ProductCard />
+                        <ProductCard />
+                        <ProductCard />
+                        <ProductCard />
+                        <ProductCard />
+                        <ProductCard />
+                        <ProductCard />
+                        
+            </Grid>
+        
             
         
     )
