@@ -58,7 +58,7 @@ function AddProduct() {
           />
         </div>
         <Button type="submit" color="secondary" variant="contained">
-          ola
+          Publicar
         </Button>
       </form>
     </div>
