@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  offset: theme.mixins.toolbar
 }));
 
 export default function Nav() {
@@ -154,7 +155,7 @@ export default function Nav() {
   return (
     <div className={classes.grow}>
       <AppBar position="absolute" style = {{backgroundColor: 'rgb(0, 23, 20)', height: '20%'}}>
-        <Toolbar>
+        <Toolbar className={classes.offset}>
         
           <Typography className={classes.title} variant="h5" noWrap>
             Musical E-Commerce
@@ -209,8 +210,11 @@ export default function Nav() {
           </div>
         </Toolbar>
       </AppBar>
+      <div className={classes.offset}></div>
+      <div className={classes.offset}></div>
       {renderMobileMenu}
       {renderMenu}
+      
     </div>
   );
 }
