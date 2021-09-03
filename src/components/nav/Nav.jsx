@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import {AppBar, Toolbar, Typography, IconButton, InputBase, Badge, MenuItem , Menu} from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
@@ -71,8 +71,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Nav() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -90,10 +90,7 @@ export default function Nav() {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
+ 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -175,16 +172,19 @@ export default function Nav() {
             </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
               <ShoppingCartIcon />
               </Badge>
             </IconButton>
+
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="secondary">
                 <FavoriteIcon />
               </Badge>
             </IconButton>
+            
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -196,21 +196,10 @@ export default function Nav() {
               <AccountCircle />
             </IconButton>
           </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
+          
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+    
     </div>
   );
 }
