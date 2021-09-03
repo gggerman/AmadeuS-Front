@@ -1,12 +1,24 @@
 import React, {useState, useEffect} from 'react'
 import { Grid, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core'
+import { Pagination } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/core/styles'
+import ProductCard from '../productcard/ProductCard';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: 150,
-    }
+    },
+    gridContainer: {
+        marginTop:'5vh',
+        margin: 'auto',
+        maxWidth: '200vh'
+    },
+    root: {
+        '& > * + *': {
+            marginTop: theme.spacing(2),
+        },
+    },
 }));
 
 export default function Catalogue() {
@@ -15,7 +27,7 @@ export default function Catalogue() {
     let data = [
         {
             id: 1,
-            title: 'Guitarra Eléctrica',
+            name: 'Guitarra Eléctrica',
             marca: 'Gibson SG',
             description: 'Resumen del instrumento',
             price: 60500,
@@ -25,7 +37,7 @@ export default function Catalogue() {
         },
         {
             id: 2,
-            title: 'Bateria',
+            name: 'Bateria',
             marca: 'Yamaha',
             description: 'Resumen del instrumento',
             price: 86000,
@@ -35,7 +47,7 @@ export default function Catalogue() {
         },
         {
             id: 3,
-            title: 'Piano',
+            name: 'Piano',
             marca: 'Steinway',
             description: 'Resumen del instrumento',
             price: 131000,
@@ -45,7 +57,7 @@ export default function Catalogue() {
         },
         {
             id: 4,
-            title: 'Trompeta',
+            name: 'Trompeta',
             marca: 'Bach',
             description: 'Resumen del instrumento',
             price: 66000,
@@ -55,7 +67,7 @@ export default function Catalogue() {
         },
         {
             id: 5,
-            title: 'Violin',
+            name: 'Violin',
             marca: 'Stentor',
             description: 'Resumen del instrumento',
             price: 63000,
@@ -65,7 +77,7 @@ export default function Catalogue() {
         },
         {
             id: 6,
-            title: 'Bateria',
+            name: 'Bateria',
             marca: 'Ludwig-Musser',
             description: 'Resumen del instrumento',
             price: 91000,
@@ -75,7 +87,7 @@ export default function Catalogue() {
         },
         {
             id: 7,
-            title: 'Bajo Eléctrico',
+            name: 'Bajo Eléctrico',
             marca: 'Jackson',
             description: 'Resumen del instrumento',
             price: 81000,
@@ -85,7 +97,7 @@ export default function Catalogue() {
         },
         {
             id: 8,
-            title: 'Flauta Traversa',
+            name: 'Flauta Traversa',
             marca: 'Yamaha',
             description: 'Resumen del instrumento',
             price: 54000,
@@ -95,7 +107,7 @@ export default function Catalogue() {
         },
         {
             id: 9,
-            title: 'Acordeón',
+            name: 'Acordeón',
             marca: 'Hohner',
             description: 'Resumen del instrumento',
             price: 70000,
@@ -105,7 +117,7 @@ export default function Catalogue() {
         },
         {
             id: 10,
-            title: 'Guitarra Eléctrica',
+            name: 'Guitarra Eléctrica',
             marca: 'Fender Jaguar',
             description: 'Resumen del instrumento',
             price: 78000,
@@ -115,7 +127,7 @@ export default function Catalogue() {
         },
         {
             id: 11,
-            title: 'Arpa',
+            name: 'Arpa',
             marca: 'Walter',
             description: 'Resumen del instrumento',
             price: 122000,
@@ -125,7 +137,7 @@ export default function Catalogue() {
         },
         {
             id: 12,
-            title: 'Armónica',
+            name: 'Armónica',
             marca: 'Suzuki',
             description: 'Resumen del instrumento',
             price: 5100,
@@ -135,7 +147,7 @@ export default function Catalogue() {
         },
         {
             id: 13,
-            title: 'Saxofón',
+            name: 'Saxofón',
             marca: 'Yamaha',
             description: 'Resumen del instrumento',
             price: 98500,
@@ -145,7 +157,7 @@ export default function Catalogue() {
         },
         {
             id: 14,
-            title: 'Guitarra Criolla',
+            name: 'Guitarra Criolla',
             marca: 'Valencia',
             description: 'Resumen del instrumento',
             price: 86300,
@@ -162,6 +174,13 @@ export default function Catalogue() {
     const [products, setProducts] = useState([]);
     const [copyProducts, setCopyProducts] = useState([]);
     const [render, setRender] = useState('');
+
+    const [page, setPage] = useState(1);
+    const [productsPerPage, setProductsPerPage] = useState(9);
+    const indexLastProduct = page * productsPerPage;
+    const indexFirstProduct = indexLastProduct - productsPerPage;
+    const currentProducts = products.slice(indexFirstProduct, indexLastProduct);
+
     const classes = useStyles();
 
     function peticion(){
@@ -183,14 +202,15 @@ export default function Catalogue() {
                 return b.price-a.price
             }))
         setRender(`Sort ${e.target.value}`);
+        setPage(1);
     }
 
     function handleSortName(e){
         setProducts ( e.target.value === 'A - Z'?
             products.sort((a,b) => {
-                if(a.title > b.title) {
+                if(a.name > b.name) {
                     return 1;
-                } else if (a.title < b.title) {
+                } else if (a.name < b.name) {
                     return -1;
                 } else {
                     return 0;
@@ -198,15 +218,16 @@ export default function Catalogue() {
             })
         :
             products.sort((a,b) => {
-                if(a.title < b.title) {
+                if(a.name < b.name) {
                     return 1;
-                } else if (a.title > b.title) {
+                } else if (a.name > b.name) {
                     return -1;
                 } else {
                     return 0;
                 }
             }))
         setRender(`Sort ${e.target.value}`);
+        setPage(1)
     }
 
     function handleFilterCategory(e){
@@ -215,16 +236,26 @@ export default function Catalogue() {
         :
         copyProducts.filter(product => product.category === e.target.value))
         setRender(`Filter ${e.target.value}`);
+        setPage(1)
     }
+
+    function handleChange(event, value) {
+        setPage(value);
+    };
 
     return (
         <>
+        <Grid container
+            direction="row"
+            justifyContent="center"
+        >
             <FormControl className={classes.formControl}>
                 <InputLabel>Filter by Category</InputLabel>
                 <Select onChange={(e) => handleFilterCategory(e)}>
                     {categorys?.map((category, index) => <MenuItem key={index} value={category}>{category}</MenuItem>)}
                 </Select>
             </FormControl>
+
             <FormControl className={classes.formControl}>
                 <InputLabel>Sort by Name</InputLabel>
                 <Select onChange={(e) => handleSortName(e)}>
@@ -232,6 +263,7 @@ export default function Catalogue() {
                     <MenuItem value='Z - A'>Z - A</MenuItem>
                 </Select>
             </FormControl>
+
             <FormControl className={classes.formControl}>
                 <InputLabel>Sort by Price</InputLabel>
                 <Select onChange={(e) => handleSortPrice(e)}>
@@ -239,18 +271,29 @@ export default function Catalogue() {
                     <MenuItem value='Higher to Lower'>Higher to Lower</MenuItem>
                 </Select>
             </FormControl>
+            </Grid>
+
             <Grid container
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
+                className={classes.gridContainer}
             >
-                {products.map(product => {
-                    return <Grid item xs={12} sm={6} md={6} lg={4} xl={4}>
-                        <h3>{product.title} {product.marca}</h3>
-                        <p>$ {product.price}</p>
-                        <img src={product.image} width='225' alt='Not Found'/>
-                    </Grid>
+                {currentProducts.map(product => {
+                    return <ProductCard key={product.id} name={product.name} description={product.description} image={product.image} price={product.price}/>
                 })}
+            </Grid>
+
+            <Grid container 
+                direction="row"
+                justifyContent="center"
+                className={classes.root}
+            >
+                <Pagination count={Math.ceil(products.length/productsPerPage)}
+                    page={page} onChange={handleChange}
+                    variant="outlined" shape="rounded"
+                    color='primary'
+                    />
             </Grid>
         </>
     )

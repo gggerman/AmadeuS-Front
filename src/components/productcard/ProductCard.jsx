@@ -1,19 +1,20 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Button, Card, CardMedia, CardContent, CardActions, IconButton, Typography, Divider } from '@material-ui/core';
+import { Button, Card, CardMedia, CardContent, CardActions, IconButton, Typography, Divider } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 280,
+    minWidth: 280,
     boxShadow:"0 8px 40px -12px rgba(0,0,0,0.3)",
     "&:hover": {
         boxShadow:"0 10px 40px 0px rgba(0,117,49,0.3)",
     },
-    marginRight: "2vh",
-    marginBottom:"2vh"
+    // marginRight: "2vh",
+    // marginBottom:"2vh"
+    margin:'5vh',
     
   },
   media: {
@@ -60,14 +61,14 @@ export default function ProductCard({name, description, price, image}) { //recib
     <Link to ="/productDetail" style = {{textDecoration:'none'}}>
       <CardMedia
         className={classes.media}
-        image={'https://http2.mlstatic.com/D_NQ_NP_600860-MLA31587514157_072019-O.jpg'}
+        image={image}
       />
       <CardContent>
         <Typography  component="h1" className= {classes.price}>
-          $120.999
+          $ {price}
         </Typography>
         <Typography  variant= "body2" component="h3">
-        Ibanez JEM Steve Vai Signature
+        {name}
         </Typography>
         <Typography variant= "body2" color="textSecondary" component ="p">
             Entrega en 24hs
