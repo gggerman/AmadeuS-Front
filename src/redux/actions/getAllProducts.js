@@ -3,20 +3,21 @@ import { GET_ALL_PRODUCTS, USER_ERRORS } from "."
 
 
 const getAllProducts = () => {
-    return async( dispatch ) => {
+    return async (dispatch) => {
 
         try {
-            const products = await axios.get( 'https://....')
-            return dispatch( {
+            const products = await axios.get('http://localhost:3000/products')
+            console.log(products)
+            return dispatch({
                 type: GET_ALL_PRODUCTS,
                 payload: products.data
             })
 
         } catch (error) {
-            return dispatch( {
+            return dispatch({
                 type: USER_ERRORS,
-                payload: console.log( error )
-            } )
+                payload: console.log(error)
+            })
         }
     }
 }
