@@ -1,4 +1,4 @@
-import {GET_ALL_PRODUCTS, GET_DETAILS} from '../actions/index'
+import { GET_ALL_PRODUCTS, GET_DETAILS } from '../actions/index'
 
 
 const initialState = {
@@ -6,13 +6,13 @@ const initialState = {
     detail: {}
 }
 
-function appReducer( state = initialState, action ) {
-    
-    switch ( action.type){
+const appReducer = (state = initialState, action) => {
+
+    switch (action.type) {
 
         case GET_ALL_PRODUCTS:
             return {
-                ...state, 
+                ...state,
                 productsLoaded: action.payload
             }
 

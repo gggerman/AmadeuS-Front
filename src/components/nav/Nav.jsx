@@ -1,72 +1,82 @@
-import React, {useState} from 'react';
-import { alpha, makeStyles } from '@material-ui/core/styles';
-import {AppBar, Toolbar, Typography, IconButton, InputBase, Badge, MenuItem , Menu} from '@material-ui/core';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import React from "react";
+import { alpha, makeStyles } from "@material-ui/core/styles";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  InputBase,
+  Badge,
+  MenuItem,
+  Menu,
+} from "@material-ui/core";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import SearchIcon from "@material-ui/icons/Search";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MailIcon from "@material-ui/icons/Mail";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import SearchBar from "../searchbar/SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
     },
   },
   search: {
-    position: 'relative',
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
+    "&:hover": {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(7),
-    width: '40%',
-    
+    width: "40%",
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputRoot: {
-    color: 'inherit',
+    color: "inherit",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
     },
   },
   sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
     },
   },
   sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
     },
   },
+  offset: theme.mixins.toolbar
 }));
 
 export default function Nav() {
@@ -95,10 +105,10 @@ export default function Nav() {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
@@ -107,14 +117,14 @@ export default function Nav() {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
@@ -151,13 +161,13 @@ export default function Nav() {
   return (
     <div className={classes.grow}>
       <AppBar position="absolute" style = {{backgroundColor: 'rgb(0, 23, 20)', height: '20%'}}>
-        <Toolbar>
+        <Toolbar className={classes.offset}>
         
           <Typography className={classes.title} variant="h5" noWrap>
             Musical E-Commerce
           </Typography>
-          
-            <div className={classes.search}>
+          <SearchBar />
+          {/* <div className={classes.search}>
                 <div className={classes.searchIcon}>
                 <SearchIcon />
                 </div>
@@ -169,13 +179,13 @@ export default function Nav() {
                 }}
                 inputProps={{ 'aria-label': 'search' }}
                 />
-            </div>
+            </div> */}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
-              <ShoppingCartIcon />
+                <ShoppingCartIcon />
               </Badge>
             </IconButton>
 

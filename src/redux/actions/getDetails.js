@@ -1,22 +1,22 @@
 import axios from "axios"
 import { GET_DETAILS, USER_ERRORS } from "."
 
-const getDetails = ( id ) => {
-    return async( dispatch ) => {
+const getDetails = (id) => {
+    return async (dispatch) => {
 
         try {
-            
-            const productDetail = await axios.get( `https://.....${ id }`)
-            return dispatch( {
+
+            const productDetail = await axios.get(`https://.....${id}`)
+            return dispatch({
                 type: GET_DETAILS,
                 payload: productDetail.data
-            } )
+            })
 
         } catch (error) {
-            return dispatch( {
+            return dispatch({
                 type: USER_ERRORS,
-                payload: console.log( error )
-            } )            
+                payload: console.log(error)
+            })
         }
     }
 }

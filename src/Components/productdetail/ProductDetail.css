@@ -1,0 +1,7 @@
+.detail1 {
+    max-width: 50%;
+}
+
+.container {
+    display: flex;
+}
