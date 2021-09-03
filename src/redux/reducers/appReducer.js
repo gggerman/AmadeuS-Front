@@ -6,9 +6,9 @@ const initialState = {
     detail: {}
 }
 
-const appReducer = ( state = initialState, action ) => {
+function appReducer( state = initialState, action ) {
     
-    switch ( action.payload ){
+    switch ( action.type){
 
         case GET_ALL_PRODUCTS:
             return {

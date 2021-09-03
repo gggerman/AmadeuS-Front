@@ -5,6 +5,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import {Link} from 'react-router-dom';
 
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 280,
@@ -50,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductCard({name, description, price, image}) { //recibe de Products las props
   const classes = useStyles();
   
+  
 
   return (
     <Card className={classes.root} >
@@ -60,14 +63,14 @@ export default function ProductCard({name, description, price, image}) { //recib
     <Link to ="/productDetail" style = {{textDecoration:'none'}}>
       <CardMedia
         className={classes.media}
-        image={'https://http2.mlstatic.com/D_NQ_NP_600860-MLA31587514157_072019-O.jpg'}
+        image={image}
       />
       <CardContent>
         <Typography  component="h1" className= {classes.price}>
-          $120.999
+          {price}
         </Typography>
         <Typography  variant= "body2" component="h3">
-        Ibanez JEM Steve Vai Signature
+        {name}
         </Typography>
         <Typography variant= "body2" color="textSecondary" component ="p">
             Entrega en 24hs
