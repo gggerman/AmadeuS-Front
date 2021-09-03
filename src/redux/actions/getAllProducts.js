@@ -4,7 +4,6 @@ import { GET_ALL_PRODUCTS, USER_ERRORS } from "."
 
 const getAllProducts = () => {
     return async (dispatch) => {
-
         try {
             const products = await axios.get('http://localhost:3000/products')
             console.log(products)
@@ -12,7 +11,6 @@ const getAllProducts = () => {
                 type: GET_ALL_PRODUCTS,
                 payload: products.data
             })
-
         } catch (error) {
             return dispatch({
                 type: USER_ERRORS,

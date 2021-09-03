@@ -4,6 +4,7 @@ import { CardMedia } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Paper } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 import "./ProductDetail.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -12,14 +13,15 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "50%", // 16:9
     margin: "1vh",
   },
-  container : {
-      width: '50%'
-  }
+  container: {
+    width: "50%",
+  },
 }));
 
 export default function ProductDetail() {
-//   const product = useSelector(({app}) => app.detail);
-  const dispatch = useDispatch()
+  const { id } = useParams();
+  //   const product = useSelector(({app}) => app.detail);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const product = {
     name: "Ibanez JEM Steve Vai Signature",
@@ -38,11 +40,11 @@ export default function ProductDetail() {
     <div>
       <div className="container">
         <Paper elevation="24" className={classes.container}>
-            <Typography component="h1">{product.name}</Typography>
-            <CardMedia className={classes.media} image={product.image} />
-            <Typography variant="body2" component="h3">
-              {product.description}
-            </Typography>
+          <Typography component="h1">{product.name}</Typography>
+          <CardMedia className={classes.media} image={product.image} />
+          <Typography variant="body2" component="h3">
+            {product.description}
+          </Typography>
         </Paper>
         <Paper>
           <div>

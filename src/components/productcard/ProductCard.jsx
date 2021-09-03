@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductCard(product) {
-  const { name, description, price, image } = product;
+  const { id, name, description, price, image } = product;
   //recibe de Products las props
   const classes = useStyles();
 
@@ -60,7 +60,7 @@ export default function ProductCard(product) {
             <FavoriteIcon className={classes.icon}/>
         </IconButton>
     
-    <Link to ="/productDetail" style = {{textDecoration:'none'}}>
+    <Link to ={`/productDetail${id}`} style = {{textDecoration:'none'}}>
       <CardMedia
         className={classes.media}
         image={image}
