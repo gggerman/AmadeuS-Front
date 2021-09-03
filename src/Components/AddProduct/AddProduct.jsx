@@ -7,24 +7,27 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import { Input } from "@material-ui/core";
+import { Checkbox } from "@material-ui/core";
+import { ListItemText } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 200,
-  }
+  },
 }));
 
 function AddProduct() {
   const classes = useStyles();
-  const [val, setVal] = useState("");
+  const [val, setVal] = useState([]);
   const [input, setInput] = useState({
     name: "",
     price: "",
     description: "",
     brand: "",
     stock: "",
-    category: "",
+    categories: [],
     image: "",
   });
   const category = ["Guitarra", "Bajo", "Violín", "Piano"];
@@ -36,11 +39,11 @@ function AddProduct() {
     });
   };
 
-  const handleSelectChange = (e) => {
-    setVal(e.target.value);
+  const handleChange = (event) => {
+    setVal(event.target.value);
     setInput({
       ...input,
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -89,19 +92,21 @@ function AddProduct() {
             onChange={handleInputChange}
           />
           <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel id="demo-simple-select-helper-label">
-              Categoría
-            </InputLabel>
+            <InputLabel>Categorías</InputLabel>
             <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
+              multiple
+              variant="outlined"
               value={val}
-              label="Categoría"
-              name="category"
-              onChange={handleSelectChange}
+              name="categories"
+              onChange={handleChange}
+              input={<Input />}
+              renderValue={(selected) => selected.join(", ")}
             >
-              {category.map((c) => (
-                <MenuItem value={c}>{c}</MenuItem>
+              {category.map((name) => (
+                <MenuItem key={name} value={name}>
+                  <Checkbox checked={val.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
