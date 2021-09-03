@@ -1,6 +1,6 @@
 import React from 'react';
 import Nav from '../nav/Nav.jsx';
-import Products from '../Products/Products';
+import Products from '../products/Products';
 import Footer from '../footer/Footer';
 import Catalogue from '../catalogue/Catalogue'
 import { makeStyles } from '@material-ui/core/styles';
