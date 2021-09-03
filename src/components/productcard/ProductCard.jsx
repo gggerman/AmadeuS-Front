@@ -1,28 +1,21 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActions,
-  IconButton,
-  Typography,
-  Divider,
-} from "@material-ui/core";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Button, Card, CardMedia, CardContent, CardActions, IconButton, Typography, Divider } from '@material-ui/core';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ShareIcon from '@material-ui/icons/Share';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 280,
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    minWidth: 280,
+    boxShadow:"0 8px 40px -12px rgba(0,0,0,0.3)",
     "&:hover": {
       boxShadow: "0 10px 40px 0px rgba(0,117,49,0.3)",
     },
-    marginRight: "2vh",
-    marginBottom: "2vh",
+    // marginRight: "2vh",
+    // marginBottom:"2vh"
+    margin:'5vh',
+    
   },
   media: {
     height: 0,
@@ -60,21 +53,24 @@ export default function ProductCard({ product }) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
-      <IconButton aria-label="add to favorites">
-        <FavoriteIcon className={classes.icon} />
-      </IconButton>
-
-      <Link to="/productDetail" style={{ textDecoration: "none" }}>
-        <CardMedia className={classes.media} image={image} />
-        <CardContent>
-          <Typography component="h1" className={classes.price}>
-            {price}
-          </Typography>
-          <Typography variant="body2" component="h3">
-            {name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+    <Card className={classes.root} >
+        <IconButton aria-label="add to favorites" >
+            <FavoriteIcon className={classes.icon}/>
+        </IconButton>
+    
+    <Link to ="/productDetail" style = {{textDecoration:'none'}}>
+      <CardMedia
+        className={classes.media}
+        image={image}
+      />
+      <CardContent>
+        <Typography  component="h1" className= {classes.price}>
+          $ {price}
+        </Typography>
+        <Typography  variant= "body2" component="h3">
+        {name}
+        </Typography>
+        <Typography variant= "body2" color="textSecondary" component ="p">
             Entrega en 24hs
           </Typography>
         </CardContent>
