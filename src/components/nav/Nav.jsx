@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -16,7 +16,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import SearchBar from "../searchbar/SearchBar";
+import SearchBar from "../searchBar/SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
