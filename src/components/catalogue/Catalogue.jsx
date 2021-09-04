@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import ProductCard from '../productcard/ProductCard';
 import { useSelector, useDispatch } from 'react-redux';
 import getAllProducts, { sortByName, sortByPrice, filterByCategory } from '../../redux/actions/getAllProducts';
+import { getAllCategories } from '../../redux/actions/getAllCategories';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -25,14 +26,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Catalogue() {
     const products = useSelector(({ app }) => app.productsLoaded);
+    const categories = useSelector(({ app }) => app.categoriesLoaded);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getAllProducts());
     }, []);
-
-    let categorys = ['All','Instrumentos eléctricos','Cuerda','Electronica/audio',
-        'categories','Percusion']
 
     // Para renderizar cuando hay ordenamientos y filtrado
     const [render, setRender] = useState('');
@@ -77,7 +76,8 @@ export default function Catalogue() {
             <FormControl className={classes.formControl}>
                 <InputLabel>Filter by Category</InputLabel>
                 <Select onChange={(e) => handleFilterCategory(e)}>
-                    {categorys?.map((category, index) => <MenuItem key={index} value={category}>{category}</MenuItem>)}
+                    <MenuItem value='All'>All</MenuItem>
+                    {categories?.map((category, index) => <MenuItem key={index} value={category.name}>{category.name}</MenuItem>)}
                 </Select>
             </FormControl>
 
@@ -105,7 +105,7 @@ export default function Catalogue() {
                 className={classes.gridContainer}
             >
                 {currentProducts?.map(product => {
-                    return <ProductCard key={product.id} name={product.name} description={product.description} image={product.image} price={product.price}/>
+                    return <ProductCard key={product._id} name={product.name} description={product.description} image={product.image} price={product.price}/>
                 })}
             </Grid>
 
