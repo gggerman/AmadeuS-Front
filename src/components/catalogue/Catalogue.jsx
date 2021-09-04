@@ -29,7 +29,7 @@ export default function Catalogue() {
 
     useEffect(() => {
         dispatch(getAllProducts());
-    }, [dispatch]);
+    }, []);
 
     let categorys = ['All','Instrumentos eléctricos','Cuerda','Electronica/audio',
         'categories','Percusion']
