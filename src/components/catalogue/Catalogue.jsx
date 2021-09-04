@@ -13,13 +13,12 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 150,
     },
     gridContainer: {
-        marginTop:'5vh',
         margin: 'auto',
         maxWidth: '200vh'
     },
     root: {
         '& > * + *': {
-            marginTop: theme.spacing(2),
+            marginTop: theme.spacing(1),
         },
     },
 }));
@@ -118,7 +117,7 @@ export default function Catalogue() {
                 <Pagination count={Math.ceil(products.length/productsPerPage)}
                     page={page} onChange={handleChange}
                     variant="outlined" shape="rounded"
-                    color='primary'
+                    color='primary'style = {{marginBottom: '2vw ', marginTop: '1vw'}}
                     />
             </Grid>
         </>
