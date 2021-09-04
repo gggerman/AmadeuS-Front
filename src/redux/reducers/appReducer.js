@@ -1,9 +1,11 @@
 import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY } from '../actions/index'
+import { GET_ALL_CATEGORIES } from '../actions/index'
 
 
 const initialState = {
     productsLoaded: [],
     allProducts: [], //para el filtrado
+    categoriesLoaded: [],
     detail: {}
 }
 
@@ -71,6 +73,12 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 productsLoaded: filterCategory
             }
+
+            case GET_ALL_CATEGORIES:
+                return {
+                    ...state,
+                    categoriesLoaded: action.payload,
+                }
 
         default:
             return state;
