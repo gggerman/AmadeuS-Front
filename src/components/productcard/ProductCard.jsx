@@ -4,6 +4,7 @@ import { Button, Card, CardMedia, CardContent, CardActions, IconButton, Typograp
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import {Link} from 'react-router-dom';
+import { numberWithCommas } from '../../utils';
 
 
 
@@ -16,13 +17,14 @@ const useStyles = makeStyles((theme) => ({
     },
     // marginRight: "2vh",
     // marginBottom:"2vh"
-    margin:'5vh',
+    margin:'3vh',
     
   },
   media: {
-    height: 0,
-    paddingTop: "50%", // 16:9
-    margin: "1vh",
+    width: '100%',
+    paddingTop: "100%", // 16:9
+    margin: "0vh",
+    backgroundSize: 'contain'
   },
 
   price: {
@@ -54,6 +56,9 @@ export default function ProductCard(product) {
   //recibe de Products las props
   const classes = useStyles();
 
+ 
+
+
   return (
     <Card className={classes.root} >
         <IconButton aria-label="add to favorites" >
@@ -67,7 +72,7 @@ export default function ProductCard(product) {
       />
       <CardContent>
         <Typography  component="h1" className= {classes.price}>
-          $ {price}
+          $ {numberWithCommas(price)}
         </Typography>
         <Typography  variant= "body2" component="h3">
         {name}
