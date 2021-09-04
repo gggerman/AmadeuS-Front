@@ -31,8 +31,7 @@ export default function Catalogue() {
 
     useEffect(() => {
         dispatch(getAllProducts());
-        dispatch(getAllCategories());
-    }, [dispatch]);
+    }, []);
 
     // Para renderizar cuando hay ordenamientos y filtrado
     const [render, setRender] = useState('');

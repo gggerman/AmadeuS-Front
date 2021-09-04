@@ -1,14 +1,26 @@
 import React from 'react';
-import { Container } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import {BottomNavigation, BottomNavigationAction, Typography} from '@material-ui/core';
 
+const useStyles = makeStyles( (theme) => ({
+    footer:{
+        display: 'flex',
+        justifyContent: 'space-around',
+        color: theme.palette.primary.contrastText,
+        backgroundColor: theme.palette.primary.dark
+    }
+}))
 
 export default function Footer(){
+    const classes = useStyles()
     return (
-        <footer style = {{backgroundColor: 'rgb(0, 23, 20)', height: '20vh', color: 'white', paddingBottom: '2vh'}}>
-            <p>About</p>
-            <p>Team</p>
-            <p>Contact</p>
-            <p>FAQ</p>
-        </footer>    
+        <BottomNavigation className ={classes.footer}>
+            
+            <Typography> About </Typography>
+            <Typography> Team </Typography>
+            <Typography> Contact </Typography>
+            <Typography> FAQ </Typography>
+                       
+        </BottomNavigation>
     )
 }
