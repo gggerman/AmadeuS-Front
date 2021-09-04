@@ -16,7 +16,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import SearchBar from "../searchBar/SearchBar";
+import SearchBar from "../searchbar/SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
