@@ -10,6 +10,7 @@ import axios from "axios";
 import { Input } from "@material-ui/core";
 import { Checkbox } from "@material-ui/core";
 import { ListItemText } from "@material-ui/core";
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -127,6 +128,13 @@ function AddProduct() {
           Publicar
         </Button>
       </form>
+      <Link to='/'>
+          <Button variant="contained" color="primary">Home</Button>
+       </Link>
+       <Link to='/adminpanel'>
+          <Button variant="contained" color="primary">Volver</Button>
+       </Link>
+           
     </div>
   );
 }
