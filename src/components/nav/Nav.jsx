@@ -16,7 +16,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import SearchBar from "../searchbar/SearchBar";
+import SearchBar from "../SearchBar/SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -219,8 +219,9 @@ export default function Nav() {
           </div>
         </Toolbar>
       </AppBar>
-      <div className={classes.offset}></div>
-      <div className={classes.offset}></div>
+      {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
+      <div className={classes.offset}></div> {/* NO BORRAR */}
+      <div className={classes.offset}></div> {/* NO BORRAR */}  
       {renderMobileMenu}
       {renderMenu}
       

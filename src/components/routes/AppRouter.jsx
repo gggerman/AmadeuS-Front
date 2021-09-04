@@ -4,7 +4,7 @@ import ProductDetail from "../productdetail/ProductDetail";
 import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
-import AddProduct from "../addproduct/AddProduct";
+import AddProduct from "../AddProduct/AddProduct";
 
 const AppRouter = () => {
   return (

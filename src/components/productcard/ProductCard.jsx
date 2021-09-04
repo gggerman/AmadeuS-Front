@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 280,
+    width: 280, // Para que las cards tengan el mismo ancho sin importar el tamaño de la imagen
     boxShadow:"0 8px 40px -12px rgba(0,0,0,0.3)",
     "&:hover": {
       boxShadow: "0 10px 40px 0px rgba(0,117,49,0.3)",
