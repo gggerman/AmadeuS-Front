@@ -26,9 +26,10 @@ const useStyles = makeStyles((theme) => ({
     margin: "5vh",
   },
   media: {
-    height: 0,
-    paddingTop: "50%", // 16:9
-    margin: "1vh",
+    width: '100%',
+    paddingTop: "100%", // 16:9
+    margin: "0vh",
+    backgroundSize: 'contain'
   },
 
   price: {
@@ -59,6 +60,9 @@ export default function ProductCard(product) {
   const { id, name, description, price, image } = product;
   //recibe de Products las props
   const classes = useStyles();
+
+ 
+
 
   return (
     <Card className={classes.root}>
