@@ -6,7 +6,7 @@ const getAllProducts = () => {
     return async (dispatch) => {
         try {
             const products = await axios.get('http://localhost:3001/products')
-            // console.log(products)
+            console.log(products)
             return dispatch({
                 type: GET_ALL_PRODUCTS,
                 payload: products.data

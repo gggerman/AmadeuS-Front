@@ -14,6 +14,7 @@ import { getAllCategories } from "../../redux/actions/getAllCategories";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -177,6 +178,13 @@ function AddProduct() {
           Publicar
         </Button>
       </form>
+      <Link to='/'>
+          <Button variant="contained" color="primary">Home</Button>
+       </Link>
+       <Link to='/adminpanel'>
+          <Button variant="contained" color="primary">Volver</Button>
+       </Link>
+           
     </div>
   );
 }
