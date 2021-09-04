@@ -1,6 +1,8 @@
 import React from 'react';
-import {Grid, Card} from '@material-ui/core';
+import {Grid, Card, Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from "react-router-dom";
+
 
 
 // idea: cards de cada funcionalidad 
@@ -10,7 +12,11 @@ import { makeStyles } from '@material-ui/core/styles';
 //-administrar usuarios
 //-secciones (ofertas-novedades)
 const useStyles = makeStyles((theme) => ({
-
+    body: {
+        margin: '0',
+        height: '100%',
+        overflow: 'hidden'
+    },
     root: {
       width: 200,
       height: 200,
@@ -21,7 +27,21 @@ const useStyles = makeStyles((theme) => ({
           backgroundColor: theme.palette.primary.main,
           cursor: 'pointer'
       },
-      color: theme.palette.primary.contrastText      
+      color: theme.palette.primary.contrastText,   
+    },
+    link: {
+        textDecoration: 'none',
+        color: theme.palette.primary.contrastText   
+    },
+    box: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'center',
+        textDecoration: 'none',
+        height: '15vh',
+        width: '15vh',
+        backgroundColor: theme.palette.primary.main,
+        
     }  
     
   }));
@@ -30,24 +50,37 @@ export default function AdminPanel(){
     const classes = useStyles()
 
     return (
-        <Grid container direction="row" alignItems= "center" justifyContent="center" spacing={0} style={{ minHeight: '100vh' }} >
+        <div className={classes.body}>
+        <Grid container direction="row" alignItems= "center" justifyContent="center" spacing={0} style={{ minHeight: '55vh' }} >
             
             <Card className={classes.root}>   
-                <h2>Stock</h2>
+             <Typography component = "h1" variant = 'h4'>Stock</Typography>
+            </Card>
+
+            <Link to ="/adminpanel/addproduct" className={classes.link}>
+                <Card className={classes.root}>
+                <Typography component = "h1" variant = 'h4'>Cargar Producto</Typography>
+                </Card>
+            </Link>
+
+            <Card className={classes.root}>
+                <Typography component = "h1" variant = 'h4'>Historial de Ventas</Typography>
             </Card>
             <Card className={classes.root}>
-                <h2>Cargar Producto</h2>
+                <Typography component = "h1" variant = 'h4'>Adnministrar Usuarios</Typography>
             </Card>
             <Card className={classes.root}>
-               <h2> Historial de Ventas</h2>
-            </Card>
-            <Card className={classes.root}>
-                <h2>Administrar Usuarios</h2>
-            </Card>
-            <Card className={classes.root}>
-               <h2> Ofertas-Novedades</h2>
+                <Typography component = "h1" variant = 'h4'>Ofertas Novedades</Typography>
             </Card>
             
         </Grid>
+            
+                <Link to='/' className = {classes.link}>
+                <Button variant="contained" color="primary">Home</Button>
+                </Link>
+           
+
+        </div>
+
     )
 }
