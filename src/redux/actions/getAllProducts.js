@@ -5,8 +5,8 @@ import { GET_ALL_PRODUCTS, USER_ERRORS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_C
 const getAllProducts = () => {
     return async (dispatch) => {
         try {
-            const products = await axios.get('http://localhost:3000/products')
-            console.log(products)
+            const products = await axios.get('http://localhost:3001/products')
+            // console.log(products)
             return dispatch({
                 type: GET_ALL_PRODUCTS,
                 payload: products.data

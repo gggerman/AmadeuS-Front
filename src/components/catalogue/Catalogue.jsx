@@ -106,7 +106,7 @@ export default function Catalogue() {
                 className={classes.gridContainer}
             >
                 {currentProducts?.map(product => {
-                    return <ProductCard key={product._id} name={product.name} description={product.description} image={product.image} price={product.price}/>
+                    return <ProductCard key={product._id} id={product._id} name={product.name} description={product.description} image={product.image} price={product.price}/>
                 })}
             </Grid>
 
