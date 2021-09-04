@@ -13,12 +13,12 @@ const AppRouter = () => {
       <div>
         <ThemeProvider theme={theme}>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/products" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
             <Route path="/adminpanel/addproduct" component={AddProduct} />
             <Route path="/adminpanel" component={AdminPanel} />
 
-            <Redirect to="/" />
+            <Redirect to="/products" />
           </Switch>
         </ThemeProvider>
       </div>
