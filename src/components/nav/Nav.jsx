@@ -11,12 +11,11 @@ import {
   Menu,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import MoreIcon from "@material-ui/icons/MoreVert";
 import SearchBar from "../searchbar/SearchBar";
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -76,7 +75,11 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
-  offset: theme.mixins.toolbar
+  offset: theme.mixins.toolbar,
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.primary.dark
+  }
 }));
 
 export default function Nav() {
@@ -112,8 +115,8 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <Link to ='/adminpanel' className ={classes.link}><MenuItem >Profile</MenuItem></Link>
+      <MenuItem >My account</MenuItem>
     </Menu>
   );
 
@@ -167,19 +170,7 @@ export default function Nav() {
             Musical E-Commerce
           </Typography>
           <SearchBar />
-          {/* <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                <SearchIcon />
-                </div>
-                <InputBase
-                placeholder="Search…"
-                classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-                />
-            </div> */}
+        
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             

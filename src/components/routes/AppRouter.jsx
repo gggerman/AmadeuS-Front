@@ -5,6 +5,7 @@ import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
 import AddProduct from "../addproduct/AddProduct";
+import AdminPanel from "../adminPanel/AdminPanel";
 
 const AppRouter = () => {
   return (
@@ -14,7 +15,9 @@ const AppRouter = () => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
-            <Route path="/addproduct" component={AddProduct} />
+            <Route path="/adminpanel/addproduct" component={AddProduct} />
+            <Route path="/adminpanel" component={AdminPanel} />
+
             <Redirect to="/" />
           </Switch>
         </ThemeProvider>
