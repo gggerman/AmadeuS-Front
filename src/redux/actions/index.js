@@ -1,3 +1,6 @@
 export const USER_ERRORS = 'USER_ERRORS'
 export const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS'
+export const SORT_BY_NAME = 'SORT_BY_NAME'
+export const SORT_BY_PRICE = 'SORT_BY_PRICE'
+export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY'
 export const GET_DETAILS = 'GET_DETAILS'
