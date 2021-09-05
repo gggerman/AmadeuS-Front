@@ -1,3 +1,4 @@
+import { filtro } from '../../utils'
 import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY } from '../actions/index'
 import { GET_ALL_CATEGORIES } from '../actions/index'
 
@@ -68,7 +69,7 @@ const appReducer = (state = initialState, action) => {
                 let allProducts = state.allProducts
                 let filterCategory = action.payload === 'All' ?
                     allProducts
-                    : allProducts.filter(product => product.categories.includes(action.payload))
+                    : filtro(action.payload, allProducts)
                 return {
                 ...state,
                 productsLoaded: filterCategory
