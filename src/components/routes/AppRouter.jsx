@@ -4,21 +4,28 @@ import ProductDetail from "../productdetail/ProductDetail";
 import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
-import AddProduct from "../addproduct/AddProduct";
+import { AddCategory } from "../addCategory/AddCategory";
+import AddProduct from '../addproduct/AddProduct'
 import AdminPanel from "../adminPanel/AdminPanel";
+import Nav from "../nav/Nav";
 
 const AppRouter = () => {
   return (
     <>
       <div>
         <ThemeProvider theme={theme}>
+        
           <Switch>
-            <Route exact path="/products" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
-            <Route path="/adminpanel/addproduct" component={AddProduct} />
-            <Route path="/adminpanel" component={AdminPanel} />
 
-            <Redirect to="/products" />
+            <Route path="/adminpanel" component={AdminPanel} />
+            <Route path="/addcategory" component={AddCategory} />            
+            <Route path="/addproduct" component={AddProduct} />
+            
+
+            <Redirect to="/" />
+
           </Switch>
         </ThemeProvider>
       </div>

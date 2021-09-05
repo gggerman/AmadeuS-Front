@@ -17,7 +17,7 @@ import {numberWithCommas} from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 280, // Para que las cards tengan el mismo ancho sin importar el tamaño de la imagen
+    width: 270, // Para que las cards tengan el mismo ancho sin importar el tamaño de la imagen
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
 
     "&:hover": {
@@ -29,14 +29,14 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     width: '100%',
-    paddingTop: "100%", // 16:9
+    paddingTop: "95%", // 16:9
     margin: "0vh",
     backgroundSize: 'contain'
   },
 
   price: {
     color: theme.palette.primary.dark,
-    fontSize: "25px",
+    fontSize: "24px",
   },
   icon: {
     color: "grey",
@@ -53,8 +53,8 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
     },
-    width: "18vh",
-    fontSize: "1.7vh",
+    width: "16vh",
+    fontSize: "1.6vh",
   },
 }));
 
@@ -68,9 +68,7 @@ export default function ProductCard(product) {
 
   return (
     <Card className={classes.root}>
-      <IconButton aria-label="add to favorites">
-        <FavoriteIcon className={classes.icon} />
-      </IconButton>
+     
 
       <Link to={`/detail/${id}`} style={{ textDecoration: "none" }}>
         <CardMedia className={classes.media} image={image} />
@@ -88,13 +86,14 @@ export default function ProductCard(product) {
         <Divider variant="middle" light />
       </Link>
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
+      <IconButton aria-label="add to favorites">
+        <FavoriteIcon className={classes.icon} />
+      </IconButton>
         <IconButton aria-label="share">
           <ShareIcon className={classes.icon} />
         </IconButton>
-
         <Button variant="contained" className={classes.button}>
-          {" "}
-          Add to Cart{" "}
+           Add to Cart
         </Button>
       </CardActions>
     </Card>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Card, Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 
 
 
@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AdminPanel(){
     const classes = useStyles()
+    let { path, url } = useRouteMatch();
 
     return (
         <div className={classes.body}>
@@ -57,15 +58,17 @@ export default function AdminPanel(){
              <Typography component = "h1" variant = 'h4'>Stock</Typography>
             </Card>
 
-            <Link to ="/adminpanel/addproduct" className={classes.link}>
+            <Link to ="/addproduct" className={classes.link}>
                 <Card className={classes.root}>
                 <Typography component = "h1" variant = 'h4'>Cargar Producto</Typography>
                 </Card>
             </Link>
 
-            <Card className={classes.root}>
-                <Typography component = "h1" variant = 'h4'>Crear Nueva Categoria</Typography>
-            </Card>
+            <Link to ="/addcategory" className={classes.link}>
+                <Card className={classes.root}> 
+                    <Typography component = "h1" variant = 'h4'>Crear Nueva Categoria</Typography>
+                </Card>
+            </Link>    
             <Card className={classes.root}>
                 <Typography component = "h1" variant = 'h4'>Administrar Usuarios</Typography>
             </Card>

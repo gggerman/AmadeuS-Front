@@ -10,7 +10,11 @@ import { getAllCategories } from '../../redux/actions/getAllCategories';
 const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
-        minWidth: 150,
+        marginTop: '-3vh' ,
+        minWidth: 130,
+    },
+    label: {
+        fontSize: '12px'
     },
     gridContainer: {
         margin: 'auto',
@@ -72,9 +76,10 @@ export default function Catalogue() {
         <Grid container
             direction="row"
             justifyContent="center"
+            style = {{marginTop: '-1vh' }}
         >
             <FormControl className={classes.formControl}>
-                <InputLabel>Filter by Category</InputLabel>
+                <InputLabel className ={classes.label}>Filter by Category</InputLabel>
                 <Select onChange={(e) => handleFilterCategory(e)}>
                     <MenuItem value='All'>All</MenuItem>
                     {categories?.map((category, index) => <MenuItem key={index} value={category.name}>{category.name}</MenuItem>)}
@@ -82,7 +87,7 @@ export default function Catalogue() {
             </FormControl>
 
             <FormControl className={classes.formControl}>
-                <InputLabel>Sort by Name</InputLabel>
+                <InputLabel className ={classes.label}>Sort by Name</InputLabel>
                 <Select onChange={(e) => handleSortName(e)}>
                     <MenuItem value='A - Z'>A - Z</MenuItem>
                     <MenuItem value='Z - A'>Z - A</MenuItem>
@@ -90,7 +95,7 @@ export default function Catalogue() {
             </FormControl>
 
             <FormControl className={classes.formControl}>
-                <InputLabel>Sort by Price</InputLabel>
+                <InputLabel className ={classes.label}>Sort by Price</InputLabel>
                 <Select onChange={(e) => handleSortPrice(e)}>
                     <MenuItem value='Lower to Higher'>Lower to Higher</MenuItem>
                     <MenuItem value='Higher to Lower'>Higher to Lower</MenuItem>

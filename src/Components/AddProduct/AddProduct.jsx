@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AddProduct() {
+
   const classes = useStyles();
   const [val, setVal] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null)
