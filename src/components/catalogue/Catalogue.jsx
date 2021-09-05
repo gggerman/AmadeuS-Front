@@ -13,13 +13,12 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 150,
     },
     gridContainer: {
-        marginTop:'5vh',
         margin: 'auto',
         maxWidth: '200vh'
     },
     root: {
         '& > * + *': {
-            marginTop: theme.spacing(2),
+            marginTop: theme.spacing(1),
         },
     },
 }));
@@ -106,7 +105,7 @@ export default function Catalogue() {
                 className={classes.gridContainer}
             >
                 {currentProducts?.map(product => {
-                    return <ProductCard key={product._id} name={product.name} description={product.description} image={product.image} price={product.price}/>
+                    return <ProductCard key={product._id} id={product._id} name={product.name} description={product.description} image={product.image} price={product.price}/>
                 })}
             </Grid>
 
@@ -118,7 +117,7 @@ export default function Catalogue() {
                 <Pagination count={Math.ceil(products.length/productsPerPage)}
                     page={page} onChange={handleChange}
                     variant="outlined" shape="rounded"
-                    color='primary'
+                    color='primary'style = {{marginBottom: '2vw ', marginTop: '1vw'}}
                     />
             </Grid>
         </>
