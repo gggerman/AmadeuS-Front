@@ -40,8 +40,7 @@ const getProductById = async () => {
 
 useEffect(() => {
   getProductById(id) 
-  
-}, [])
+}, [id])
 
 
   return (
