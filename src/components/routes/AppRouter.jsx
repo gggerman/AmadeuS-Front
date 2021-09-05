@@ -6,7 +6,6 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
 import { AddCategory } from "../addCategory/AddCategory";
 import AdminPanel from "../adminPanel/AdminPanel";
-import Nav from "../nav/Nav";
 import AddProduct from "../addProduct/AddProduct";
 
 

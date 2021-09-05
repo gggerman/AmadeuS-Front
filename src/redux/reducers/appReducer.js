@@ -66,9 +66,16 @@ const appReducer = (state = initialState, action) => {
 
             case FILTER_BY_CATEGORY:
                 let allProducts = state.allProducts
-                let filterCategory = action.payload === 'All' ?
-                    allProducts
-                    : allProducts.filter(product => product.categories.includes(action.payload))
+                let filterCategory=[]
+                if(action.payload === 'All'){
+                    filterCategory = allProducts
+                } else {
+                    allProducts.forEach(product => {
+                        product.categories.forEach(p => {
+                            if(p.name === action.payload) filterCategory.push(product)
+                        })
+                    })
+                }
                 return {
                 ...state,
                 productsLoaded: filterCategory
