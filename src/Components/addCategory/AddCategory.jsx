@@ -8,6 +8,7 @@ import { addCategory } from '../../redux/actions/addCategory';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import { HomeRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -64,6 +65,10 @@ export const AddCategory = ( { history} ) => {
         history.goBack()
     }
 
+    const handleReturnHome = () => {
+        history.push("/products")
+    }
+
     return (
         <Box 
             display='flex'
@@ -112,7 +117,16 @@ export const AddCategory = ( { history} ) => {
                 endIcon={<ReplyRoundedIcon />}
                 >
                 regresar
-                </Button>               
+                </Button>  
+
+                <Button 
+                    onClick={ handleReturnHome }
+                    variant='contained'
+                    color='primary'
+                    endIcon={<HomeRounded />}
+                    >
+                    Home
+                </Button>             
             </form>
             
             {

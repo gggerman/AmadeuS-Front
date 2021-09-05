@@ -63,9 +63,11 @@ export default function AdminPanel(){
                 </Card>
             </Link>
 
-            <Card className={classes.root}>
-                <Typography component = "h1" variant = 'h4'>Crear Nueva Categoria</Typography>
-            </Card>
+            <Link to ="/adminpanel/addCategory" className={classes.link}>
+                <Card className={classes.root}> 
+                    <Typography component = "h1" variant = 'h4'>Crear Nueva Categoria</Typography>
+                </Card>
+            </Link>    
             <Card className={classes.root}>
                 <Typography component = "h1" variant = 'h4'>Administrar Usuarios</Typography>
             </Card>
