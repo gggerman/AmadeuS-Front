@@ -5,7 +5,7 @@ import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
 import { AddCategory } from "../addCategory/AddCategory";
-import AddProduct  from "../addproduct/AddProduct.jsx";
+import AddProduct from '../addproduct/AddProduct'
 import AdminPanel from "../adminPanel/AdminPanel";
 import Nav from "../nav/Nav";
 
@@ -14,17 +14,17 @@ const AppRouter = () => {
     <>
       <div>
         <ThemeProvider theme={theme}>
-        <Route path="/" component={Nav} />
+        
           <Switch>
-            <Route exact path="/products" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
 
             <Route path="/adminpanel" component={AdminPanel} />
-            <Route path="/adminpanel/addCategory" component={AddCategory} />            
-            <Route path="/adminpanel/addproduct" component={AddProduct} />
+            <Route path="/addcategory" component={AddCategory} />            
+            <Route path="/addproduct" component={AddProduct} />
             
 
-            <Redirect to="/products" />
+            <Redirect to="/" />
 
           </Switch>
         </ThemeProvider>
