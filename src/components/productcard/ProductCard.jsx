@@ -1,26 +1,37 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, Card, CardMedia, CardContent, CardActions, IconButton, Typography, Divider } from '@material-ui/core';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import {Link} from 'react-router-dom';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Button,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  IconButton,
+  Typography,
+  Divider,
+} from "@material-ui/core";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import { Link } from "react-router-dom";
+import {numberWithCommas} from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 280,
-    boxShadow:"0 8px 40px -12px rgba(0,0,0,0.3)",
+    width: 280, // Para que las cards tengan el mismo ancho sin importar el tamaño de la imagen
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+
     "&:hover": {
       boxShadow: "0 10px 40px 0px rgba(0,117,49,0.3)",
     },
     // marginRight: "2vh",
     // marginBottom:"2vh"
-    margin:'5vh',
-    
+    margin: "3vh",
   },
   media: {
-    height: 0,
-    paddingTop: "50%", // 16:9
-    margin: "1vh",
+    width: '100%',
+    paddingTop: "100%", // 16:9
+    margin: "0vh",
+    backgroundSize: 'contain'
   },
 
   price: {
@@ -48,29 +59,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductCard(product) {
-  const { name, description, price, image } = product;
+  const { id, name, price, image } = product;
   //recibe de Products las props
   const classes = useStyles();
 
+ 
+
+
   return (
-    <Card className={classes.root} >
-        <IconButton aria-label="add to favorites" >
-            <FavoriteIcon className={classes.icon}/>
-        </IconButton>
-    
-    <Link to ="/productDetail" style = {{textDecoration:'none'}}>
-      <CardMedia
-        className={classes.media}
-        image={image}
-      />
-      <CardContent>
-        <Typography  component="h1" className= {classes.price}>
-          $ {price}
-        </Typography>
-        <Typography  variant= "body2" component="h3">
-        {name}
-        </Typography>
-        <Typography variant= "body2" color="textSecondary" component ="p">
+    <Card className={classes.root}>
+      <IconButton aria-label="add to favorites">
+        <FavoriteIcon className={classes.icon} />
+      </IconButton>
+
+      <Link to={`/detail/${id}`} style={{ textDecoration: "none" }}>
+        <CardMedia className={classes.media} image={image} />
+        <CardContent>
+          <Typography component="h1" className={classes.price}>
+            $ {numberWithCommas(price)}
+          </Typography>
+          <Typography variant="body2" component="h3">
+            {name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
             Entrega en 24hs
           </Typography>
         </CardContent>

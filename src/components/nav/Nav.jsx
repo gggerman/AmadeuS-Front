@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -11,12 +11,11 @@ import {
   Menu,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import SearchBar from "../searchbar/SearchBar";
+import SearchBar from "../searchBar/SearchBar";
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -76,13 +75,17 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
-  offset: theme.mixins.toolbar
+  offset: theme.mixins.toolbar,
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.primary.dark
+  }
 }));
 
 export default function Nav() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -100,11 +103,8 @@ export default function Nav() {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const menuId = "primary-search-account-menu";
+ 
+  const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -115,8 +115,8 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <Link to ='/adminpanel' className ={classes.link}><MenuItem >Profile</MenuItem></Link>
+      <MenuItem >My account</MenuItem>
     </Menu>
   );
 
@@ -170,31 +170,22 @@ export default function Nav() {
             Musical E-Commerce
           </Typography>
           <SearchBar />
-          {/* <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                <SearchIcon />
-                </div>
-                <InputBase
-                placeholder="Search…"
-                classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-                />
-            </div> */}
+        
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
+
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="secondary">
                 <FavoriteIcon />
               </Badge>
             </IconButton>
+            
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -206,21 +197,12 @@ export default function Nav() {
               <AccountCircle />
             </IconButton>
           </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
+          
         </Toolbar>
       </AppBar>
-      <div className={classes.offset}></div>
-      <div className={classes.offset}></div>
+      {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
+      <div className={classes.offset}></div> {/* NO BORRAR */}
+      <div className={classes.offset}></div> {/* NO BORRAR */}  
       {renderMobileMenu}
       {renderMenu}
       
