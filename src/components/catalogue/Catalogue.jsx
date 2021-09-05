@@ -35,10 +35,16 @@ export default function Catalogue() {
     useEffect(() => {
         dispatch(getAllProducts());
         dispatch(getAllCategories());
-    }, []);
+    }, [dispatch]);
 
     // Para renderizar cuando hay ordenamientos y filtrado
     const [render, setRender] = useState('');
+    // Controlador de los select's
+    const [select, setSelect] = useState({
+        name:'',
+        price:'',
+        filter:''
+    });
 
     // Control del paginado
     const [page, setPage] = useState(1);
@@ -52,19 +58,31 @@ export default function Catalogue() {
     function handleSortName(e){
         dispatch(sortByName(e.target.value));
         setRender(`Sort ${e.target.value}`);
-        setPage(1)
+        setSelect({
+            ...select,
+            name: e.target.value
+        })
+        setPage(1);
     }
 
     function handleSortPrice(e){
         dispatch(sortByPrice(e.target.value));
         setRender(`Sort ${e.target.value}`);
+        setSelect({
+            ...select,
+            price: e.target.value
+        })
         setPage(1);
     }
 
     function handleFilterCategory(e){
         dispatch(filterByCategory(e.target.value))
         setRender(`Filter ${e.target.value}`);
-        setPage(1)
+        setSelect({
+            ...select,
+            filter: e.target.value
+        })
+        setPage(1);
     }
 
     function handleChange(event, value) {
@@ -76,11 +94,11 @@ export default function Catalogue() {
         <Grid container
             direction="row"
             justifyContent="center"
-            style = {{marginTop: '-1vh' }}
+            style = {{marginTop: '5vh' }}
         >
             <FormControl className={classes.formControl}>
                 <InputLabel className ={classes.label}>Filter by Category</InputLabel>
-                <Select onChange={(e) => handleFilterCategory(e)}>
+                <Select value={select.filter} onChange={(e) => handleFilterCategory(e)}>
                     <MenuItem value='All'>All</MenuItem>
                     {categories?.map((category, index) => <MenuItem key={index} value={category.name}>{category.name}</MenuItem>)}
                 </Select>
@@ -88,7 +106,7 @@ export default function Catalogue() {
 
             <FormControl className={classes.formControl}>
                 <InputLabel className ={classes.label}>Sort by Name</InputLabel>
-                <Select onChange={(e) => handleSortName(e)}>
+                <Select value={select.name} onChange={(e) => handleSortName(e)}>
                     <MenuItem value='A - Z'>A - Z</MenuItem>
                     <MenuItem value='Z - A'>Z - A</MenuItem>
                 </Select>
@@ -96,7 +114,7 @@ export default function Catalogue() {
 
             <FormControl className={classes.formControl}>
                 <InputLabel className ={classes.label}>Sort by Price</InputLabel>
-                <Select onChange={(e) => handleSortPrice(e)}>
+                <Select value={select.price} onChange={(e) => handleSortPrice(e)}>
                     <MenuItem value='Lower to Higher'>Lower to Higher</MenuItem>
                     <MenuItem value='Higher to Lower'>Higher to Lower</MenuItem>
                 </Select>

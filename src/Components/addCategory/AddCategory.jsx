@@ -9,6 +9,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { HomeRounded } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,10 +66,6 @@ export const AddCategory = ( { history} ) => {
         history.goBack()
     }
 
-    const handleReturnHome = () => {
-        history.push("/products")
-    }
-
     return (
         <Box 
             display='flex'
@@ -90,6 +87,7 @@ export const AddCategory = ( { history} ) => {
                 <FormControl >
                     <InputLabel htmlFor='my-input'>nombre de la categoria</InputLabel>
                         <Input 
+                            required
                             id="component-error"
                             aria-describedby='"component-error-text'
                             value={ name }
@@ -120,7 +118,7 @@ export const AddCategory = ( { history} ) => {
                 </Button>  
 
                 <Button 
-                    onClick={ handleReturnHome }
+                    component={ Link } to='/'
                     variant='contained'
                     color='primary'
                     endIcon={<HomeRounded />}
