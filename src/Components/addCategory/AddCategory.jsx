@@ -87,6 +87,7 @@ export const AddCategory = ( { history} ) => {
                 <FormControl >
                     <InputLabel htmlFor='my-input'>nombre de la categoria</InputLabel>
                         <Input 
+                            required
                             id="component-error"
                             aria-describedby='"component-error-text'
                             value={ name }

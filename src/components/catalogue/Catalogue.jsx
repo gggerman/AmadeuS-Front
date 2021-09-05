@@ -76,7 +76,7 @@ export default function Catalogue() {
         <Grid container
             direction="row"
             justifyContent="center"
-            style = {{marginTop: '-1vh' }}
+            style = {{marginTop: '5vh' }}
         >
             <FormControl className={classes.formControl}>
                 <InputLabel className ={classes.label}>Filter by Category</InputLabel>
