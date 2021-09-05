@@ -163,7 +163,7 @@ export default function Nav() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="absolute" style = {{backgroundColor: 'rgb(0, 23, 20)', height: '20%'}}>
+      <AppBar position="absolute" style = {{backgroundColor: 'rgb(0, 23, 20)', height: '18%'}}>
         <Toolbar className={classes.offset}>
         
           <Typography className={classes.title} variant="h5" noWrap>
