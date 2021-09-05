@@ -10,11 +10,11 @@ import { getAllCategories } from '../../redux/actions/getAllCategories';
 const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
-        marginTop: '-4vh' ,
+        marginTop: '-3vh' ,
         minWidth: 130,
     },
     label: {
-        fontSize: '13px'
+        fontSize: '12px'
     },
     gridContainer: {
         margin: 'auto',
@@ -76,7 +76,7 @@ export default function Catalogue() {
         <Grid container
             direction="row"
             justifyContent="center"
-            style = {{marginTop: '-1.5vh' }}
+            style = {{marginTop: '-1vh' }}
         >
             <FormControl className={classes.formControl}>
                 <InputLabel className ={classes.label}>Filter by Category</InputLabel>
