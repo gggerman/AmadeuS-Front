@@ -19,7 +19,7 @@ const AppRouter = () => {
             <Route exact path="/products" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
 
-            <Route path="/addCategory" component={AddCategory} />            
+            <Route path="/adminpanel/addCategory" component={AddCategory} />            
 
             <Route path="/adminpanel/addproduct" component={AddProduct} />
             <Route path="/adminpanel" component={AdminPanel} />

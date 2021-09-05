@@ -19,5 +19,4 @@ export const addCategory = ( { name } ) => {
             })
         }
     }
-
 }
