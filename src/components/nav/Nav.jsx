@@ -14,7 +14,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import SearchBar from "../searchBar/SearchBar";
+import SearchBar from "../searchbar/SearchBar";
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -163,7 +163,7 @@ export default function Nav() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="absolute" style = {{backgroundColor: 'rgb(0, 23, 20)', height: '20%'}}>
+      <AppBar position="absolute" style = {{backgroundColor: 'rgb(0, 23, 20)', height: '18%'}}>
         <Toolbar className={classes.offset}>
         
           <Typography className={classes.title} variant="h5" noWrap>
