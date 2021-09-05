@@ -1,3 +1,4 @@
 export const USER_ERRORS = 'USER_ERRORS'
 export const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS'
 export const GET_DETAILS = 'GET_DETAILS'
+export const ADD_CATEGORY = 'ADD_CATEGORY'
