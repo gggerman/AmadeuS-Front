@@ -14,7 +14,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import SearchBar from "../searchBar/SearchBar";
+import SearchBar from "../searchbar/SearchBar";
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({

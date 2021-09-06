@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Card, Typography, Box, Button } from '@material-ui/core';
+import {Grid, Card, Typography, Box, Button, Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, useRouteMatch } from "react-router-dom";
 
@@ -18,13 +18,16 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'hidden'
     },
     root: {
+      display: 'flex',
+      justifyContent: 'center', 
+      textAlign: 'center',
       width: 200,
       height: 200,
       margin: '2vh',
       padding: '1vh',
-      backgroundColor: theme.palette.primary.dark,
+      background: 'linear-gradient(to right, #093028, #237a57)',
       "&:hover": {
-          backgroundColor: theme.palette.primary.main,
+          background: 'linear-gradient(to left, #16222a, #3a6073)',
           cursor: 'pointer'
       },
       color: theme.palette.primary.contrastText,   
@@ -33,16 +36,18 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         color: theme.palette.primary.contrastText   
     },
-    box: {
+    backhome: {
         display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'center',
-        textDecoration: 'none',
-        height: '15vh',
-        width: '15vh',
-        backgroundColor: theme.palette.primary.main,
-        
-    }  
+        justifyContent: 'center'
+    },
+    btn: {
+        backgroundColor: '#16222A',
+        color:'white',
+        "&:hover": {
+            backgroundColor: theme.palette.primary.light
+        }
+    }
+    
     
   }));
 
@@ -55,33 +60,37 @@ export default function AdminPanel(){
         <Grid container direction="row" alignItems= "center" justifyContent="center" spacing={0} style={{ minHeight: '55vh' }} >
             
             <Card className={classes.root}>   
-             <Typography component = "h1" variant = 'h4'>Stock</Typography>
+             <Typography component = "h1" variant = 'h5'>Stock</Typography>
             </Card>
 
-            <Link to ="/addproduct" className={classes.link}>
+            <Link to ="/addcategory" className={classes.link}>
                 <Card className={classes.root}>
-                <Typography component = "h1" variant = 'h4'>Cargar Producto</Typography>
+                <Typography component = "h1" variant = 'h5'>Crear Nueva Categoria</Typography>
                 </Card>
             </Link>
 
-            <Link to ="/addcategory" className={classes.link}>
+            <Link to ="/addproduct" className={classes.link}>
                 <Card className={classes.root}> 
-                    <Typography component = "h1" variant = 'h4'>Crear Nueva Categoria</Typography>
+                    <Typography component = "h1" variant = 'h5'>Cargar Producto</Typography>
                 </Card>
             </Link>    
-            <Card className={classes.root}>
-                <Typography component = "h1" variant = 'h4'>Administrar Usuarios</Typography>
-            </Card>
-            <Card className={classes.root}>
-                <Typography component = "h1" variant = 'h4'>Historial de Ventas</Typography>
-            </Card>
+            <Link to ="" className={classes.link}>
+                <Card className={classes.root}>
+                    <Typography component = "h1" variant = 'h5'>Administrar Usuarios</Typography>
+                </Card>
+            </Link>
+            <Link to ="" className={classes.link}>
+                <Card className={classes.root}>
+                    <Typography component = "h1" variant = 'h5'>Historial de Ventas</Typography>
+                </Card>
+            </Link>
             
         </Grid>
-            
+             <Container className={classes.backhome}>
                 <Link to='/' className = {classes.link}>
-                <Button variant="contained" color="primary">Home</Button>
+                <Button variant="contained" className ={classes.btn}>Home</Button>
                 </Link>
-           
+            </Container>
 
         </div>
 
