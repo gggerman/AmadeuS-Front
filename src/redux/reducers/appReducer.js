@@ -1,4 +1,4 @@
-import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY } from '../actions/index'
+import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY, ADD_CATEGORY } from '../actions/index'
 import { GET_ALL_CATEGORIES } from '../actions/index'
 
 
@@ -86,6 +86,9 @@ const appReducer = (state = initialState, action) => {
                     ...state,
                     categoriesLoaded: action.payload,
                 }
+
+            case ADD_CATEGORY:
+                return state;
 
         default:
             return state;
