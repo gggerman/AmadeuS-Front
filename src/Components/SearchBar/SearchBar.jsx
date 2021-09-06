@@ -6,6 +6,10 @@ import { alpha, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { getByName } from "../../redux/actions/getByName";
 import { Link } from "react-router-dom";
+import { Autocomplete } from "@material-ui/lab";
+import { Grid, TextField } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import "./SearchBar.css";
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -46,15 +50,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SearchBar() {
+  const [val, setVal] = useState([]);
   const classes = useStyles();
   const [name, setName] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  // const [focused, setFocused] = useState(false)
+  const dispatch = useDispatch();
+  const [focused, setFocused] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(name);
-    getByName(name);
+    dispatch(getByName(name));
+    setName("");
   }
 
   async function doSearch() {
@@ -69,7 +75,7 @@ function SearchBar() {
         }
       }
     } catch (err) {
-      setSearchResults([])
+      setSearchResults([]);
       console.log(err);
     }
   }
@@ -83,7 +89,7 @@ function SearchBar() {
   }, [name]);
 
   return (
-    <div>
+    <div className='searchbox'>
       <form onSubmit={(e) => handleSubmit(e)}>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
@@ -97,13 +103,16 @@ function SearchBar() {
             }}
             inputProps={{ "aria-label": "search" }}
             value={name}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setTimeout(() => setFocused(false), 200)}
             onChange={handleChange}
           />
-          {name.length > 0 && (
+          {name.length > 0 && <Grid></Grid>}
+          {name.length > 0 && focused && (
             <div className="searchbox__results">
               {searchResults.length > 0
                 ? searchResults.map((r) => (
-                    <div key={r.id}>
+                    <div key={r.id} className="searchbox__result">
                       <Link to={`/detail/${r._id}`} onClick={() => setName("")}>
                         <div
                           className="searchbox__result-image"
