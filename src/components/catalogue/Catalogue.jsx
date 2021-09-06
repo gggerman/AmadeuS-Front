@@ -10,7 +10,7 @@ import { getAllCategories } from '../../redux/actions/getAllCategories';
 const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
-        marginTop: '-3vh' ,
+        marginTop: '-8vh' ,
         minWidth: 130,
     },
     label: {
