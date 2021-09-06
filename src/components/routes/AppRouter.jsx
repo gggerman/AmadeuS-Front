@@ -7,7 +7,7 @@ import theme from "../../theme";
 import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
-
+ 
 
 const AppRouter = () => {
   return (
@@ -16,7 +16,9 @@ const AppRouter = () => {
         <ThemeProvider theme={theme}>
         
           <Switch>
-            <Route exact path="/" component={Home} />
+            {/* El catalogo se tiene que visualizar en la ruta /products
+            Hay que poner otro home de inicio que no sea el catalogo */}
+            <Route exact path="/products" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
 
             <Route path="/adminpanel" component={AdminPanel} />
@@ -24,7 +26,7 @@ const AppRouter = () => {
             <Route path="/addproduct" component={AddProduct} />
             
 
-            <Redirect to="/" />
+            <Redirect to="/products" />
 
           </Switch>
         </ThemeProvider>
