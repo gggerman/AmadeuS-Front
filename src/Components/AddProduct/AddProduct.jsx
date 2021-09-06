@@ -20,8 +20,29 @@ import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 200,
+    margin: theme.spacing(2),
+    width: "70vh",
+    display: "absolute",
+    justifyContent: "center",
+  },
+  btnBack: {
+    backgroundColor: "#16222A",
+    color: "white",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+    },
+  },
+  btnPublicar: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+    },
+    marginTop: "1vh",
+  },
+  link: {
+    textDecoration: "none",
+    color: theme.palette.primary.contrastText,
   },
 }));
 
@@ -131,15 +152,8 @@ function AddProduct() {
 
   return (
     <div>
-      <Grid container spacing={3} direction="column" alignItems="center">
-        <Grid item>
-          <form
-            className={classes.formControl}
-            onSubmit={handleSubmit}
-            style={{ margin: "30px", width: "700px" }}
-          >
-            <Grid container spacing={1} justifyContent="center">
-              {/* <input
+      <FormControl className={classes.formControl} onSubmit={handleSubmit}>
+        {/* <input
               accept="image/*"
               name='image'
               className={classes.input}
@@ -148,7 +162,7 @@ function AddProduct() {
               type="file"
               onChange={handleUpload}
             /> */}
-              <Grid container spacing={2}>
+        {/* <Grid container spacing={2}>
                 <Grid item xs={4}>
                   <TextField
                     name="name"
@@ -216,8 +230,8 @@ function AddProduct() {
                     </FormHelperText>
                   )}
                 </Grid>
-                <Grid item xs={4}>
-                  <FormControl
+                <Grid item xs={4}> */}
+        {/* <FormControl
                     variant="outlined"
                     className={classes.formControl}
                   >
@@ -268,22 +282,138 @@ function AddProduct() {
                   Publicar
                 </Button>
               </Grid>
-            </Grid>
-          </form>
-        </Grid>
-        <Grid item>
-          <Link to="/">
-            <Button variant="contained" color="primary">
+            // </Grid>
+        //   </form>
+        // </Grid>
+        // <Grid item>
+        //   <Link to="/">
+        //     <Button variant="contained" color="primary">
+        //       Home
+        //     </Button>
+        //   </Link>
+        //   <Link to="/adminpanel">
+        //     <Button variant="contained" color="primary">
+        //       Volver
+        //     </Button>
+        //   </Link>
+        // </Grid>
+      // </Grid> */}
+        <TextField
+          required
+          name="name"
+          label="Producto"
+          variant="outlined"
+          onChange={handleInputChange}
+        />
+        {errors.name && (
+          <FormHelperText id="component-error">{errors.name}</FormHelperText>
+        )}
+        <TextField
+          required
+          name="image"
+          label="Imagen URL"
+          variant="outlined"
+          onChange={handleInputChange}
+        />
+        {errors.image && (
+          <FormHelperText id="component-error">{errors.image}</FormHelperText>
+        )}
+        <TextField
+          required
+          name="price"
+          label="Precio"
+          variant="outlined"
+          type="number"
+          onChange={handleInputChange}
+        />
+        {errors.price && (
+          <FormHelperText id="component-error">{errors.price}</FormHelperText>
+        )}
+        <TextField
+          required
+          name="brand"
+          label="Marca"
+          variant="outlined"
+          onChange={handleInputChange}
+        />
+        {errors.brand && (
+          <FormHelperText id="component-error">{errors.brand}</FormHelperText>
+        )}
+        <TextField
+          required
+          name="stock"
+          label="Unidades disponibles"
+          variant="outlined"
+          type="number"
+          onChange={handleInputChange}
+        />
+        {errors.stock && (
+          <FormHelperText id="component-error">{errors.stock}</FormHelperText>
+        )}
+        <FormControl variant="outlined">
+          <InputLabel>Categorías</InputLabel>
+          <Select
+            multiple
+            variant="outlined"
+            value={val}
+            name="categories"
+            onChange={handleSelectChange}
+            input={<Input />}
+            renderValue={(selected) => selected.join(", ")}
+          >
+            {categories.map((category) => (
+              <MenuItem key={category.name} value={category.name}>
+                <Checkbox checked={val.indexOf(category.name) > -1} />
+                <ListItemText primary={category.name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {errors.categories && (
+          <FormHelperText id="component-error">
+            {errors.categories}
+          </FormHelperText>
+        )}
+        <div>
+          <TextField
+            id="standard-multiline-static"
+            name="description"
+            label="Descripción"
+            multiline
+            variant="outlined"
+            rows={4}
+            fullWidth
+            onChange={handleInputChange}
+          />
+          {errors.description && (
+            <FormHelperText id="component-error">
+              {errors.description}
+            </FormHelperText>
+          )}
+        </div>
+        <Button type="submit" className={classes.btnPublicar}>
+          Publicar
+        </Button>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            marginTop: "5vh",
+          }}
+        >
+          <Link to="/" className={classes.link}>
+            <Button variant="contained" className={classes.btnBack}>
               Home
             </Button>
           </Link>
-          <Link to="/adminpanel">
-            <Button variant="contained" color="primary">
+          <Link to="/adminpanel" className={classes.link}>
+            <Button variant="contained" className={classes.btnBack}>
               Volver
             </Button>
           </Link>
-        </Grid>
-      </Grid>
+        </div>
+      </FormControl>
     </div>
   );
 }

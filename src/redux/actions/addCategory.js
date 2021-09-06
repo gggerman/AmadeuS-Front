@@ -3,12 +3,11 @@ import { ADD_CATEGORY, USER_ERRORS } from "."
 
 
 
-export const addCategory = ( { name } ) => {
+export const addCategory = (  name  ) => {
     return async( dispatch ) => {
-       
         try {
-            await axios.post( 'http://localhost3000/categories', name )
-            dispatch({
+            await axios.post( 'http://localhost:3001/categories', { name } )
+            dispatch({                
                 type: ADD_CATEGORY
             })
             

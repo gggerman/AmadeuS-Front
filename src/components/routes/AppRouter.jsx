@@ -5,8 +5,8 @@ import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
 import { AddCategory } from "../addCategory/AddCategory";
-import AdminPanel from "../adminPanel/AdminPanel";
-import AddProduct from "../addProduct/AddProduct";
+import AdminPanel from "../adminpanel/AdminPanel";
+import AddProduct from "../addproduct/AddProduct";
 
 
 const AppRouter = () => {
