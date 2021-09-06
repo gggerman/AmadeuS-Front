@@ -4,7 +4,7 @@ import ProductDetail from "../productdetail/ProductDetail";
 import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
-import { AddCategory } from "../addCategory/AddCategory";
+import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
 
