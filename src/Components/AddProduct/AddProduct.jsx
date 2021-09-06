@@ -18,9 +18,32 @@ import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 200,
+    margin: theme.spacing(2),
+    width: '70vh',
+    display: 'absolute',
+    justifyContent: 'center'
   },
+  btnBack: {
+    backgroundColor: '#16222A',
+    color:'white',
+    "&:hover": {
+        backgroundColor: theme.palette.primary.light
+    }
+  },
+  btnPublicar: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+    },
+    marginTop: '1vh'
+    
+  },
+  link: {
+    textDecoration: 'none',
+    color: theme.palette.primary.contrastText   
+  },
+  
 }));
 
 function AddProduct() {
@@ -91,12 +114,12 @@ function AddProduct() {
 
   return (
     <div>
-      <form
+      <FormControl
         className={classes.formControl}
         onSubmit={handleSubmit}
-        style={{ margin: "30px", width: "700px" }}
+        
       >
-        <div>
+        
         {/* <input
               accept="image/*"
               name='image'
@@ -112,6 +135,7 @@ function AddProduct() {
             label="Producto"
             variant="outlined"
             onChange={handleInputChange}
+            
           />
           <TextField
             required
@@ -143,7 +167,7 @@ function AddProduct() {
             type="number"
             onChange={handleInputChange}
           />
-          <FormControl variant="outlined" className={classes.formControl}>
+          <FormControl variant="outlined">
             <InputLabel>Categorías</InputLabel>
             <Select
               multiple
@@ -162,7 +186,7 @@ function AddProduct() {
               ))}
             </Select>
           </FormControl>
-        </div>
+        
         <div>
           <TextField
             id="standard-multiline-static"
@@ -175,16 +199,21 @@ function AddProduct() {
             onChange={handleInputChange}
           />
         </div>
-        <Button type="submit" color="secondary" variant="contained">
+        <Button type="submit" className = {classes.btnPublicar}>
           Publicar
         </Button>
-      </form>
-      <Link to='/'>
-          <Button variant="contained" color="primary">Home</Button>
-       </Link>
-       <Link to='/adminpanel'>
-          <Button variant="contained" color="primary">Volver</Button>
-       </Link>
+
+          <div style = {{display: 'flex', justifyContent: 'space-evenly', marginTop: '5vh'}}>
+            <Link to='/' className = {classes.link}>
+                <Button variant="contained" className = {classes.btnBack}>Home</Button>
+            </Link>
+            <Link to='/adminpanel' className = {classes.link}>
+                <Button variant="contained" className = {classes.btnBack}>Volver</Button>
+            </Link>
+        </div>
+      </FormControl>
+
+     
            
     </div>
   );
