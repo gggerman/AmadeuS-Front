@@ -12,6 +12,7 @@ import { HomeRounded } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { getAllCategories } from '../../redux/actions/getAllCategories';
 import { useSelector } from 'react-redux';
+import { validar } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,6 +52,7 @@ export const AddCategory = ( { history} ) => {
     console.log(categories)
 
     const handleInputChange = ( e ) => {
+        setErrors(false)
         setName(e.target.value)            
     }
 
@@ -59,21 +61,20 @@ export const AddCategory = ( { history} ) => {
     }, [])
        
     const handleSubmit = ( e ) => {
+      
       e.preventDefault();         
-      if( name.trim().length > 3  ) {
-        const categoryExis = categories.find( elem => 
-            elem.name.toLocaleLowerCase() === name.trim().toLocaleLowerCase() )                    
-        if( categoryExis ){
+      if( name.trim().length > 3  ) {    
+        if( validar( name, categories ) ){
           setOpenError(true)
         } else {        
-        dispatch( addCategory( name.trim() ) )
-        setOpen(true)
-        setErrors(false)
-        setName('')
-        } 
-      } else {
+          dispatch( addCategory( name.trim() ) )
+          setOpen(true)
+          setErrors(false)
+          setName('')
+          }
+      } else {  
         setErrors( true )
-      }           
+      }             
     }
 
     const handleClose = () => {
@@ -150,7 +151,7 @@ export const AddCategory = ( { history} ) => {
             </form>
             
             {
-                errors ? <Typography variant='h5' color='error' className={ classes.msg}>
+                errors ? <Typography variant='h5' color='error' className={ classes.msg }>
                              El nombre debe ser mayor a 4 caracteres
                         </Typography> : null
             }           
