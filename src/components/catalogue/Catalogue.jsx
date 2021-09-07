@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
     },
     gridContainer: {
         margin: 'auto',
-        maxWidth: '200vh'
+        maxWidth: '200vh',
+       
     },
     root: {
         '& > * + *': {

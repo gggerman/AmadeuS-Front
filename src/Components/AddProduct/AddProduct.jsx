@@ -87,7 +87,8 @@ function AddProduct() {
     e.preventDefault();
     if (validate()) {
       axios.post("http://localhost:3001/products", input);
-    }
+    }   
+    
   };
 
   // const handleUpload = (e) => {
@@ -152,152 +153,9 @@ function AddProduct() {
 
   return (
     <div>
-      <FormControl className={classes.formControl} onSubmit={handleSubmit}>
-        {/* <input
-              accept="image/*"
-              name='image'
-              className={classes.input}
-              id="contained-button-file"
-              multiple
-              type="file"
-              onChange={handleUpload}
-            /> */}
-        {/* <Grid container spacing={2}>
-                <Grid item xs={4}>
-                  <TextField
-                    name="name"
-                    label="Producto"
-                    variant="outlined"
-                    onChange={handleInputChange}
-                  />
-                  {errors.name && (
-                    <FormHelperText id="component-error">
-                      {errors.name}
-                    </FormHelperText>
-                  )}
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    name="image"
-                    label="Imagen URL"
-                    variant="outlined"
-                    onChange={handleInputChange}
-                  />
-                  {errors.image && (
-                    <FormHelperText id="component-error">
-                      {errors.image}
-                    </FormHelperText>
-                  )}
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    name="price"
-                    label="Precio"
-                    variant="outlined"
-                    type="number"
-                    onChange={handleInputChange}
-                  />
-                  {errors.price && (
-                    <FormHelperText id="component-error">
-                      {errors.price}
-                    </FormHelperText>
-                  )}
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    name="brand"
-                    label="Marca"
-                    variant="outlined"
-                    onChange={handleInputChange}
-                  />
-                  {errors.brand && (
-                    <FormHelperText id="component-error">
-                      {errors.brand}
-                    </FormHelperText>
-                  )}
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    name="stock"
-                    label="Unidades disponibles"
-                    variant="outlined"
-                    type="number"
-                    onChange={handleInputChange}
-                  />
-                  {errors.stock && (
-                    <FormHelperText id="component-error">
-                      {errors.stock}
-                    </FormHelperText>
-                  )}
-                </Grid>
-                <Grid item xs={4}> */}
-        {/* <FormControl
-                    variant="outlined"
-                    className={classes.formControl}
-                  >
-                    <InputLabel>Categorías</InputLabel>
-                    <Select
-                      multiple
-                      variant="outlined"
-                      value={val}
-                      name="categories"
-                      onChange={handleSelectChange}
-                      input={<Input />}
-                      renderValue={(selected) => selected.join(", ")}
-                    >
-                      {categories.map((category) => (
-                        <MenuItem key={category.name} value={category.name}>
-                          <Checkbox checked={val.indexOf(category.name) > -1} />
-                          <ListItemText primary={category.name} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  {errors.categories && (
-                    <FormHelperText id="component-error">
-                      {errors.categories}
-                    </FormHelperText>
-                  )}
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    id="standard-multiline-static"
-                    name="description"
-                    label="Descripción"
-                    multiline
-                    variant="outlined"
-                    rows={4}
-                    fullWidth
-                    onChange={handleInputChange}
-                  />
-                  {errors.description && (
-                    <FormHelperText id="component-error">
-                      {errors.description}
-                    </FormHelperText>
-                  )}
-                </Grid>
-              </Grid>
-              <Grid item>
-                <Button type="submit" color="secondary" variant="contained">
-                  Publicar
-                </Button>
-              </Grid>
-            // </Grid>
-        //   </form>
-        // </Grid>
-        // <Grid item>
-        //   <Link to="/">
-        //     <Button variant="contained" color="primary">
-        //       Home
-        //     </Button>
-        //   </Link>
-        //   <Link to="/adminpanel">
-        //     <Button variant="contained" color="primary">
-        //       Volver
-        //     </Button>
-        //   </Link>
-        // </Grid>
-      // </Grid> */}
+      <form  onSubmit={handleSubmit}>
+      <FormControl className={classes.formControl}>
+       
         <TextField
           required
           name="name"
@@ -306,7 +164,7 @@ function AddProduct() {
           onChange={handleInputChange}
         />
         {errors.name && (
-          <FormHelperText id="component-error">{errors.name}</FormHelperText>
+          <FormHelperText id="component-error" style ={{color: 'red'}}>{errors.name}</FormHelperText>
         )}
         <TextField
           required
@@ -316,7 +174,7 @@ function AddProduct() {
           onChange={handleInputChange}
         />
         {errors.image && (
-          <FormHelperText id="component-error">{errors.image}</FormHelperText>
+          <FormHelperText id="component-error" style ={{color: 'red'}} >{errors.image}</FormHelperText>
         )}
         <TextField
           required
@@ -327,7 +185,7 @@ function AddProduct() {
           onChange={handleInputChange}
         />
         {errors.price && (
-          <FormHelperText id="component-error">{errors.price}</FormHelperText>
+          <FormHelperText id="component-error" style ={{color: 'red'}}>{errors.price}</FormHelperText>
         )}
         <TextField
           required
@@ -337,7 +195,7 @@ function AddProduct() {
           onChange={handleInputChange}
         />
         {errors.brand && (
-          <FormHelperText id="component-error">{errors.brand}</FormHelperText>
+          <FormHelperText id="component-error" style ={{color: 'red'}}>{errors.brand}</FormHelperText>
         )}
         <TextField
           required
@@ -348,7 +206,7 @@ function AddProduct() {
           onChange={handleInputChange}
         />
         {errors.stock && (
-          <FormHelperText id="component-error">{errors.stock}</FormHelperText>
+          <FormHelperText id="component-error" style ={{color: 'red'}}>{errors.stock}</FormHelperText>
         )}
         <FormControl variant="outlined">
           <InputLabel>Categorías</InputLabel>
@@ -370,7 +228,7 @@ function AddProduct() {
           </Select>
         </FormControl>
         {errors.categories && (
-          <FormHelperText id="component-error">
+          <FormHelperText id="component-error" style ={{color: 'red'}}>
             {errors.categories}
           </FormHelperText>
         )}
@@ -414,6 +272,7 @@ function AddProduct() {
           </Link>
         </div>
       </FormControl>
+      </form>
     </div>
   );
 }

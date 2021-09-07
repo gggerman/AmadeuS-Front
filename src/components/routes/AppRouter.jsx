@@ -7,6 +7,7 @@ import theme from "../../theme";
 import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
+import Order from "../order/Order";
  
 
 const AppRouter = () => {
@@ -25,6 +26,7 @@ const AppRouter = () => {
             <Route path="/addcategory" component={AddCategory} />            
             <Route path="/addproduct" component={AddProduct} />
             
+            <Route path="/order" component = {Order} />
 
             <Redirect to="/products" />
 
