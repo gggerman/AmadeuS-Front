@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, FormControl, FormHelperText, Input, InputLabel, Button, Typography} from '@material-ui/core';
 import SaveRounded from '@material-ui/icons/SaveRounded';
@@ -10,6 +10,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { HomeRounded } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
+import { getAllCategories } from '../../redux/actions/getAllCategories';
+import { useSelector } from 'react-redux';
+import { validar } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,25 +44,45 @@ export const AddCategory = ( { history} ) => {
     const [name, setName] = useState('')
     const [errors, setErrors] = useState(false)  
     const [open, setOpen] = useState(false);
+    const [openError, setOpenError] = useState(false)
+
+   const categories = useSelector(state => state.app.categoriesLoaded)
+
+
+    console.log(categories)
 
     const handleInputChange = ( e ) => {
+        setErrors(false)
         setName(e.target.value)            
     }
+
+    useEffect( () =>{
+      dispatch( getAllCategories() )
+    }, [])
        
     const handleSubmit = ( e ) => {
-        e.preventDefault();   
-        if( name.trim().length > 3  ){               
-            dispatch( addCategory( name.trim() ) )
-            setOpen(true)
-            setErrors(false)
-            setName('')            
-        } else {
-            setErrors( true )
-        }           
+      
+      e.preventDefault();         
+      if( name.trim().length > 3  ) {    
+        if( validar( name, categories ) ){
+          setOpenError(true)
+        } else {        
+          dispatch( addCategory( name.trim() ) )
+          setOpen(true)
+          setErrors(false)
+          setName('')
+          }
+      } else {  
+        setErrors( true )
+      }             
     }
 
     const handleClose = () => {
         setOpen(false);
+      };
+
+      const handleCloseError = () => {
+        setOpenError(false);
       };
 
     const handleReturn = () => {
@@ -128,7 +151,7 @@ export const AddCategory = ( { history} ) => {
             </form>
             
             {
-                errors ? <Typography variant='h5' color='error' className={ classes.msg}>
+                errors ? <Typography variant='h5' color='error' className={ classes.msg }>
                              El nombre debe ser mayor a 4 caracteres
                         </Typography> : null
             }           
@@ -149,6 +172,28 @@ export const AddCategory = ( { history} ) => {
                     <Fade in={open}>
                         <div className={classes.paper}>
                             <h2 id="transition-modal-title">Creacion exitosa</h2>            
+                        </div>
+                    </Fade>
+                </Modal>
+            </div>
+
+            <div>      
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={openError}
+                    onClose={handleCloseError}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500,
+                    }}
+                >
+                    <Fade in={openError}>
+                        <div className={classes.paper}>
+                            <h2 id="transition-modal-title">La categoria ya existe!!</h2>
+                            <p id="transition-modal-description">Click para cerrar</p>            
                         </div>
                     </Fade>
                 </Modal>
