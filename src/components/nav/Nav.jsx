@@ -78,7 +78,11 @@ const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
   link: {
     textDecoration: 'none',
-    color: theme.palette.primary.contrastText
+    color: theme.palette.primary.dark
+  },
+  logo: {
+    textDecoration: 'none',
+    color: 'white'
   }
 }));
 
@@ -166,7 +170,7 @@ export default function Nav() {
       <AppBar position="absolute" style = {{backgroundColor: 'rgb(0, 23, 20)', height: '18%'}}>
         <Toolbar className={classes.offset}>
 
-          <Link to ="/" className ={classes.link}>
+          <Link to ="/" className ={classes.logo}>
           <Typography className={classes.title} variant="h5" noWrap>
             Musical E-Commerce
           </Typography>

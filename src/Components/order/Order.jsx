@@ -2,6 +2,7 @@ import React from 'react';
 import {AppBar, Card, Box, Container, CardMedia, Typography, Divider, Button, CssBaseline} from '@material-ui/core';
 import logo from './logo.jpg'
 import { makeStyles } from '@material-ui/core';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     media: {
@@ -133,9 +134,11 @@ const useStyles = makeStyles((theme) => ({
              </Typography>
              <Divider variant = "middle" style ={{width: '100%'}}/>                 
 
+             <Link to="/ordermp" style ={{textDecoration: 'none'}}>
              <Button variant="contained" className={classes.button}>
                     Continuar
              </Button>
+             </Link>   
                 
   
           </Container>
