@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { FormHelperText, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Typography, Container, Paper, Grid, TextField, Button, Snackbar } from '@material-ui/core';
 import { Visibility, VisibilityOff, Check, Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
+import { addUser, getAllUsers } from '../../redux/actions/users';
 
 const useStyles = makeStyles((theme) => ({
     gridContainer: {
@@ -31,17 +33,25 @@ export default function AddUser(){
     const classes = useStyles();
 
     const history = useHistory();
+    const users = useSelector(({ app }) => app.usersLoaded);
+    const dispatch = useDispatch();
+
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [error, setError] = useState({});
     const [input, setInput] = useState({
         name:'',
         surname:'',
-        document:'',
-        email:'',
+        // document:'',
+        phone:'',
+        mail:'',
         password:'',
         showPassword: false,
     })
+
+    useEffect(() => {
+        dispatch(getAllUsers());
+    },[dispatch])
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -51,6 +61,19 @@ export default function AddUser(){
         setOpenSuccess(false);
         setOpenError(false);
     };
+
+    function validateEmail(mail){
+        // let equals = false;
+        // users.forEach(user => {
+        //     if(user.mail === mail){
+        //         equals = true;
+        //     }
+        // })
+        // return equals;
+        return users.some(user => {
+            return user.mail === mail;
+        })
+    }
 
     function validate(input){
         let error = {};
@@ -71,23 +94,29 @@ export default function AddUser(){
             error.surname = 'El apellido debe tener un minimo de 3 letras'
         }
 
-        if(!input.document){
-            error.document = 'Debe ingresar su número de documento'
-        } else if(!/^[0-9]+$/u.test(input.document)){
-            error.document = 'Solo ingrese números'
-        } else if(input.document.length !== 8){
-            error.document = 'El documento debe tener 8 números'
-        } // else if(){
+        // if(!input.document){
+        //     error.document = 'Debe ingresar su número de documento'
+        // } else if(!/^[0-9]+$/u.test(input.document)){
+        //     error.document = 'Solo ingrese números'
+        // } else if(input.document.length !== 8){
+        //     error.document = 'El documento debe tener 8 números'
+        // } else if(){
             // error.document = 'Ya hay un usuario registrado con ese número de documento'
         //}
 
-        if(!input.email){
-            error.email = 'Debe ingresar su email'
-        } else if(!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(input.email)){
-            error.email = 'El email no es válido'
-        } // else if(){
-            // error.email = 'Ya hay un usuario registrado con ese email'
-        //}
+        if(input.phone){
+            if(!/^[0-9+ -]+$/u.test(input.phone)){
+                error.phone = 'Formato no válido'
+            }
+        }
+
+        if(!input.mail){
+            error.mail = 'Debe ingresar su email'
+        } else if(!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(input.mail)){
+            error.mail = 'El email no es válido'
+        }  else if(validateEmail(input.mail)){
+            error.mail = 'El email ya esta registrado'
+        }
         
         if(!input.password){
             error.password = 'Debe ingresar su contraseña'
@@ -113,11 +142,13 @@ export default function AddUser(){
 
     function handleSubmit(e){
         e.preventDefault();
+        dispatch(addUser(input));
         setInput({
             name:'',
             surname:'',
-            document:'',
-            email:'',
+            // document:'',
+            phone:'',
+            mail:'',
             password:''
         });
         setOpenSuccess(true);
@@ -128,8 +159,9 @@ export default function AddUser(){
         setInput({
             name:'',
             surname:'',
-            document:'',
-            email:'',
+            // document:'',
+            phone:'',
+            mail:'',
             password:''
         });
         history.push('/products');
@@ -170,7 +202,7 @@ export default function AddUser(){
                     helperText={error.surname}
                 />
 
-                <TextField
+                {/* <TextField
                     className={classes.textField}
                     required
                     name="document"
@@ -179,17 +211,27 @@ export default function AddUser(){
                     variant="outlined"
                     onChange={handleInput}
                     helperText={error.document}
+                /> */}
+
+                <TextField
+                    className={classes.textField}
+                    name="phone"
+                    value={input.phone}
+                    label="N° de teléfono"
+                    variant="outlined"
+                    onChange={handleInput}
+                    helperText={error.phone}
                 />
 
                 <TextField
                     className={classes.textField}
                     required
-                    name="email"
-                    value={input.email}
+                    name="mail"
+                    value={input.mail}
                     label="E-mail"
                     variant="outlined"
                     onChange={handleInput}
-                    helperText={error.email}
+                    helperText={error.mail}
                 />
 
                 <FormControl variant="outlined">
@@ -215,7 +257,7 @@ export default function AddUser(){
                 </FormControl>
 
                 <Grid container direction="row" justifyContent="center" alignItems="center">
-                    {!error.name && !error.surname && !error.document && !error.email && !error.password &&
+                    {!error.name && !error.surname && !error.document && !error.mail && !error.password &&
                         <Button type="submit" variant="contained" color="primary" endIcon={<Check />}>
                             Crear cuenta
                         </Button>
