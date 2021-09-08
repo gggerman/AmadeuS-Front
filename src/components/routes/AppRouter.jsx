@@ -7,7 +7,7 @@ import theme from "../../theme";
 import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
- 
+import AddUser from "../addUser/AddUser";
 
 const AppRouter = () => {
   return (
@@ -24,6 +24,7 @@ const AppRouter = () => {
             <Route path="/adminpanel" component={AdminPanel} />
             <Route path="/addcategory" component={AddCategory} />            
             <Route path="/addproduct" component={AddProduct} />
+            <Route path="/adduser" component={AddUser} />
             
 
             <Redirect to="/products" />
