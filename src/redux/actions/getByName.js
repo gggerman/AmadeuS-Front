@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GET_ALL_PRODUCTS, USER_ERRORS } from "./index"
+import { GET_ALL_PRODUCTS } from "./index"
 
 export function getByName(name) {
     return async (dispatch) => {

@@ -144,8 +144,14 @@ function AddProduct() {
     if (!input.price || isNaN(input.price)) {
       errors.price = "Debes seleccionar precio";
     }
+    if (input.price < 0) {
+      errors.price = "El precio no puede ser negativo";
+    }
     if (isNaN(input.stock)) {
       errors.stock = "Debes seleccionar cantidad";
+    }
+    if (input.stock < 0) {
+      errors.stock = "El stock no puede ser negativo";
     }
     if (!input.brand || !input.brand.length) {
       errors.brand = "Debe tener marca";
