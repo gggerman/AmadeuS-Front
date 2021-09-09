@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import { Typography, Divider } from "@material-ui/core";
 import { CardMedia, Box, Grid, Button, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { Paper } from "@material-ui/core";
-import { useParams } from "react-router";
+import { useParams, useRouteMatch } from "react-router";
+import { Link } from 'react-router-dom';
 import Nav from '../nav/Nav';
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light,
     },
     width: "20vh",
+    height: '7vh',
     fontSize: "2vh",
     marginRight: '4vh',
     marginLeft: '4vh'
@@ -45,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductDetail() {
   const { id } = useParams();
   const [detail, setDetail] = useState({})
+  const {path, url} = useRouteMatch()
+  console.log( url )
 
   const classes = useStyles();
 console.log(detail)
@@ -98,9 +101,11 @@ useEffect(() => {
                 <Button variant="contained" className={classes.button}>
                   Add to Cart
                 </Button>
+                <Link to={`/order/${id}`} style = {{textDecoration: 'none'}}>
                 <Button variant="contained" className={classes.button}>
-                  Buy
+                  Comprar
                 </Button>
+                </Link>
               </Grid>
 
               <Typography variant="body2" component="h3" className = {classes.container}>

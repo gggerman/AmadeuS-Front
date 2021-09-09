@@ -8,10 +8,13 @@ import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
 import Order from "../order/Order";
-import OrderMp from "../ordermp/OrderMp";
+import Stock from "../stock/Stock";
+import { useRouteMatch } from "react-router";
  
 
 const AppRouter = () => {
+  const {path, url} = useRouteMatch() 
+
   return (
     <>
       <div>
@@ -27,8 +30,9 @@ const AppRouter = () => {
             <Route path="/addcategory" component={AddCategory} />            
             <Route path="/addproduct" component={AddProduct} />
             
-            <Route path="/order" component = {Order} />
-            {/* <Route path="/ordermp" component = {OrderMp} /> */}
+            <Route path="/order/:id" component = {Order} />
+            <Route path="/stock" component = {Stock} />
+            
 
             <Redirect to="/products" />
 

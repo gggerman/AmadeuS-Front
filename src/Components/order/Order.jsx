@@ -1,8 +1,11 @@
-import React from 'react';
-import {AppBar, Card, Box, Container, CardMedia, Typography, Divider, Button, CssBaseline} from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import {AppBar, TextField, Input, Box, Container, CardMedia, Typography, Divider, Button, CssBaseline} from '@material-ui/core';
 import logo from './logo.jpg'
 import { makeStyles } from '@material-ui/core';
 import {Link} from 'react-router-dom';
+import { useParams } from 'react-router';
+import axios from 'axios';
+import { numberWithCommas } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
     media: {
@@ -40,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
       justifyContent:'space-around',
       alignItems: 'center',
       width: "40%",
-      height: '50vh',
+      height: '100vh',
       backgroundColor:'RGB(245, 245, 244)',
       borderRadius: '5px',
         
@@ -58,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     
     },
     img: {
-        width: '80%',
+        width: '60%',
         backgroundSize: 'contain',
         
     },
@@ -74,14 +77,55 @@ const useStyles = makeStyles((theme) => ({
   
   export default function Order() {
     const classes = useStyles()
-  
+    const {id} = useParams()
+
+    const [detail, setDetail] = useState({})
+    const [quantity, setQuantity] = useState(1) 
+    // quantity no puede ser mayor a detail.stock y tampoco puede ser menor que uno
+    // funcion que valide 
+
 
   
+
+    const getProductById = async () => {
+      try{
+         const response = await axios.get(`http://localhost:3001/products/${id}`)
+          setDetail(response.data)
+         
+      }
+      catch (error){
+          console.log(error)
+      }
+    }
+    
+    useEffect(() => {
+      getProductById(id) 
+    }, [id])
+  
+const handleSubmit = (e) => {
+  //aca iria el post de la compra {name, price, quantity} que recibe la ruta de mercadopago
+  e.preventDefault()
+  axios.post('http://localhost:3001/mercadopago/checkout/', {name: detail.name, price: detail.price *      quantity, quantity: quantity})
+    .then((response) => window.location = response.data)
+    .catch((err) => console.log(err))
+}
+ 
+
+const sumClick = (e) => {
+  e.preventDefault()
+  if(quantity < detail.stock) setQuantity(quantity + 1)
+  else return false
+}
+const restClick = (e) => {
+  e.preventDefault()
+  if(quantity > 1) setQuantity(quantity - 1)
+  else return false
+}
   
     return (
       <div>
         <CssBaseline>
-        <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%'}}>
+        <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%', position: 'absolute'}}>
 
         </AppBar>
 
@@ -113,11 +157,11 @@ const useStyles = makeStyles((theme) => ({
 
 
             <Box style = {{display:'flex', justifyContent:'center', marginTop: '3vh'}}>
-                <CardMedia className={classes.media}> <img src={'https://vanzguitars.files.wordpress.com/2010/03/32_jem7dbk.png'} className={classes.img} /> 
+                <CardMedia className={classes.media}> <img src={detail.image} className={classes.img} /> 
                 </CardMedia>
              </Box>
              <Typography component="h1" variant ='body1' >
-               Ibanez JEM Steve Vai Signature
+               {detail.name}
              </Typography>
 
              <Box style = {{display: 'flex', justifyContent: 'space-evenly'}}>
@@ -125,21 +169,24 @@ const useStyles = makeStyles((theme) => ({
                 Total:
                 </Typography>
                 <Typography component="h1" variant ='h5' >
-                $ 250.000
+                $ {detail.price && numberWithCommas(detail.price * quantity)}
                 </Typography>
              </Box>
+             <Typography component ="h4">Stock Disponible: {detail.stock}</Typography>
 
-             <Typography component="p" variant ='body2' >
-               Cantidad : 1
-             </Typography>
+            
              <Divider variant = "middle" style ={{width: '100%'}}/>                 
 
-             <Link to="/ordermp" style ={{textDecoration: 'none'}}>
-             <Button variant="contained" className={classes.button}>
-                    Continuar
-             </Button>
-             </Link>   
-                
+             <form onSubmit={handleSubmit}>
+             <Typography component ="h4">Cantidad: {quantity} unidad</Typography>
+              <Button onClick={sumClick}>+</Button>
+              <Button onClick={restClick}>-</Button>
+
+              <Button variant="contained" type = "submit" className={classes.button}>
+                      Comprar Ahora
+              </Button>
+            
+            </form>   
   
           </Container>
         </Container>
