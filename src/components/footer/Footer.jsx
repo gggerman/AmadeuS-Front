@@ -7,7 +7,8 @@ const useStyles = makeStyles( (theme) => ({
         display: 'flex',
         justifyContent: 'space-around',
         color: theme.palette.primary.contrastText,
-        backgroundColor: theme.palette.primary.dark
+        backgroundColor: theme.palette.primary.dark,
+        padding: '5vh'
     }
 }))
 

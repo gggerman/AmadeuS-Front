@@ -7,12 +7,13 @@ import theme from "../../theme";
 import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
+import '../../App.css'
  
 
 const AppRouter = () => {
   return (
     <>
-      <div>
+      <div className='app'>
         <ThemeProvider theme={theme}>
         
           <Switch>
@@ -24,7 +25,7 @@ const AppRouter = () => {
             <Route path="/adminpanel" component={AdminPanel} />
             <Route path="/addcategory" component={AddCategory} />            
             <Route path="/addproduct" component={AddProduct} />
-            
+            <Route path="/editproduct/:id" component={AddProduct} />
 
             <Redirect to="/products" />
 
