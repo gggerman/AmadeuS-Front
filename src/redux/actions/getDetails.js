@@ -13,7 +13,7 @@ export const getDetails = (id) => {
                     loading: true
                 }
             })
-            const productDetail = await axios.get(`http://localhost:3001/products/${id}`)
+            const productDetail = await axios.get(`https://musical-e-commerce.herokuapp.com/products/${id}`)
             return dispatch({
                 type: GET_DETAILS,
                 payload: {

@@ -100,9 +100,9 @@ function AddProduct() {
     if (validate()) {
       console.log(input);
       if (input._id) {
-        axios.put(`http://localhost:3001/products/${input._id}`, input);
+        axios.put(`https://musical-e-commerce.herokuapp.com/products/${input._id}`, input);
       } else {
-        axios.post("http://localhost:3001/products", input);
+        axios.post("https://musical-e-commerce.herokuapp.com/products", input);
         setInput(initialInput);
       }
     }

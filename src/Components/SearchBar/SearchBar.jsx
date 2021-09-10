@@ -88,7 +88,7 @@ function SearchBar() {
     try {
       if (name.length > 0) {
         let response = await axios(
-          `http://localhost:3001/products?name=${name}`
+          `https://musical-e-commerce.herokuapp.com/products?name=${name}`
         );
         console.log(response.status);
         if (response.status === 200) {

@@ -13,7 +13,7 @@ export function getByName(name) {
                     loading: true
                 }
             })
-            const products = await axios.get(`http://localhost:3001/products?name=${name}`)
+            const products = await axios.get(`https://musical-e-commerce.herokuapp.com/products?name=${name}`)
             if (products.status === 200) {
                 return dispatch({
                     type: GET_ALL_PRODUCTS,

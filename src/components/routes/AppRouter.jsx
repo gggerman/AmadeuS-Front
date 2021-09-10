@@ -15,14 +15,14 @@ const AppRouter = () => {
     <>
       <div className='app'>
         <ThemeProvider theme={theme}>
-        
+
           <Switch>
             {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
             <Route exact path="/products" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
             <Route path="/adminpanel" component={AdminPanel} />
-            <Route path="/addcategory" component={AddCategory} />            
+            <Route path="/addcategory" component={AddCategory} />
             <Route path="/addproduct" component={AddProduct} />
             <Route path="/editproduct/:id" component={AddProduct} />
             <Route path="/adduser" component={AddUser} />
