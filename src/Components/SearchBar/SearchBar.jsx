@@ -6,20 +6,9 @@ import { alpha, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { getByName } from "../../redux/actions/getByName";
 import { Link } from "react-router-dom";
-import { Autocomplete } from "@material-ui/lab";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Divider,
-  Grid,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Card, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import "./SearchBar.css";
-import ProductCard from "../productcard/ProductCard";
 import { numberWithCommas } from "../../utils";
 import { useHistory } from "react-router";
 import { setSearchBar } from "../../redux/actions/searchBar";
@@ -74,14 +63,14 @@ function SearchBar() {
   const dispatch = useDispatch();
   const [focused, setFocused] = useState(false);
   const history = useHistory();
-  const input = useRef()
+  const input = useRef();
 
   function handleSubmit(e) {
     e.preventDefault();
     history.push("/products");
     dispatch(setSearchBar(name));
     dispatch(getByName(name));
-    input.current.blur()
+    input.current.blur();
   }
 
   async function doSearch() {
@@ -184,9 +173,14 @@ function SearchBar() {
                           })`,
                         }}
                       ></div>
-                      <Typography variant="body2" component="h3">
-                        {r.name}
-                      </Typography>
+                      <div>
+                        <Typography variant="body2" component="h3">
+                          ${numberWithCommas(r.price)}
+                        </Typography>
+                        <Typography variant="body2" component="h3">
+                          {r.name}
+                        </Typography>
+                      </div>
                     </Link>
                   </div>
                 ))

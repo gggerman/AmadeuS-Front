@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GET_DETAILS, USER_ERRORS } from "."
+import { GET_DETAILS } from "."
 
 export const getDetails = (id) => {
     return async (dispatch) => {

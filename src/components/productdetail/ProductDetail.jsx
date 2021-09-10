@@ -118,13 +118,31 @@ export default function ProductDetail() {
                   Buy
                 </Button>
               </Grid>
-
+              {data.stock === 0 ? (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  component="h3"
+                  className={classes.container}
+                >
+                  Sin stock
+                </Typography>
+                
+              ) : ( 
+                <Typography
+                  variant="body2"
+                  component="h3"
+                  className={classes.container}
+                >
+                  Stock: {data.stock}
+                </Typography>
+              )}
               <Typography
                 variant="body2"
                 component="h3"
                 className={classes.container}
               >
-                Stock: {data.stock} {data.brand}
+                {data.brand}
               </Typography>
             </Grid>
           </Grid>
