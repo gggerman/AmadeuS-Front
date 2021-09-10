@@ -9,7 +9,7 @@ import AdminPanel from "../adminPanel/AdminPanel";
 import AddProduct from "../../Components/AddProduct/AddProduct";
 import Order from "../../Components/order/Order";
 import '../../App.css'
-import AddUser from "../adduser/AddUser";
+import AddUser from "../../Components/addUser/AddUser";
 
 
 const AppRouter = () => {
