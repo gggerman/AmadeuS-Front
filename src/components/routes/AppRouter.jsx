@@ -7,10 +7,14 @@ import theme from "../../theme";
 import { AddCategory } from "../../Components/addCategory/AddCategory";
 import AdminPanel from "../adminPanel/AdminPanel";
 import AddProduct from "../../Components/AddProduct/AddProduct";
+import Order from "../order/Order";
 import '../../App.css'
-import AddUser from "../addUser/AddUser";
+import AddUser from "../adduser/AddUser";
+
 
 const AppRouter = () => {
+
+
   return (
     <>
       <div className='app'>
@@ -24,8 +28,13 @@ const AppRouter = () => {
             <Route path="/adminpanel" component={AdminPanel} />
             <Route path="/addcategory" component={AddCategory} />
             <Route path="/addproduct" component={AddProduct} />
+
+            
+            <Route path="/order/:id" component = {Order} />
+      
             <Route path="/editproduct/:id" component={AddProduct} />
             <Route path="/adduser" component={AddUser} />
+
             <Redirect to="/products" />
 
           </Switch>
