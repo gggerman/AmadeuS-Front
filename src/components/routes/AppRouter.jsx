@@ -4,12 +4,12 @@ import ProductDetail from "../productdetail/ProductDetail";
 import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
-import { AddCategory } from "../../Components/addCategory/AddCategory";
-import AdminPanel from "../adminPanel/AdminPanel";
-import AddProduct from "../../Components/AddProduct/AddProduct";
-import Order from "../../Components/order/Order";
+import { AddCategory } from "../addategory/AddCategory";
+import AdminPanel from "../adminpanel/AdminPanel";
+import AddProduct from "../addproduct/AddProduct";
+import Order from "../order/Order";
 import '../../App.css'
-import AddUser from "../../Components/addUser/AddUser";
+import AddUser from "../adduser/AddUser";
 
 
 const AppRouter = () => {
