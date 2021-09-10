@@ -16,6 +16,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchBar from "../searchbar/SearchBar";
 import { Link } from 'react-router-dom';
+import AddUser from '../addUser/AddUser'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -103,7 +104,6 @@ export default function Nav() {
     handleMobileMenuClose();
   };
 
- 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -199,6 +199,13 @@ export default function Nav() {
           </div>
           
         </Toolbar>
+        {/* <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2vw'}}>
+          <Link to='/adduser' style={{ textDecoration: "none", color:"#ffffff" }}>
+            <Typography variant="p" noWrap>
+              Registrate
+            </Typography>
+          </Link>
+        </div> */}
       </AppBar>
       {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
       <div className={classes.offset}></div> {/* NO BORRAR */}

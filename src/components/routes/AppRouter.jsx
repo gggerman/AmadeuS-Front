@@ -8,6 +8,8 @@ import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
 import AddUser from "../addUser/AddUser";
+import Login from "../login/Login";
+import UserManagement from "../usermanagement/UserManagement";
 
 const AppRouter = () => {
   return (
@@ -25,6 +27,8 @@ const AppRouter = () => {
             <Route path="/addcategory" component={AddCategory} />            
             <Route path="/addproduct" component={AddProduct} />
             <Route path="/adduser" component={AddUser} />
+            <Route path="/login" component={Login} />
+            <Route path="/usermanagement" component={UserManagement} />
             
 
             <Redirect to="/products" />

@@ -153,6 +153,7 @@ export default function AddUser(){
         });
         setOpenSuccess(true);
         // setOpenError(true);
+        history.push('/products');
     }
 
     function handleClick(e){
