@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
     return (
       <div>
         <CssBaseline>
-        <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%'}}>
+        <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%', position: 'absolute'}}>
 
         </AppBar>
 
@@ -157,6 +157,7 @@ const useStyles = makeStyles((theme) => ({
                 </Typography>}
                 
              </Box>
+             <Typography component ="h4">Stock Disponible: {detail.stock}</Typography>
 
              <Typography component="p" variant ='body2' >
                Stock Disponible:  {detail.stock}

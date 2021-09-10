@@ -119,8 +119,8 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <Link to ='/adminpanel' className ={classes.link}><MenuItem >Profile</MenuItem></Link>
-      <MenuItem >My account</MenuItem>
+      <Link to ='/adminpanel' className ={classes.link}><MenuItem >Perfil</MenuItem></Link>
+      
     </Menu>
   );
 

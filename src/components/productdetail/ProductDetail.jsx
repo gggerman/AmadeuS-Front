@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light,
     },
     width: "20vh",
+    height: '7vh',
     fontSize: "2vh",
     marginRight: '4vh',
     marginLeft: '4vh'
@@ -45,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductDetail() {
   const { id } = useParams();
   const [detail, setDetail] = useState({})
+  const {path, url} = useRouteMatch()
+  console.log( url )
 
   const classes = useStyles();
   console.log(detail)

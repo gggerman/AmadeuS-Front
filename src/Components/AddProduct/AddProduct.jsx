@@ -87,8 +87,8 @@ function AddProduct() {
     e.preventDefault();
     if (validate()) {
       axios.post("http://localhost:3001/products", input);
-    }   
-    
+      setInput({});
+    }
   };
 
   // const handleUpload = (e) => {
@@ -153,125 +153,133 @@ function AddProduct() {
 
   return (
     <div>
-      <form  onSubmit={handleSubmit}>
-      <FormControl className={classes.formControl}>
-       
-        <TextField
-          required
-          name="name"
-          label="Producto"
-          variant="outlined"
-          onChange={handleInputChange}
-        />
-        {errors.name && (
-          <FormHelperText id="component-error" style ={{color: 'red'}}>{errors.name}</FormHelperText>
-        )}
-        <TextField
-          required
-          name="image"
-          label="Imagen URL"
-          variant="outlined"
-          onChange={handleInputChange}
-        />
-        {errors.image && (
-          <FormHelperText id="component-error" style ={{color: 'red'}} >{errors.image}</FormHelperText>
-        )}
-        <TextField
-          required
-          name="price"
-          label="Precio"
-          variant="outlined"
-          type="number"
-          onChange={handleInputChange}
-        />
-        {errors.price && (
-          <FormHelperText id="component-error" style ={{color: 'red'}}>{errors.price}</FormHelperText>
-        )}
-        <TextField
-          required
-          name="brand"
-          label="Marca"
-          variant="outlined"
-          onChange={handleInputChange}
-        />
-        {errors.brand && (
-          <FormHelperText id="component-error" style ={{color: 'red'}}>{errors.brand}</FormHelperText>
-        )}
-        <TextField
-          required
-          name="stock"
-          label="Unidades disponibles"
-          variant="outlined"
-          type="number"
-          onChange={handleInputChange}
-        />
-        {errors.stock && (
-          <FormHelperText id="component-error" style ={{color: 'red'}}>{errors.stock}</FormHelperText>
-        )}
-        <FormControl variant="outlined">
-          <InputLabel>Categorías</InputLabel>
-          <Select
-            multiple
-            variant="outlined"
-            value={val}
-            name="categories"
-            onChange={handleSelectChange}
-            input={<Input />}
-            renderValue={(selected) => selected.join(", ")}
-          >
-            {categories.map((category) => (
-              <MenuItem key={category.name} value={category.name}>
-                <Checkbox checked={val.indexOf(category.name) > -1} />
-                <ListItemText primary={category.name} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        {errors.categories && (
-          <FormHelperText id="component-error" style ={{color: 'red'}}>
-            {errors.categories}
-          </FormHelperText>
-        )}
-        <div>
+      <form onSubmit={handleSubmit}>
+        <FormControl className={classes.formControl} onSubmit={handleSubmit}>
+          {/* <input
+              accept="image/*"
+              name='image'
+              className={classes.input}
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={handleUpload}
+            /> */}
           <TextField
-            id="standard-multiline-static"
-            name="description"
-            label="Descripción"
-            multiline
+            required
+            name="name"
+            label="Producto"
             variant="outlined"
-            rows={4}
-            fullWidth
             onChange={handleInputChange}
           />
-          {errors.description && (
+          {errors.name && (
+            <FormHelperText id="component-error">{errors.name}</FormHelperText>
+          )}
+          <TextField
+            required
+            name="image"
+            label="Imagen URL"
+            variant="outlined"
+            onChange={handleInputChange}
+          />
+          {errors.image && (
+            <FormHelperText id="component-error">{errors.image}</FormHelperText>
+          )}
+          <TextField
+            required
+            name="price"
+            label="Precio"
+            variant="outlined"
+            type="number"
+            onChange={handleInputChange}
+          />
+          {errors.price && (
+            <FormHelperText id="component-error">{errors.price}</FormHelperText>
+          )}
+          <TextField
+            required
+            name="brand"
+            label="Marca"
+            variant="outlined"
+            onChange={handleInputChange}
+          />
+          {errors.brand && (
+            <FormHelperText id="component-error">{errors.brand}</FormHelperText>
+          )}
+          <TextField
+            required
+            name="stock"
+            label="Unidades disponibles"
+            variant="outlined"
+            type="number"
+            onChange={handleInputChange}
+          />
+          {errors.stock && (
+            <FormHelperText id="component-error">{errors.stock}</FormHelperText>
+          )}
+          <FormControl variant="outlined">
+            <InputLabel>Categorías</InputLabel>
+            <Select
+              multiple
+              variant="outlined"
+              value={val}
+              name="categories"
+              onChange={handleSelectChange}
+              input={<Input />}
+              renderValue={(selected) => selected.join(", ")}
+            >
+              {categories.map((category) => (
+                <MenuItem key={category.name} value={category.name}>
+                  <Checkbox checked={val.indexOf(category.name) > -1} />
+                  <ListItemText primary={category.name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {errors.categories && (
             <FormHelperText id="component-error">
-              {errors.description}
+              {errors.categories}
             </FormHelperText>
           )}
-        </div>
-        <Button type="submit" className={classes.btnPublicar}>
-          Publicar
-        </Button>
+          <div>
+            <TextField
+              id="standard-multiline-static"
+              name="description"
+              label="Descripción"
+              multiline
+              variant="outlined"
+              rows={4}
+              fullWidth
+              onChange={handleInputChange}
+            />
+            {errors.description && (
+              <FormHelperText id="component-error">
+                {errors.description}
+              </FormHelperText>
+            )}
+          </div>
+          <Button type="submit" className={classes.btnPublicar}>
+            Publicar
+          </Button>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            marginTop: "5vh",
-          }}
-        >
-          <Link to="/" className={classes.link}>
-            <Button variant="contained" className={classes.btnBack}>
-              Home
-            </Button>
-          </Link>
-          <Link to="/adminpanel" className={classes.link}>
-            <Button variant="contained" className={classes.btnBack}>
-              Volver
-            </Button>
-          </Link>
-        </div>
-      </FormControl>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              marginTop: "5vh",
+            }}
+          >
+            <Link to="/" className={classes.link}>
+              <Button variant="contained" className={classes.btnBack}>
+                Home
+              </Button>
+            </Link>
+            <Link to="/adminpanel" className={classes.link}>
+              <Button variant="contained" className={classes.btnBack}>
+                Volver
+              </Button>
+            </Link>
+          </div>
+        </FormControl>
       </form>
     </div>
   );
