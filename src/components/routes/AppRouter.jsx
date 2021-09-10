@@ -5,7 +5,7 @@ import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
 import { AddCategory } from "../../Components/addCategory/AddCategory";
-import AdminPanel from "../adminpanel/AdminPanel";
+import AdminPanel from "../adminPanel/AdminPanel";
 import AddProduct from "../../Components/AddProduct/AddProduct";
 import '../../App.css'
 import AddUser from "../addUser/AddUser";
