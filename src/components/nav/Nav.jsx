@@ -16,6 +16,9 @@ import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchBar from "../searchbar/SearchBar";
 import { Link } from "react-router-dom";
+import Logout from '../account/Logout'
+import Login from '../account/Login'
+import LoginLogout from "../account/LoginLogout";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -165,7 +168,7 @@ export default function Nav() {
       </MenuItem>
     </Menu>
   );
-
+  
   return (
     <div className={classes.grow}>
       <AppBar
@@ -173,7 +176,7 @@ export default function Nav() {
         style={{ backgroundColor: "rgb(0, 23, 20)", height: "18%" }}
       >
         <Toolbar className={classes.navDisplay}>
-          <Link
+          <Link 
             to="/products"
             style={{ textDecoration: "none", color: "white" }}
           >
@@ -207,6 +210,11 @@ export default function Nav() {
             >
               <AccountCircle />
             </IconButton>
+            
+            {/* <LoginLogout /> */}
+            <Login/>
+            <Logout/>
+
           </div>
         </Toolbar>
       </AppBar>
