@@ -4,11 +4,13 @@ import {BottomNavigation, BottomNavigationAction, CssBaseline, Typography} from 
 
 const useStyles = makeStyles( (theme) => ({
     footer:{
+        position: 'sticky',
+        bottom: 0,
         display: 'flex',
         justifyContent: 'space-around',
         color: theme.palette.primary.contrastText,
-        backgroundColor: theme.palette.primary.dark,
-        padding: '5vh'
+        backgroundColor: 'rgb(0, 23, 20)'
+
     }
 }))
 
