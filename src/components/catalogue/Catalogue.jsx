@@ -102,6 +102,7 @@ export default function Catalogue() {
   function handleChange(event, value) {
     setPage(value);
   }
+  
   useEffect(() => {
     dispatch(filterByCategory(select.filter));
   }, [select.filter]);
@@ -109,7 +110,7 @@ export default function Catalogue() {
   return (
     <>
       {loading && (
-        <div className='loading'>
+        <div className="loading">
           <CircularProgress />
         </div>
       )}

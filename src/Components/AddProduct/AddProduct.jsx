@@ -12,16 +12,23 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
+  Typography,
+  Grid,
+  CardMedia,
+  Divider,
+  Box,
+  OutlinedInput,
 } from "@material-ui/core";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDetails } from "../../redux/actions/getDetails";
 import { useParams } from "react-router";
+import { numberWithCommas } from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
     width: "70vh",
     display: "absolute",
     justifyContent: "center",
@@ -39,11 +46,43 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
     },
-    marginTop: "1vh",
+    marginTop: "3vh",
   },
   link: {
     textDecoration: "none",
     color: theme.palette.primary.contrastText,
+  },
+  field: {
+    marginTop: "2vh",
+  },
+  media: {
+    width: "100%",
+    paddingTop: "80%", // 16:9
+    margin: "0vh",
+    backgroundSize: "contain",
+    "&:hover": {
+      backgroundSize: "larger",
+    },
+  },
+  container: {
+    width: "80vh",
+    margin: "5vh",
+  },
+  mp: {
+    maxWidth: "8vh",
+    marginRight: "5vh",
+    marginLeft: "5vh",
+  },
+  button: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+    },
+    width: "20vh",
+    fontSize: "2vh",
+    marginRight: "4vh",
+    marginLeft: "4vh",
   },
 }));
 
@@ -62,7 +101,7 @@ function AddProduct() {
   };
   const [input, setInput] = useState(initialInput);
   const [errors, setErrors] = useState({});
-  const detail = useSelector(({ app }) => app.detail.data);
+  const { data, loading, success } = useSelector(({ app }) => app.detail);
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -75,10 +114,10 @@ function AddProduct() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (detail._id) {
-      setInput(detail);
+    if (data._id) {
+      setInput(data);
     }
-  }, [detail]);
+  }, [data]);
 
   const handleInputChange = (e) => {
     setInput({
@@ -175,10 +214,11 @@ function AddProduct() {
   }, []);
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <FormControl className={classes.formControl} onSubmit={handleSubmit}>
-          {/* <input
+    <div style={{ display: "flex" }}>
+      <div style={{ display: "flex" }}>
+        <form onSubmit={handleSubmit}>
+          <FormControl className={classes.formControl} onSubmit={handleSubmit}>
+            {/* <input
               accept="image/*"
               name='image'
               className={classes.input}
@@ -187,134 +227,215 @@ function AddProduct() {
               type="file"
               onChange={handleUpload}
             /> */}
-          <TextField
-            required
-            name="name"
-            value={input.name}
-            label="Producto"
-            variant="outlined"
-            onChange={handleInputChange}
-          />
-          {errors.name && (
-            <FormHelperText id="component-error">{errors.name}</FormHelperText>
-          )}
-          <TextField
-            required
-            name="image"
-            value={input.image}
-            label="Imagen URL"
-            variant="outlined"
-            onChange={handleInputChange}
-          />
-          {errors.image && (
-            <FormHelperText id="component-error">{errors.image}</FormHelperText>
-          )}
-          <TextField
-            required
-            name="price"
-            value={input.price}
-            label="Precio"
-            variant="outlined"
-            type="number"
-            onChange={handleInputChange}
-          />
-          {errors.price && (
-            <FormHelperText id="component-error">{errors.price}</FormHelperText>
-          )}
-          <TextField
-            required
-            name="brand"
-            value={input.brand}
-            label="Marca"
-            variant="outlined"
-            onChange={handleInputChange}
-          />
-          {errors.brand && (
-            <FormHelperText id="component-error">{errors.brand}</FormHelperText>
-          )}
-          <TextField
-            required
-            name="stock"
-            value={input.stock}
-            label="Unidades disponibles"
-            variant="outlined"
-            type="number"
-            onChange={handleInputChange}
-          />
-          {errors.stock && (
-            <FormHelperText id="component-error">{errors.stock}</FormHelperText>
-          )}
-          <FormControl variant="outlined">
-            <InputLabel>Categorías</InputLabel>
-            <Select
-              multiple
-              variant="outlined"
-              value={input.categories}
-              name="categories"
-              onChange={handleSelectChange}
-              input={<Input />}
-              renderValue={(selected) =>
-                categories
-                  .filter((c) => selected.indexOf(c._id) > -1)
-                  .map((c) => c.name)
-                  .join(", ")
-              }
-            >
-              {categories.map((category) => (
-                <MenuItem key={category.name} value={category._id}>
-                  <Checkbox checked={val.indexOf(category._id) > -1} />
-                  <ListItemText primary={category.name} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {errors.categories && (
-            <FormHelperText id="component-error">
-              {errors.categories}
-            </FormHelperText>
-          )}
-          <div>
             <TextField
-              id="standard-multiline-static"
-              name="description"
-              label="Descripción"
-              value={input.description}
-              multiline
+              className={classes.field}
+              required
+              name="name"
+              value={input.name}
+              label="Producto"
               variant="outlined"
-              rows={4}
-              fullWidth
               onChange={handleInputChange}
             />
-            {errors.description && (
+            {errors.name && (
               <FormHelperText id="component-error">
-                {errors.description}
+                {errors.name}
               </FormHelperText>
             )}
-          </div>
-          <Button type="submit" className={classes.btnPublicar}>
-            Publicar
-          </Button>
+            <TextField
+              className={classes.field}
+              required
+              name="image"
+              value={input.image}
+              label="Imagen URL"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
+            {errors.image && (
+              <FormHelperText id="component-error">
+                {errors.image}
+              </FormHelperText>
+            )}
+            <TextField
+              className={classes.field}
+              required
+              name="price"
+              value={input.price}
+              label="Precio"
+              variant="outlined"
+              type="number"
+              onChange={handleInputChange}
+            />
+            {errors.price && (
+              <FormHelperText id="component-error">
+                {errors.price}
+              </FormHelperText>
+            )}
+            <TextField
+              className={classes.field}
+              required
+              name="brand"
+              value={input.brand}
+              label="Marca"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
+            {errors.brand && (
+              <FormHelperText id="component-error">
+                {errors.brand}
+              </FormHelperText>
+            )}
+            <TextField
+              className={classes.field}
+              required
+              name="stock"
+              value={input.stock}
+              label="Unidades disponibles"
+              variant="outlined"
+              type="number"
+              onChange={handleInputChange}
+            />
+            {errors.stock && (
+              <FormHelperText id="component-error">
+                {errors.stock}
+              </FormHelperText>
+            )}
+            <FormControl variant='outlined' className={classes.field}>
+              <InputLabel>Categorías</InputLabel>
+              <Select
+                multiple
+                label="Categorías"
+                value={input.categories}
+                name="categories"
+                onChange={handleSelectChange}
+                input={<OutlinedInput label='Categorias'/>}
+                renderValue={(selected) =>
+                  categories
+                    .filter((c) => selected.indexOf(c._id) > -1)
+                    .map((c) => c.name)
+                    .join(", ")
+                }
+              >
+                {categories.map((category) => (
+                  <MenuItem key={category.name} value={category._id}>
+                    <Checkbox checked={val.indexOf(category._id) > -1} />
+                    <ListItemText primary={category.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {errors.categories && (
+              <FormHelperText id="component-error">
+                {errors.categories}
+              </FormHelperText>
+            )}
+            <div>
+              <TextField
+                id="standard-multiline-static"
+                name="description"
+                label="Descripción"
+                value={input.description}
+                className={classes.field}
+                multiline
+                variant="outlined"
+                rows={4}
+                fullWidth
+                onChange={handleInputChange}
+              />
+              {errors.description && (
+                <FormHelperText id="component-error">
+                  {errors.description}
+                </FormHelperText>
+              )}
+            </div>
+            <Button type="submit" className={classes.btnPublicar}>
+              Publicar
+            </Button>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              marginTop: "5vh",
-            }}
-          >
-            <Link to="/" className={classes.link}>
-              <Button variant="contained" className={classes.btnBack}>
-                Home
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-evenly",
+                marginTop: "5vh",
+              }}
+            >
+              <Link to="/" className={classes.link}>
+                <Button variant="contained" className={classes.btnBack}>
+                  Home
+                </Button>
+              </Link>
+              <Link to="/adminpanel" className={classes.link}>
+                <Button variant="contained" className={classes.btnBack}>
+                  Volver
+                </Button>
+              </Link>
+            </div>
+          </FormControl>
+        </form>
+      </div>
+      <div>
+        <Grid
+          className={classes.formControl}
+          container
+          style={{ marginTop: "4vh" }}
+        >
+          <Grid item xs={6}>
+            <CardMedia className={classes.media} image={input.image} />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography
+              component="h1"
+              variant="h4"
+              className={classes.container}
+            >
+              {input.name}
+              <Divider variant="middle" light />
+            </Typography>
+            <Typography
+              variant="h3"
+              component="h2"
+              className={classes.container}
+            >
+              ${input.price}
+              <Divider variant="fullwidth" />
+            </Typography>
+            <Typography
+              component="p"
+              variant="body2"
+              className={classes.container}
+            >
+              {input.description}
+            </Typography>
+            <Grid
+              style={{
+                width: "600px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Box>
+                {" "}
+                <img
+                  src={"https://img.icons8.com/color/480/mercado-pago.png"}
+                  className={classes.mp}
+                />
+              </Box>
+              <Button variant="contained" className={classes.button}>
+                Add to Cart
               </Button>
-            </Link>
-            <Link to="/adminpanel" className={classes.link}>
-              <Button variant="contained" className={classes.btnBack}>
-                Volver
+              <Button variant="contained" className={classes.button}>
+                Buy
               </Button>
-            </Link>
-          </div>
-        </FormControl>
-      </form>
+            </Grid>
+            <Typography
+              variant="body2"
+              component="h3"
+              className={classes.container}
+            >
+              Stock: {input.stock} {input.brand}
+            </Typography>
+          </Grid>
+        </Grid>
+      </div>
     </div>
   );
 }

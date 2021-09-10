@@ -90,7 +90,6 @@ function SearchBar() {
         let response = await axios(
           `http://localhost:3001/products?name=${name}`
         );
-        console.log(response.status);
         if (response.status === 200) {
           setSearchResults(await response.data);
         }

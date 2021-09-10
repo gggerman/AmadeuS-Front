@@ -9,6 +9,7 @@ import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
 import '../../App.css'
 import AddUser from "../addUser/AddUser";
+import Stock from "../stock/Stock";
 
 const AppRouter = () => {
   return (
@@ -22,6 +23,7 @@ const AppRouter = () => {
             <Route exact path="/products" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
             <Route path="/adminpanel" component={AdminPanel} />
+            <Route path='/stock' component={Stock}/>
             <Route path="/addcategory" component={AddCategory} />            
             <Route path="/addproduct" component={AddProduct} />
             <Route path="/editproduct/:id" component={AddProduct} />

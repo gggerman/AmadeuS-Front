@@ -167,7 +167,7 @@ export default function Nav() {
   );
 
   return (
-    <div className={classes.grow}>
+    <div>
       <AppBar
         position="absolute"
         style={{ backgroundColor: "rgb(0, 23, 20)", height: "18%" }}
