@@ -8,7 +8,6 @@ import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
 import Order from "../order/Order";
-import OrderMp from "../ordermp/OrderMp";
  
 
 const AppRouter = () => {
@@ -27,8 +26,8 @@ const AppRouter = () => {
             <Route path="/addcategory" component={AddCategory} />            
             <Route path="/addproduct" component={AddProduct} />
             
-            <Route path="/order" component = {Order} />
-            {/* <Route path="/ordermp" component = {OrderMp} /> */}
+            <Route path="/order/:id" component = {Order} />
+      
 
             <Redirect to="/products" />
 

@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import {useParams} from 'react-router-dom';
 import {AppBar, Card, Box, Container, CardMedia, Typography, Divider, Button, CssBaseline} from '@material-ui/core';
 import logo from './logo.jpg'
 import { makeStyles } from '@material-ui/core';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
+import { numberWithCommas } from '../../utils';
+
 
 const useStyles = makeStyles((theme) => ({
     media: {
@@ -39,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
       justifyContent:'space-around',
       alignItems: 'center',
-      width: "40%",
-      height: '50vh',
+      width: "35%",
+      height: '100vh',
       backgroundColor:'RGB(245, 245, 244)',
       borderRadius: '5px',
         
@@ -58,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     
     },
     img: {
-        width: '80%',
+        width: '40%',
         backgroundSize: 'contain',
         
     },
@@ -74,9 +78,33 @@ const useStyles = makeStyles((theme) => ({
   
   export default function Order() {
     const classes = useStyles()
-  
+    const { id } = useParams()
+    const [detail, setDetail] = useState({})
+    const [quantity, setQuantity] = useState(1)
 
+    const getProductById = async () => {
+      try{
+         const response = await axios.get(`http://localhost:3001/products/${id}`)
+          setDetail(response.data)
+      }
+      catch (error){
+          console.log(error)
+      }
+    }
+    
+    useEffect(() => {
+      getProductById(id) 
+    }, [])
+
+    const handleCheckout = () => {
+      axios.post('http://localhost:3001/mercadopago/checkout', { name: detail.name, price: detail.price, quantity: quantity})
+      .then((response) => window.location = response.data )
+      .catch((err) => console.log(err))
+    }
   
+    const handleQuantity = (e) =>{
+      setQuantity(e.target.value)
+    }
   
     return (
       <div>
@@ -113,32 +141,35 @@ const useStyles = makeStyles((theme) => ({
 
 
             <Box style = {{display:'flex', justifyContent:'center', marginTop: '3vh'}}>
-                <CardMedia className={classes.media}> <img src={'https://vanzguitars.files.wordpress.com/2010/03/32_jem7dbk.png'} className={classes.img} /> 
+                <CardMedia className={classes.media}> <img src={detail.image} className={classes.img} /> 
                 </CardMedia>
              </Box>
              <Typography component="h1" variant ='body1' >
-               Ibanez JEM Steve Vai Signature
+               {detail.name}
              </Typography>
 
              <Box style = {{display: 'flex', justifyContent: 'space-evenly'}}>
                 <Typography component="h1" variant ='h5' >
                 Total:
                 </Typography>
-                <Typography component="h1" variant ='h5' >
-                $ 250.000
-                </Typography>
+                {detail.price && <Typography component="h1" variant ='h5' >
+                $ {numberWithCommas(detail.price * quantity)}
+                </Typography>}
+                
              </Box>
 
              <Typography component="p" variant ='body2' >
-               Cantidad : 1
+               Stock Disponible:  {detail.stock}
              </Typography>
              <Divider variant = "middle" style ={{width: '100%'}}/>                 
-
-             <Link to="/ordermp" style ={{textDecoration: 'none'}}>
-             <Button variant="contained" className={classes.button}>
+               <label>Cantidad: 
+                 <input type="number" min = "1" max ={detail.stock} defaultValue = "1" onChange={handleQuantity}/>
+               
+               </label>
+             <Button variant="contained" className={classes.button} onClick ={handleCheckout}>
                     Continuar
              </Button>
-             </Link>   
+            
                 
   
           </Container>
