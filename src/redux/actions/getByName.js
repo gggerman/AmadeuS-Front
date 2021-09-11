@@ -1,5 +1,6 @@
 import axios from "axios"
 import { GET_ALL_PRODUCTS } from "./index"
+const { REACT_APP_SERVER } = process.env;
 
 export function getByName(name) {
     return async (dispatch) => {
@@ -13,7 +14,7 @@ export function getByName(name) {
                     loading: true
                 }
             })
-            const products = await axios.get(`http:/localhost:3001/products?name=${name}`)
+            const products = await axios.get(`${REACT_APP_SERVER}/products?name=${name}`)
             if (products.status === 200) {
                 return dispatch({
                     type: GET_ALL_PRODUCTS,
