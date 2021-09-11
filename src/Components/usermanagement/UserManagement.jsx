@@ -35,13 +35,13 @@ export default function UserManagement(){
 
     async function handlePrivileges(user){
         user.isAdmin = !user.isAdmin;
-        await axios.put(`http://localhost:3001/users/${user._id}`, user);
+        await axios.put(`https://musical-e-commerce.herokuapp.com/users/${user._id}`, user);
         setRender(`Change ${user}`);
         dispatch(getAllUsers());
     }
 
     async function handleDelete(id){
-        await axios.delete(`http://localhost:3001/users/${id}`);
+        await axios.delete(`https://musical-e-commerce.herokuapp.com//${id}`);
         setRender(`Change ${id}`);
         dispatch(getAllUsers());
         setOpen(true);

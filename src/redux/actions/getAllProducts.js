@@ -5,16 +5,35 @@ import { GET_ALL_PRODUCTS, USER_ERRORS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_C
 const getAllProducts = () => {
     return async (dispatch) => {
         try {
-            const products = await axios.get('http://localhost:3001/products')
+            dispatch({
+                type: GET_ALL_PRODUCTS,
+                payload: {
+                    data: [],
+                    success: undefined,
+                    error: undefined,
+                    loading: true
+                }
+            })
+            const products = await axios.get('https://musical-e-commerce.herokuapp.com/products')
             console.log(products)
             return dispatch({
                 type: GET_ALL_PRODUCTS,
-                payload: products.data
+                payload: {
+                    data: products.data,
+                    success: true,
+                    error: false,
+                    loading: false
+                }
             })
         } catch (error) {
             return dispatch({
-                type: USER_ERRORS,
-                payload: console.log(error)
+                type: GET_ALL_PRODUCTS,
+                payload: {
+                    data: [],
+                    success: false,
+                    error: error,
+                    loading: false
+                }
             })
         }
     }
@@ -23,21 +42,36 @@ const getAllProducts = () => {
 export function sortByName(order){
     return{
         type: SORT_BY_NAME,
-        payload: order
+        payload: {
+            data: order,
+            success: true,
+            error: false,
+            loading: false
+        }
     }
 }
 
 export function sortByPrice(order){
     return{
         type: SORT_BY_PRICE,
-        payload: order
+        payload: {
+            data: order,
+            success: true,
+            error: false,
+            loading: false
+        }
     }
 }
 
 export function filterByCategory(category){
     return{
         type: FILTER_BY_CATEGORY,
-        payload: category
+        payload: {
+            data: category,
+            success: true,
+            error: false,
+            loading: false
+        }
     }
 }
 

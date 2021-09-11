@@ -1,22 +1,23 @@
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import React, { useState } from "react";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import { Input } from "@material-ui/core";
-import { Checkbox } from "@material-ui/core";
-import { ListItemText } from "@material-ui/core";
+import {
+  Input,
+  Checkbox,
+  ListItemText,
+  FormHelperText,
+  Button,
+  TextField,
+  Select,
+  InputLabel,
+  MenuItem,
+  FormControl,
+} from "@material-ui/core";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { FormHelperText } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import { getDetails } from "../../redux/actions/getDetails";
+import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -50,7 +51,7 @@ function AddProduct() {
   const classes = useStyles();
   const [val, setVal] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [input, setInput] = useState({
+  const initialInput = {
     name: "",
     price: "",
     description: "",
@@ -58,15 +59,26 @@ function AddProduct() {
     stock: "",
     categories: [],
     image: "",
-  });
+  };
+  const [input, setInput] = useState(initialInput);
   const [errors, setErrors] = useState({});
-
+  const detail = useSelector(({ app }) => app.detail.data);
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const dispatch = useDispatch();
+  const { id } = useParams();
 
   useEffect(() => {
     dispatch(getAllCategories());
+    if (id) {
+      dispatch(getDetails(id));
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (detail._id) {
+      setInput(detail);
+    }
+  }, [detail]);
 
   const handleInputChange = (e) => {
     setInput({
@@ -86,8 +98,13 @@ function AddProduct() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      axios.post("http://localhost:3001/products", input);
-      setInput({});
+      console.log(input);
+      if (input._id) {
+        axios.put(`https://musical-e-commerce.herokuapp.com/products/${input._id}`, input);
+      } else {
+        axios.post("https://musical-e-commerce.herokuapp.com/products", input);
+        setInput(initialInput);
+      }
     }
   };
 
@@ -124,11 +141,17 @@ function AddProduct() {
     if (!input.categories || !input.categories.length) {
       errors.categories = "Debes elegir categorías";
     }
-    if (!input.price || !input.price.length) {
+    if (!input.price || isNaN(input.price)) {
       errors.price = "Debes seleccionar precio";
     }
-    if (!input.stock || !input.stock.length) {
+    if (input.price < 0) {
+      errors.price = "El precio no puede ser negativo";
+    }
+    if (isNaN(input.stock)) {
       errors.stock = "Debes seleccionar cantidad";
+    }
+    if (input.stock < 0) {
+      errors.stock = "El stock no puede ser negativo";
     }
     if (!input.brand || !input.brand.length) {
       errors.brand = "Debe tener marca";
@@ -167,6 +190,7 @@ function AddProduct() {
           <TextField
             required
             name="name"
+            value={input.name}
             label="Producto"
             variant="outlined"
             onChange={handleInputChange}
@@ -177,6 +201,7 @@ function AddProduct() {
           <TextField
             required
             name="image"
+            value={input.image}
             label="Imagen URL"
             variant="outlined"
             onChange={handleInputChange}
@@ -187,6 +212,7 @@ function AddProduct() {
           <TextField
             required
             name="price"
+            value={input.price}
             label="Precio"
             variant="outlined"
             type="number"
@@ -198,6 +224,7 @@ function AddProduct() {
           <TextField
             required
             name="brand"
+            value={input.brand}
             label="Marca"
             variant="outlined"
             onChange={handleInputChange}
@@ -208,6 +235,7 @@ function AddProduct() {
           <TextField
             required
             name="stock"
+            value={input.stock}
             label="Unidades disponibles"
             variant="outlined"
             type="number"
@@ -221,15 +249,20 @@ function AddProduct() {
             <Select
               multiple
               variant="outlined"
-              value={val}
+              value={input.categories}
               name="categories"
               onChange={handleSelectChange}
               input={<Input />}
-              renderValue={(selected) => selected.join(", ")}
+              renderValue={(selected) =>
+                categories
+                  .filter((c) => selected.indexOf(c._id) > -1)
+                  .map((c) => c.name)
+                  .join(", ")
+              }
             >
               {categories.map((category) => (
-                <MenuItem key={category.name} value={category.name}>
-                  <Checkbox checked={val.indexOf(category.name) > -1} />
+                <MenuItem key={category.name} value={category._id}>
+                  <Checkbox checked={val.indexOf(category._id) > -1} />
                   <ListItemText primary={category.name} />
                 </MenuItem>
               ))}
@@ -245,6 +278,7 @@ function AddProduct() {
               id="standard-multiline-static"
               name="description"
               label="Descripción"
+              value={input.description}
               multiline
               variant="outlined"
               rows={4}

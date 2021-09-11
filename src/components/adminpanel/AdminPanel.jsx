@@ -59,9 +59,11 @@ export default function AdminPanel(){
         <div className={classes.body}>
         <Grid container direction="row" alignItems= "center" justifyContent="center" spacing={0} style={{ minHeight: '55vh' }} >
             
+            <Link to = "/stock" className={classes.link}>
             <Card className={classes.root}>   
              <Typography component = "h1" variant = 'h5'>Stock</Typography>
             </Card>
+            </Link>
 
             <Link to ="/addcategory" className={classes.link}>
                 <Card className={classes.root}>

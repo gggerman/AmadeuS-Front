@@ -1,19 +1,50 @@
 import axios from "axios"
-import { GET_ALL_PRODUCTS, USER_ERRORS } from "./index"
+import { GET_ALL_PRODUCTS } from "./index"
 
 export function getByName(name) {
     return async (dispatch) => {
         try {
-            const products = await axios.get(`http://localhost:3001/products?name=${name}`)
-            return dispatch({
+            dispatch({
                 type: GET_ALL_PRODUCTS,
-                payload: products.data
+                payload: {
+                    data: [],
+                    success: undefined,
+                    error: undefined,
+                    loading: true
+                }
             })
+            const products = await axios.get(`https://musical-e-commerce.herokuapp.com/products?name=${name}`)
+            if (products.status === 200) {
+                return dispatch({
+                    type: GET_ALL_PRODUCTS,
+                    payload: {
+                        data: products.data,
+                        success: true,
+                        error: undefined,
+                        loading: false
+                    }
+                })
+            } else {
+                return dispatch({
+                    type: GET_ALL_PRODUCTS,
+                    payload: {
+                        data: [],
+                        success: false,
+                        error: products.status,
+                        loading: false
+                    }
+                })
+            }
         }
         catch (error) {
             return dispatch({
-                type: USER_ERRORS,
-                payload: console.log(error)
+                type: GET_ALL_PRODUCTS,
+                payload: {
+                    data: [],
+                    success: false,
+                    error: error,
+                    loading: false
+                }
             })
         }
     }

@@ -13,7 +13,7 @@ import {
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import { Link } from "react-router-dom";
-import {numberWithCommas} from '../../utils';
+import { numberWithCommas } from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
     margin: "3vh",
   },
   media: {
-    width: '100%',
+    width: "100%",
     paddingTop: "95%", // 16:9
     margin: "0vh",
-    backgroundSize: 'contain'
+    backgroundSize: "contain",
   },
 
   price: {
@@ -59,17 +59,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductCard(product) {
-  const { id, name, price, image } = product;
+  const { id, name, price, image, stock } = product;
   //recibe de Products las props
   const classes = useStyles();
 
- 
-
-
   return (
     <Card className={classes.root}>
-     
-
       <Link to={`/detail/${id}`} style={{ textDecoration: "none" }}>
         <CardMedia className={classes.media} image={image} />
         <CardContent>
@@ -79,6 +74,15 @@ export default function ProductCard(product) {
           <Typography variant="body2" component="h3">
             {name}
           </Typography>
+          {
+            (stock === 0 ? (
+              <Typography variant="body2" color="error" component="p">
+                Sin stock
+              </Typography>
+            ) : (
+              <></>
+            ))
+          }
           <Typography variant="body2" color="textSecondary" component="p">
             Entrega en 24hs
           </Typography>
@@ -86,14 +90,14 @@ export default function ProductCard(product) {
         <Divider variant="middle" light />
       </Link>
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
-      <IconButton aria-label="add to favorites">
-        <FavoriteIcon className={classes.icon} />
-      </IconButton>
+        <IconButton aria-label="add to favorites">
+          <FavoriteIcon className={classes.icon} />
+        </IconButton>
         <IconButton aria-label="share">
           <ShareIcon className={classes.icon} />
         </IconButton>
         <Button variant="contained" className={classes.button}>
-           Add to Cart
+          Add to Cart
         </Button>
       </CardActions>
     </Card>
