@@ -12,6 +12,9 @@ import Stock from "../stock/Stock";
 import AddUser from "../adduser/AddUser";
 import LoginLogout from "../account/LoginLogout";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import Order from "../order/Order";
+import '../../App.css'
+import AddUser from "../adduser/AddUser";
 
 
 
@@ -28,10 +31,15 @@ const AppRouter = () => {
     } 
   };
 
+
+const AppRouter = () => {
+
+
   return (
     <>
       <div className="app">
         <ThemeProvider theme={theme}>
+
           <Switch>
             {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
@@ -44,6 +52,7 @@ const AppRouter = () => {
             <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
             <Route path="/adduser" component={AddUser} />
             <Route path="/login" component={LoginLogout} />
+            <Route path="/order/:id" component = {Order} />
             <Redirect to="/" />
           </Switch>
         </ThemeProvider>

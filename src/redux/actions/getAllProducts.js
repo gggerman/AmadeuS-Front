@@ -16,6 +16,7 @@ const getAllProducts = () => {
             })
             const products = await axios.get('http://localhost:3001/products')
             // console.log(products)
+            // const products = await axios.get('https://musical-e-commerce.herokuapp.com/products')
             return dispatch({
                 type: GET_ALL_PRODUCTS,
                 payload: {

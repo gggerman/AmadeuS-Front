@@ -6,6 +6,7 @@ export const getAllCategories = () => {
         try {
             const categories = await axios.get('http://localhost:3001/categories')
             // console.log(categories)
+            // const categories = await axios.get('https://musical-e-commerce.herokuapp.com/categories')
             return dispatch({
                 type: GET_ALL_CATEGORIES,
                 payload: categories.data

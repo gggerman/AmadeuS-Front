@@ -80,13 +80,15 @@ const useStyles = makeStyles((theme) => ({
   },
   offset: theme.mixins.toolbar,
   link: {
-    textDecoration: "none",
-    color: theme.palette.primary.dark,
+
+    textDecoration: 'none',
+    color: theme.palette.primary.dark
   },
-  navDisplay: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
+  logo: {
+    textDecoration: 'none',
+    color: 'white'
+  }
+
 }));
 
 export default function Nav() {
@@ -125,10 +127,9 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <Link to="/adminpanel" className={classes.link}>
-        <MenuItem>Profile</MenuItem>
-      </Link>
-      <MenuItem>My account</MenuItem>
+
+      <Link to ='/adminpanel' className ={classes.link}><MenuItem >Perfil</MenuItem></Link>
+
     </Menu>
   );
 
@@ -187,6 +188,7 @@ export default function Nav() {
             <Typography className={classes.title} variant="h5" noWrap>
               Musical E-Commerce
             </Typography>
+
           </Link>
           <SearchBar />
 
