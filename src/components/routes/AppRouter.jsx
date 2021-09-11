@@ -8,7 +8,7 @@ import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
 import '../../App.css'
-import AddUser from "../addUser/AddUser";
+import AddUser from "../adduser/AddUser";
 
 const AppRouter = () => {
   return (
