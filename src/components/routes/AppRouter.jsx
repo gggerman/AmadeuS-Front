@@ -13,10 +13,7 @@ import AddUser from "../adduser/AddUser";
 import LoginLogout from "../account/LoginLogout";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import Order from "../order/Order";
-import '../../App.css'
-import AddUser from "../adduser/AddUser";
-
-
+import "../../App.css";
 
 const AppRouter = () => {
   const { user } = useAuth0();
@@ -28,37 +25,36 @@ const AppRouter = () => {
       return user.email && user.email === "juanmhdz99@gmail.com"
         ? component
         : Home;
-    } 
+    }
   };
 
-
-const AppRouter = () => {
-
-
-  return (
-    <>
-      <div className="app">
-        <ThemeProvider theme={theme}>
-
-          <Switch>
-            {/* El catalogo se tiene que visualizar en la ruta /products
+  const AppRouter = () => {
+    return (
+      <>
+        <div className="app">
+          <ThemeProvider theme={theme}>
+            <Switch>
+              {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
-            <Route exact path="/" component={Home} />
-            <Route path="/detail/:id" component={ProductDetail} />
-            <Route path="/stock" component={adminAuth(Stock)} />
-            <Route path="/adminpanel" component={adminAuth(AdminPanel)} />
-            <Route path="/addcategory" component={adminAuth(AddCategory)} />
-            <Route path="/addproduct" component={adminAuth(AddProduct)} />
-            <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
-            <Route path="/adduser" component={AddUser} />
-            <Route path="/login" component={LoginLogout} />
-            <Route path="/order/:id" component = {Order} />
-            <Redirect to="/" />
-          </Switch>
-        </ThemeProvider>
-      </div>
-    </>
-  );
+              <Route exact path="/" component={Home} />
+              <Route path="/detail/:id" component={ProductDetail} />
+              <Route path="/stock" component={adminAuth(Stock)} />
+              <Route path="/adminpanel" component={adminAuth(AdminPanel)} />
+              <Route path="/addcategory" component={adminAuth(AddCategory)} />
+              <Route path="/addproduct" component={adminAuth(AddProduct)} />
+              <Route
+                path="/editproduct/:id"
+                component={adminAuth(AddProduct)}
+              />
+              <Route path="/adduser" component={AddUser} />
+              <Route path="/login" component={LoginLogout} />
+              <Route path="/order/:id" component={Order} />
+              <Redirect to="/" />
+            </Switch>
+          </ThemeProvider>
+        </div>
+      </>
+    );
+  };
 };
-
 export default AppRouter;
