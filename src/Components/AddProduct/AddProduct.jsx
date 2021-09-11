@@ -18,6 +18,9 @@ import {
   Divider,
   Box,
   OutlinedInput,
+  Modal,
+  Fade,
+  Backdrop,
 } from "@material-ui/core";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
 import { useDispatch, useSelector } from "react-redux";
@@ -84,6 +87,25 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "4vh",
     marginLeft: "4vh",
   },
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  msg: {
+    fontStyle: "italic",
+  },
 }));
 
 function AddProduct() {
@@ -101,6 +123,7 @@ function AddProduct() {
   };
   const [input, setInput] = useState(initialInput);
   const [errors, setErrors] = useState({});
+  const [open, setOpen] = useState(false);
   const { data, loading, success } = useSelector(({ app }) => app.detail);
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const dispatch = useDispatch();
@@ -140,9 +163,11 @@ function AddProduct() {
       console.log(input);
       if (input._id) {
         axios.put(`http://localhost:3001/products/${input._id}`, input);
+        setOpen(true);
       } else {
         axios.post("http://localhost:3001/products", input);
         setInput(initialInput);
+        setOpen(true);
       }
     }
   };
@@ -192,6 +217,9 @@ function AddProduct() {
     if (input.stock < 0) {
       errors.stock = "El stock no puede ser negativo";
     }
+    if (!input.stock) {
+      errors.stock = "Debes seleccionar stock";
+    }
     if (!input.brand || !input.brand.length) {
       errors.brand = "Debe tener marca";
     }
@@ -212,6 +240,10 @@ function AddProduct() {
   useEffect(() => {
     setErrors({});
   }, []);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div style={{ display: "flex" }}>
@@ -237,7 +269,7 @@ function AddProduct() {
               onChange={handleInputChange}
             />
             {errors.name && (
-              <FormHelperText id="component-error">
+              <FormHelperText error id="component-error">
                 {errors.name}
               </FormHelperText>
             )}
@@ -251,7 +283,7 @@ function AddProduct() {
               onChange={handleInputChange}
             />
             {errors.image && (
-              <FormHelperText id="component-error">
+              <FormHelperText error id="component-error">
                 {errors.image}
               </FormHelperText>
             )}
@@ -266,7 +298,7 @@ function AddProduct() {
               onChange={handleInputChange}
             />
             {errors.price && (
-              <FormHelperText id="component-error">
+              <FormHelperText error id="component-error">
                 {errors.price}
               </FormHelperText>
             )}
@@ -280,7 +312,7 @@ function AddProduct() {
               onChange={handleInputChange}
             />
             {errors.brand && (
-              <FormHelperText id="component-error">
+              <FormHelperText error id="component-error">
                 {errors.brand}
               </FormHelperText>
             )}
@@ -295,11 +327,11 @@ function AddProduct() {
               onChange={handleInputChange}
             />
             {errors.stock && (
-              <FormHelperText id="component-error">
+              <FormHelperText error id="component-error">
                 {errors.stock}
               </FormHelperText>
             )}
-            <FormControl variant='outlined' className={classes.field}>
+            <FormControl variant="outlined" className={classes.field}>
               <InputLabel>Categorías</InputLabel>
               <Select
                 multiple
@@ -307,7 +339,7 @@ function AddProduct() {
                 value={input.categories}
                 name="categories"
                 onChange={handleSelectChange}
-                input={<OutlinedInput label='Categorias'/>}
+                input={<OutlinedInput label="Categorias" />}
                 renderValue={(selected) =>
                   categories
                     .filter((c) => selected.indexOf(c._id) > -1)
@@ -324,7 +356,7 @@ function AddProduct() {
               </Select>
             </FormControl>
             {errors.categories && (
-              <FormHelperText id="component-error">
+              <FormHelperText error id="component-error">
                 {errors.categories}
               </FormHelperText>
             )}
@@ -342,7 +374,7 @@ function AddProduct() {
                 onChange={handleInputChange}
               />
               {errors.description && (
-                <FormHelperText id="component-error">
+                <FormHelperText error id="component-error">
                   {errors.description}
                 </FormHelperText>
               )}
@@ -436,6 +468,47 @@ function AddProduct() {
           </Grid>
         </Grid>
       </div>
+      <div>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          className={classes.modal}
+          open={open}
+          onClose={handleClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={open}>
+            <div className={classes.paper}>
+              <h2 id="transition-modal-title">Creacion exitosa</h2>
+            </div>
+          </Fade>
+        </Modal>
+      </div>
+      {/* <div>      
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={openError}
+                    onClose={handleCloseError}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500,
+                    }}
+                >
+                    <Fade in={openError}>
+                        <div className={classes.paper}>
+                            <h2 id="transition-modal-title">La categoria ya existe!!</h2>
+                            <p id="transition-modal-description">Click para cerrar</p>            
+                        </div>
+                    </Fade>
+                </Modal>
+            </div> */}
     </div>
   );
 }
