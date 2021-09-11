@@ -7,11 +7,13 @@ import theme from "../../theme";
 import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
+import Order from "../order/Order";
 import '../../App.css'
 import AddUser from "../adduser/AddUser";
 import LoginLogout from "../account/LoginLogout";
 import { withAuthenticationRequired } from '@auth0/auth0-react'
 const AppRouter = () => {
+
   return (
     <>
       <div className='app'>
@@ -25,6 +27,10 @@ const AppRouter = () => {
             <Route path="/adminpanel" component={withAuthenticationRequired(AdminPanel)} />
             <Route path="/addcategory" component={AddCategory} />
             <Route path="/addproduct" component={AddProduct} />
+
+
+            <Route path="/order/:id" component = {Order} />
+
             <Route path="/editproduct/:id" component={AddProduct} />
             <Route path="/adduser" component={AddUser} />
             <Route path="/login" component={LoginLogout} />
