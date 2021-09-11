@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Nav from '../nav/Nav';
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
+import { useDispatch, useSelector } from "react-redux";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,12 +46,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const [detail, setDetail] = useState({})
- 
-
-
+  const [detail, setDetail] = useState({});
+  const { data, success, loading } = useSelector(({ app }) => app.detail);
+  const dispatch = useDispatch();
   const classes = useStyles();
-  console.log(detail)
 
 const getProductById = async () => {
   try{
