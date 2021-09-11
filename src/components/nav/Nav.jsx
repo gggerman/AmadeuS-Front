@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -16,6 +16,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchBar from "../searchbar/SearchBar";
 import { Link } from 'react-router-dom';
+import { UserContext } from "../shoppingcart/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -103,6 +104,8 @@ export default function Nav() {
     handleMobileMenuClose();
   };
 
+  const {shoppingCart, setShoppingCart} = useContext( UserContext )
+  const {cartQuantity} = shoppingCart
  
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -170,12 +173,12 @@ export default function Nav() {
             Musical E-Commerce
           </Typography>
           <SearchBar />
-        
+          
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton aria-label="show 4 new mails" color="inherit" component={ Link } to='/cart'>
+              <Badge badgeContent={cartQuantity} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>

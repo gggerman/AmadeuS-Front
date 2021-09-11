@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { Typography, Divider } from "@material-ui/core";
 import { CardMedia, Box, Grid, Button, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -7,6 +7,10 @@ import { useParams } from "react-router";
 import Nav from '../nav/Nav';
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
+import { UserContext } from "../shoppingcart/UserContext";
+import { useDispatch } from "react-redux";
+import addToCart from "../../redux/actions/addToCart";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,22 +51,33 @@ export default function ProductDetail() {
   const [detail, setDetail] = useState({})
 
   const classes = useStyles();
-console.log(detail)
+  console.log(detail)
+  const dispatch = useDispatch()
+  const {shoppingCart, setShoppingCart} = useContext( UserContext )
+  const {cartQuantity} = shoppingCart
 
-const getProductById = async () => {
-        
-  try{
-     const response = await axios.get(`http://localhost:3001/products/${id}`)
-      setDetail(response.data)
+  const getProductById = async () => {
+          
+    try{
+      const response = await axios.get(`http://localhost:3001/products/${id}`)
+        setDetail(response.data)
+    }
+    catch (error){
+        console.log(error)
+    }
   }
-  catch (error){
-      console.log(error)
-  }
-}
 
-useEffect(() => {
-  getProductById(id) 
-}, [id])
+  useEffect(() => {
+    getProductById(id) 
+  }, [id])
+
+  const handleAdd = (e) => {
+    setShoppingCart( cant => ({
+      ...cant,
+      cartQuantity: cartQuantity  + 1
+  }))
+    dispatch( addToCart(id))
+  }
 
 
   return (
@@ -95,7 +110,11 @@ useEffect(() => {
                 
                 <Box> <img src={'https://img.icons8.com/color/480/mercado-pago.png'} className = {classes.mp} /></Box>
               
-                <Button variant="contained" className={classes.button}>
+                <Button  
+                    variant="contained" 
+                    className={classes.button}
+                    onClick={ handleAdd }
+                    >
                   Add to Cart
                 </Button>
                 <Button variant="contained" className={classes.button}>
