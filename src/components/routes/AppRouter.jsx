@@ -11,9 +11,6 @@ import '../../App.css'
 import AddUser from "../adduser/AddUser";
 import LoginLogout from "../account/LoginLogout";
 import { withAuthenticationRequired } from '@auth0/auth0-react'
-
-
-
 const AppRouter = () => {
   return (
     <>
