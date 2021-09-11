@@ -6,7 +6,7 @@ import { ADD_CATEGORY, USER_ERRORS } from "."
 export const addCategory = (  name  ) => {
     return async( dispatch ) => {
         try {
-            await axios.post('https://musical-e-commerce.herokuapp.com/categories', { name } )
+            await axios.post('http:/localhost:3001/categories', { name } )
             dispatch({
                 type: ADD_CATEGORY
             })
