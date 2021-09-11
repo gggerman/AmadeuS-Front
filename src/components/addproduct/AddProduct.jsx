@@ -165,7 +165,8 @@ function AddProduct() {
         axios.put(`http://localhost:3001/products/${input._id}`, input);
         setOpen(true);
       } else {
-        axios.post("https://musical-e-commerce.herokuapp.com/products", input);
+        axios.post("http://localhost:3001/products", input);
+        // axios.post("https://musical-e-commerce.herokuapp.com/products", input);
         setInput(initialInput);
         setOpen(true);
       }

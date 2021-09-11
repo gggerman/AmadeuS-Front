@@ -80,15 +80,13 @@ const useStyles = makeStyles((theme) => ({
   },
   offset: theme.mixins.toolbar,
   link: {
-
-    textDecoration: 'none',
-    color: theme.palette.primary.dark
+    textDecoration: "none",
+    color: theme.palette.primary.dark,
   },
-  logo: {
-    textDecoration: 'none',
-    color: 'white'
-  }
-
+  navDisplay: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
 }));
 
 export default function Nav() {
@@ -97,8 +95,8 @@ export default function Nav() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const { isAuthenticated, user } = useAuth0();
 
-  console.log('nav', isAuthenticated)
-  console.log('nav-user', user)
+  console.log("nav", isAuthenticated);
+  console.log("nav-user", user);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -107,7 +105,7 @@ export default function Nav() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => { 
+  const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
@@ -127,9 +125,9 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-
-      <Link to ='/adminpanel' className ={classes.link}><MenuItem >Perfil</MenuItem></Link>
-
+      <Link to="/adminpanel" className={classes.link}>
+        <MenuItem>Perfil</MenuItem>
+      </Link>
     </Menu>
   );
 
@@ -188,7 +186,6 @@ export default function Nav() {
             <Typography className={classes.title} variant="h5" noWrap>
               Musical E-Commerce
             </Typography>
-
           </Link>
           <SearchBar />
 
