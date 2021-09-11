@@ -5,16 +5,16 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { Auth0Provider } from '@auth0/auth0-react'
-// import onRedirectCallback from './utils/history';
+
+const { REACT_APP_AUTH0_DOMAIN, REACT_APP_AUTH0_CLIENT_ID } = process.env;
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <Auth0Provider
-        domain="dev-0-knpzfi.us.auth0.com"
-        clientId="fR28ahoOpOWK8od5XOXeWwfpkCrRzNyV"
+        domain={REACT_APP_AUTH0_DOMAIN}
+        clientId={REACT_APP_AUTH0_CLIENT_ID}
         redirectUri={window.location.origin}
-        // onRedirectCallback={onRedirectCallback}
       >
         <App />
       </Auth0Provider>

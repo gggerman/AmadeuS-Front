@@ -16,8 +16,6 @@ import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchBar from "../searchbar/SearchBar";
 import { Link } from "react-router-dom";
-import Logout from '../account/Logout'
-import Login from '../account/Login'
 import LoginLogout from "../account/LoginLogout";
 
 const useStyles = makeStyles((theme) => ({
@@ -211,9 +209,7 @@ export default function Nav() {
               <AccountCircle />
             </IconButton>
             
-            {/* <LoginLogout /> */}
-            <Login/>
-            <Logout/>
+            <LoginLogout />
 
           </div>
         </Toolbar>
