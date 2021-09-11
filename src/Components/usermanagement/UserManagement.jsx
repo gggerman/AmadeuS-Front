@@ -41,7 +41,7 @@ export default function UserManagement(){
     }
 
     async function handleDelete(id){
-        await axios.delete(`https://musical-e-commerce.herokuapp.com//${id}`);
+        await axios.delete(`https://musical-e-commerce.herokuapp.com/users/${id}`);
         setRender(`Change ${id}`);
         dispatch(getAllUsers());
         setOpen(true);
