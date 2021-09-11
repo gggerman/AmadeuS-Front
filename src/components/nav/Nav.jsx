@@ -16,6 +16,9 @@ import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchBar from "../searchbar/SearchBar";
 import { Link } from "react-router-dom";
+import Logout from "../account/Logout";
+import Login from "../account/Login";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -90,6 +93,10 @@ export default function Nav() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const { isAuthenticated, user } = useAuth0();
+
+  console.log('nav', isAuthenticated)
+  console.log('nav-user', user)
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -98,7 +105,7 @@ export default function Nav() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
+  const handleMobileMenuClose = () => { 
     setMobileMoreAnchorEl(null);
   };
 
@@ -207,6 +214,11 @@ export default function Nav() {
             >
               <AccountCircle />
             </IconButton>
+
+            {/* <LoginLogout /> */}
+            {isAuthenticated ? <Logout /> : <Login />}
+            {/* <Login /> */}
+            {/* <Logout /> */}
           </div>
         </Toolbar>
       </AppBar>
