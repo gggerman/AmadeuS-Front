@@ -50,19 +50,15 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductDetail() {
   const { id } = useParams();
   const [detail, setDetail] = useState({})
- 
-
-
   const classes = useStyles();
-  console.log(detail)
   const dispatch = useDispatch()
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity} = shoppingCart
-
+  const { REACT_APP_SERVER } = process.env;
   const getProductById = async () => {
           
     try{
-      const response = await axios.get(`http://localhost:3001/products/${id}`)
+      const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`)
         setDetail(response.data)
     }
     catch (error){

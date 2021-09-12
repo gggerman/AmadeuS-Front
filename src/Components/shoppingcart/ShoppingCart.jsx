@@ -83,7 +83,7 @@ console.log('cartItems', cartItems)
                     <Button 
                         variant='contained' 
                         color='primary'
-                        component={ Link } to='/products'
+                        component={ Link } to='/'
                         >
                         Comprar
                     </Button>

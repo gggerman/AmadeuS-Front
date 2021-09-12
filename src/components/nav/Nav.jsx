@@ -181,7 +181,7 @@ export default function Nav() {
       >
         <Toolbar className={classes.navDisplay}>
           <Link 
-            to="/products"
+            to="/"
             style={{ textDecoration: "none", color: "white" }}
           >
             <Typography className={classes.title} variant="h5" noWrap>

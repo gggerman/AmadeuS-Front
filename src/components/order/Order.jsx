@@ -81,10 +81,10 @@ const useStyles = makeStyles((theme) => ({
     const { id } = useParams()
     const [detail, setDetail] = useState({})
     const [quantity, setQuantity] = useState(1)
-
+    const { REACT_APP_SERVER } = process.env;
     const getProductById = async () => {
       try{
-         const response = await axios.get(`http://localhost:3001/products/${id}`)
+         const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`)
           setDetail(response.data)
       }
       catch (error){
@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     }, [])
 
     const handleCheckout = () => {
-      axios.post('http://localhost:3001/mercadopago/checkout', { name: detail.name, price: detail.price, quantity: quantity})
+      axios.post(`${REACT_APP_SERVER}/mercadopago/checkout`, { name: detail.name, price: detail.price, quantity: quantity})
       .then((response) => window.location = response.data )
       .catch((err) => console.log(err))
     }
