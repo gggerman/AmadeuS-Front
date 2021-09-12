@@ -7,6 +7,9 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
 const { REACT_APP_SERVER } = process.env;
+import { useDispatch } from 'react-redux';
+import addOrder from '../../redux/actions/addOrder';
+
 
 const useStyles = makeStyles((theme) => ({
     media: {
@@ -33,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
       width: "60%",
       height: '70vh',
       backgroundColor:'RGB(245, 245, 244)',
-      margin: '3%',
+      margin: '2%',
       borderRadius: '5px',
       
       
@@ -61,6 +64,11 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '70%'
     
     },
+    icon: {
+      width: '8vh',
+      backgroundSize: 'contain',
+      margin: 'auto'
+    },
     img: {
         width: '40%',
         backgroundSize: 'contain',
@@ -78,10 +86,17 @@ const useStyles = makeStyles((theme) => ({
   
   export default function Order() {
     const classes = useStyles()
+    const dispatch = useDispatch()
+
     const { id } = useParams()
     const [detail, setDetail] = useState({})
     const [quantity, setQuantity] = useState(1)
 
+    const [idOrder, setIdOrder] = useState()
+    console.log(idOrder)
+    
+    const { REACT_APP_SERVER } = process.env;
+    
     const getProductById = async () => {
       try{
          const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`)
@@ -96,7 +111,19 @@ const useStyles = makeStyles((theme) => ({
       getProductById(id) 
     }, [])
 
+    useEffect(() => {            
+      dispatch(addOrder(idOrder))
+    },[idOrder])
+
+
     const handleCheckout = () => {
+      //axios.post a nuestra base de datos con status 'pending? 
+      //axios.post('http://localhost:3001/orders, toda la info: detail.name, detail.price, detail.quantity, detail.id, buyer,detail.stock, detail.categories)
+      axios.post(`${REACT_APP_SERVER}:3001/orders`, { products: detail.name })
+      .then((response) => setIdOrder(response.data)) //estado de redux para guardar ese id y dps que lo consuma OrderDetail no estaria guardando en redux
+      // .then( (response) => dispatch(addOrder(response)))   no funciona asi
+      .catch((err) => console.log(err))
+      
       axios.post(`${REACT_APP_SERVER}/mercadopago/checkout`, { name: detail.name, price: detail.price, quantity: quantity})
       .then((response) => window.location = response.data )
       .catch((err) => console.log(err))
@@ -110,28 +137,36 @@ const useStyles = makeStyles((theme) => ({
       <div>
         <CssBaseline>
         <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%', position: 'absolute'}}>
-
+          <Link to ="/products" style = {{margin: 'auto'}}>
+          <img src ={logo} className={classes.icon}/>
+          </Link>
         </AppBar>
 
          <Container className={classes.container}>
 
           
           <Container className={classes.containerIzq}>
-            
-              <Typography component ="h1" variant= "h5" style = {{marginTop: '-10vh'}}> ¿Como queres recibir o retirar tu compra?</Typography>
+            <Box>
+              <Typography component ="h1" variant= "h5" style = {{marginTop: '-2vh'}}> ¿Como queres recibir o retirar tu compra?</Typography>
+            </Box>
 
-              <Box>
+              <Container style = {{backgroundColor: 'white', height: '80%'}}>
+                <Box>
                  <Typography component ="h1" variant = "h6">Recibir Compra</Typography>
                  <Typography component ="h4">Tu Domicilio</Typography>
-                 
+                 </Box>
+
+                <Box>
                  <Typography component ="h1" variant = "h6">Recibir Compra</Typography>
                  <Typography component ="h4">Correo</Typography>
-                 
+                </Box>  
 
-                 <Typography component="h1" variant = "h6">Retirar Compra </Typography>
-                 <Typography component ="h4">Domicilio de la Tienda</Typography>
-            
-              </Box>  
+                <Box>
+                  <Typography component="h1" variant = "h6">Retirar Compra </Typography>
+                  <Typography component ="h4">Domicilio de la Tienda</Typography>
+                 </Box>
+
+              </Container>  
               
           
           </Container>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Grid,
   FormControl,
@@ -17,6 +17,8 @@ import getAllProducts, {
   filterByCategory,
 } from "../../redux/actions/getAllProducts";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
+import { UserContext } from '../shoppingcart/UserContext';
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -39,6 +41,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Catalogue() {
+    // const products = useSelector(({ app }) => app.productsLoaded);
+    // const categories = useSelector(({ app }) => app.categoriesLoaded);
+    // const dispatch = useDispatch();
+    const {shoppingCart, setShoppingCart} = useContext( UserContext )
+    const {cartQuantity} = shoppingCart
+
+    
   const { data, loading, success } = useSelector(
     ({ app }) => app.productsLoaded
   );
@@ -51,6 +60,10 @@ export default function Catalogue() {
       dispatch(getAllProducts());
     }
     dispatch(getAllCategories());
+    setShoppingCart( prev => ({
+      ...prev,
+      cartQuantity: JSON.parse(localStorage.getItem('cartItemsQuantity'))
+  }))
   }, [dispatch]);
 
   // Para renderizar cuando hay ordenamientos y filtrado
@@ -102,6 +115,7 @@ export default function Catalogue() {
   function handleChange(event, value) {
     setPage(value);
   }
+  
   useEffect(() => {
     dispatch(filterByCategory(select.filter));
   }, [select.filter]);
@@ -109,7 +123,7 @@ export default function Catalogue() {
   return (
     <>
       {loading && (
-        <div className='loading'>
+        <div className="loading">
           <CircularProgress />
         </div>
       )}

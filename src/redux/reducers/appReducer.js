@@ -1,7 +1,7 @@
 import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY, ADD_CATEGORY, SET_SEARCHBAR } from '../actions/index'
 import { GET_ALL_CATEGORIES } from '../actions/index'
 import { ADD_USER, GET_ALL_USERS } from '../actions/index'
-
+import { ADD_ORDER_ID } from '../actions/index';
 
 const initialState = {
     productsLoaded: {
@@ -24,7 +24,8 @@ const initialState = {
         error: undefined,
         loading: false
     },
-    usersLoaded: []
+    usersLoaded: [],
+    order: ''
 }
 
 const appReducer = (state = initialState, action) => {
@@ -123,11 +124,11 @@ const appReducer = (state = initialState, action) => {
                 productsLoaded: filterCategory
             }
 
-        case GET_ALL_CATEGORIES:
-            return {
-                ...state,
-                categoriesLoaded: action.payload,
-            }
+            case GET_ALL_CATEGORIES:
+                return {
+                    ...state,
+                    categoriesLoaded: action.payload,
+                }               
 
         case ADD_CATEGORY:
             return state;
@@ -139,6 +140,11 @@ const appReducer = (state = initialState, action) => {
         case ADD_USER:
             return state;
 
+        case ADD_ORDER_ID: 
+            return {
+                ...state,
+                order: action.payload
+            }    
         case GET_ALL_USERS:
             return {
                 ...state,
