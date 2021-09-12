@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -15,8 +15,9 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchBar from "../searchbar/SearchBar";
-import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from 'react-router-dom';
+import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
 
 const useStyles = makeStyles((theme) => ({
@@ -113,7 +114,10 @@ export default function Nav() {
     handleMobileMenuClose();
   };
 
-  const menuId = "primary-search-account-menu";
+  const {shoppingCart, setShoppingCart} = useContext( UserContext )
+  const {cartQuantity} = shoppingCart
+ 
+  const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -178,8 +182,8 @@ export default function Nav() {
         style={{ backgroundColor: "rgb(0, 23, 20)", height: "18%" }}
       >
         <Toolbar className={classes.navDisplay}>
-          <Link
-            to="/products"
+          <Link 
+            to="/"
             style={{ textDecoration: "none", color: "white" }}
           >
             <Typography className={classes.title} variant="h5" noWrap>
@@ -187,11 +191,12 @@ export default function Nav() {
             </Typography>
           </Link>
           <SearchBar />
-
+          
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            
+            <IconButton aria-label="show 4 new mails" color="inherit" component={ Link } to='/cart'>
+              <Badge badgeContent={cartQuantity} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>

@@ -12,6 +12,7 @@ import "./SearchBar.css";
 import { numberWithCommas } from "../../utils";
 import { useHistory } from "react-router";
 import { setSearchBar } from "../../redux/actions/searchBar";
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -67,7 +68,7 @@ function SearchBar() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    history.push("/products");
+    history.push("/");
     dispatch(setSearchBar(name));
     dispatch(getByName(name));
     input.current.blur();
@@ -76,8 +77,8 @@ function SearchBar() {
   async function doSearch() {
     try {
       if (name.length > 0) {
-        let response = await axios(
-          `http://localhost:3001/products?name=${name}`
+        let response = await axios.get(
+          `${REACT_APP_SERVER}/products?name=${name}`
         );
         if (response.status === 200) {
           setSearchResults(await response.data);

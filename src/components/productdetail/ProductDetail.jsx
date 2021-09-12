@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Typography,
   Divider,
@@ -8,13 +7,17 @@ import {
   Grid,
   Button,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import { useParams } from "react-router";
 import Nav from "../nav/Nav";
 import { numberWithCommas } from "../../utils";
 import { useSelector, useDispatch } from "react-redux";
 import getDetails from "../../redux/actions/getDetails";
 import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/styles";
+import axios from "axios";
+import { UserContext } from "../shoppingcart/UserContext";
+import addToCart from "../../redux/actions/addToCart";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -54,6 +57,17 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { id } = useParams();
+  const { shoppingCart, setShoppingCart } = useContext(UserContext);
+  const { cartQuantity } = shoppingCart;
+  const { REACT_APP_SERVER } = process.env;
+
+  const handleAdd = (e) => {
+    setShoppingCart((cant) => ({
+      ...cant,
+      cartQuantity: cartQuantity + 1,
+    }));
+    dispatch(addToCart(id));
+  };
 
   useEffect(() => {
     dispatch(getDetails(id));
@@ -71,82 +85,85 @@ export default function ProductDetail() {
       {!loading && success && (
         <div>
           <Grid container style={{ marginTop: "-4vh" }}>
-            <Grid item xs={6}>
-              <CardMedia className={classes.media} image={data.image} />
-            </Grid>
-            <Grid item xs={6}>
-              <Typography
-                component="h1"
-                variant="h4"
-                className={classes.container}
+            <CardMedia className={classes.media} image={data.image} />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography
+              component="h1"
+              variant="h4"
+              className={classes.container}
+            >
+              {data.name}
+              <Divider variant="middle" light />
+            </Typography>
+            <Typography
+              variant="h3"
+              component="h2"
+              className={classes.container}
+            >
+              ${numberWithCommas(data.price)}
+              <Divider variant="fullwidth" />
+            </Typography>
+            <Typography
+              component="p"
+              variant="body2"
+              className={classes.container}
+            >
+              {data.description}
+            </Typography>
+            <Grid
+              style={{
+                width: "600px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Box>
+                {" "}
+                <img
+                  src={"https://img.icons8.com/color/480/mercado-pago.png"}
+                  className={classes.mp}
+                />
+              </Box>
+
+              <Button
+                variant="contained"
+                className={classes.button}
+                onClick={handleAdd}
               >
-                {data.name}
-                <Divider variant="middle" light />
-              </Typography>
-              <Typography
-                variant="h3"
-                component="h2"
-                className={classes.container}
-              >
-                ${numberWithCommas(data.price)}
-                <Divider variant="fullwidth" />
-              </Typography>
-              <Typography
-                component="p"
-                variant="body2"
-                className={classes.container}
-              >
-                {data.description}
-              </Typography>
-              <Grid
-                style={{
-                  width: "600px",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Box>
-                  {" "}
-                  <img
-                    src={"https://img.icons8.com/color/480/mercado-pago.png"}
-                    className={classes.mp}
-                  />
-                </Box>
+                Add to Cart
+              </Button>
+              <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
                 <Button variant="contained" className={classes.button}>
-                  Add to Cart
+                  Comprar
                 </Button>
-                <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
-                  <Button variant="contained" className={classes.button}>
-                    Comprar
-                  </Button>
-                </Link>
-              </Grid>
-              {data.stock === 0 ? (
-                <Typography
-                  variant="body2"
-                  color="error"
-                  component="h3"
-                  className={classes.container}
-                >
-                  Sin stock
-                </Typography>
-              ) : (
-                <Typography
-                  variant="body2"
-                  component="h3"
-                  className={classes.container}
-                >
-                  Stock: {data.stock}
-                </Typography>
-              )}
+              </Link>
+            </Grid>
+            {data.stock === 0 ? (
+              <Typography
+                variant="body2"
+                color="error"
+                component="h3"
+                className={classes.container}
+              >
+                Sin stock
+              </Typography>
+            ) : (
               <Typography
                 variant="body2"
                 component="h3"
                 className={classes.container}
               >
-                {data.brand}
+                Stock: {data.stock}
               </Typography>
-            </Grid>
+            )}
+            <Typography
+              variant="body2"
+              component="h3"
+              className={classes.container}
+            >
+              {data.brand}
+            </Typography>
           </Grid>
         </div>
       )}
