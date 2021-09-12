@@ -153,6 +153,7 @@ export default function AddUser(){
         });
         setOpenSuccess(true);
         // setOpenError(true);
+        history.push('/');
     }
 
     function handleClick(e){
@@ -164,7 +165,7 @@ export default function AddUser(){
             mail:'',
             password:''
         });
-        history.push('/products');
+        history.push('/');
     }
 
     function handleVisibilityPassword(){
