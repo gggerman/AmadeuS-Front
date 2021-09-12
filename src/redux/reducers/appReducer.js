@@ -1,6 +1,6 @@
-import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY, ADD_CATEGORY, ADD_ORDER_ID, SET_SEARCHBAR, ADD_USER, GET_ALL_USERS, GET_ALL_CATEGORIES } from '../actions/index'
-
-
+import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY, ADD_CATEGORY, SET_SEARCHBAR } from '../actions/index'
+import { GET_ALL_CATEGORIES } from '../actions/index'
+import { ADD_USER, GET_ALL_USERS } from '../actions/index'
 
 const initialState = {
     productsLoaded: {
@@ -23,10 +23,8 @@ const initialState = {
         error: undefined,
         loading: false
     },
-    order: '',
     usersLoaded: []
-     //para asociar order con id
-}   
+}
 
 const appReducer = (state = initialState, action) => {
 
@@ -124,20 +122,14 @@ const appReducer = (state = initialState, action) => {
                 productsLoaded: filterCategory
             }
 
-        case GET_ALL_CATEGORIES:
-            return {
-                ...state,
-                categoriesLoaded: action.payload,
-            }
-            case ADD_CATEGORY:
-                return state;
-            
-            case ADD_ORDER_ID:
+            case GET_ALL_CATEGORIES:
                 return {
                     ...state,
-                    order : action.payload
-                }
-       
+                    categoriesLoaded: action.payload,
+                }               
+
+        case ADD_CATEGORY:
+            return state;
         case SET_SEARCHBAR:
             return {
                 ...state,

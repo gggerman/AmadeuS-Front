@@ -68,6 +68,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SearchBar() {
+
+
   const [val, setVal] = useState([]);
   const classes = useStyles();
   const search = useSelector(({ app }) => app.searchBar);
@@ -89,7 +91,7 @@ function SearchBar() {
   async function doSearch() {
     try {
       if (name.length > 0) {
-        let response = await axios(
+        let response = await axios.get(
           `${REACT_APP_SERVER}/products?name=${name}`
         );
         console.log(response.status);

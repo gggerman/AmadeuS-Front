@@ -4,7 +4,7 @@ import {makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, Ca
 import logo from './logo.jpg';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
-import { numberWithCommas } from '../utils';
+import { numberWithCommas } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
     media: {

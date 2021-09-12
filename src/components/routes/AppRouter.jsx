@@ -8,7 +8,7 @@ import { AddCategory } from "../addcategory/AddCategory";
 import AddProduct from "../addproduct/AddProduct";
 import AdminPanel from "../adminpanel/AdminPanel";
 import Order from "../order/Order";
-import OrderDetail from './../../orderdetail/OrderDetail';
+import OrderDetail from '../orderdetail/OrderDetail';
 import AddUser from "../adduser/AddUser";
 import LoginLogout from "../account/LoginLogout";
 import { withAuthenticationRequired } from '@auth0/auth0-react'
