@@ -18,7 +18,7 @@ import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 1000, 
+    width: 1000,
     height: 240,
     display: "flex",
     justifyContent: "space-between",
@@ -70,13 +70,14 @@ function Stock() {
   );
   const dispatch = useDispatch();
   const classes = useStyles();
+  const { REACT_APP_SERVER } = process.env;
 
   useEffect(() => {
     dispatch(getAllProducts());
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:3001/products/${id}`);
+    axios.delete(`${REACT_APP_SERVER}/products/${id}`);
   };
 
   return (
