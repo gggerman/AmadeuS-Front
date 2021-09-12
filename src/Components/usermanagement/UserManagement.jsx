@@ -5,16 +5,26 @@ import axios from 'axios';
 import { getAllUsers } from '../../redux/actions/users';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
-import { Grid, Container, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Snackbar } from '@material-ui/core';
+import { Grid, Container, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Modal, Snackbar } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     button: {
         backgroundColor: '#8e0000',
         color: '#ffffff',
-        margin:'1vh',
     },
     tableCell:{
         padding:'1vw',
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    paper: {
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
     },
 }));
 
@@ -26,8 +36,9 @@ export default function UserManagement(){
     const users = useSelector(({ app }) => app.usersLoaded);
     const dispatch = useDispatch();
     const history = useHistory();
-    const [render, setRender] = useState('');
+
     const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         dispatch(getAllUsers());
@@ -35,15 +46,14 @@ export default function UserManagement(){
 
     async function handlePrivileges(user){
         user.isAdmin = !user.isAdmin;
-        await axios.put(`https://musical-e-commerce.herokuapp.com/users/${user._id}`, user);
-        setRender(`Change ${user}`);
+        await axios.put(`http://localhost:3001/users/${user._id}`, user);
         dispatch(getAllUsers());
     }
 
     async function handleDelete(id){
-        await axios.delete(`https://musical-e-commerce.herokuapp.com/users/${id}`);
-        setRender(`Change ${id}`);
+        await axios.delete(`http://localhost:3001/users/${id}`);
         dispatch(getAllUsers());
+        setOpenModal(false);
         setOpen(true);
     }
 
@@ -54,6 +64,15 @@ export default function UserManagement(){
     
         setOpen(false);
     };
+
+    function handleOpenModal(){
+        setOpenModal(true);
+    }
+
+    function handleCloseModal(){
+        setOpenModal(false);
+    }
+
 
     return (
         <Grid container component="main">
@@ -89,9 +108,25 @@ export default function UserManagement(){
                                     }
                                 </TableCell>
                                 <TableCell className={classes.tableCell} align="center">
-                                    <Button variant="contained" className={classes.button} onClick={() => handleDelete(user._id)}>
+                                    <Button variant="contained" className={classes.button} onClick={() => handleOpenModal()}>
                                         Eliminar
                                     </Button>
+                                    <Modal
+                                        open={openModal}
+                                        onClose={handleCloseModal}
+                                        aria-labelledby="title"
+                                        aria-describedby="description"
+                                        className={classes.modal}
+                                    >
+                                        <div className={classes.paper}>
+                                            <h2 id="title" style={{display:'flex', justifyContent:'center'}}>¡ATENCIÓN!</h2>
+                                            <p id="description">¿Seguro que deseas eliminar este usuario?</p>
+                                            <Grid container justifyContent="center">
+                                                <Button variant="contained" color="primary" style={{marginRight:'1vh'}} onClick={() => handleDelete(user._id)}>Confirmar</Button>
+                                                <Button variant="contained" className={classes.button} style={{marginLeft:'1vh'}} onClick={handleCloseModal}>Cancelar</Button>
+                                            </Grid>
+                                        </div>
+                                    </Modal>
                                 </TableCell>
                             </TableRow>
                         ))}
