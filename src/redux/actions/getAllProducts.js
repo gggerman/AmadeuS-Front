@@ -1,5 +1,6 @@
 import axios from "axios"
 import { GET_ALL_PRODUCTS, USER_ERRORS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY } from "./index"
+const { REACT_APP_SERVER } = process.env;
 
 
 const getAllProducts = () => {
@@ -14,8 +15,7 @@ const getAllProducts = () => {
                     loading: true
                 }
             })
-            const products = await axios.get('https://musical-e-commerce.herokuapp.com/products')
-            console.log(products)
+            const products = await axios.get(`${REACT_APP_SERVER}/products`)
             return dispatch({
                 type: GET_ALL_PRODUCTS,
                 payload: {

@@ -1,5 +1,6 @@
 import axios from "axios"
 import { GET_DETAILS, USER_ERRORS } from "."
+const { REACT_APP_SERVER } = process.env;
 
 export const getDetails = (id) => {
     return async (dispatch) => {
@@ -13,7 +14,7 @@ export const getDetails = (id) => {
                     loading: true
                 }
             })
-            const productDetail = await axios.get(`https://musical-e-commerce.herokuapp.com/products/${id}`)
+            const productDetail = await axios.get(`${REACT_APP_SERVER}/products/${id}`)
             return dispatch({
                 type: GET_DETAILS,
                 payload: {
