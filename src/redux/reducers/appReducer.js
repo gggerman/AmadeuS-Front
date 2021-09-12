@@ -17,18 +17,16 @@ const initialState = {
     }, //para el filtrado
     searchBar: '',
     categoriesLoaded: [],
-    
     detail: {
         data: {},
         success: undefined,
         error: undefined,
         loading: false
     },
-    usersLoaded: [],
-    order: '' //para asociar order con id
-},   
-    
-
+    order: '',
+    usersLoaded: []
+     //para asociar order con id
+}   
 
 const appReducer = (state = initialState, action) => {
 
@@ -131,9 +129,15 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 categoriesLoaded: action.payload,
             }
-
-        case ADD_CATEGORY:
-            return state;
+            case ADD_CATEGORY:
+                return state;
+            
+            case ADD_ORDER_ID:
+                return {
+                    ...state,
+                    order : action.payload
+                }
+       
         case SET_SEARCHBAR:
             return {
                 ...state,
@@ -147,11 +151,6 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 usersLoaded: action.payload,
             }
-        case ADD_ORDER_ID:
-                return {
-                    ...state,
-                    order : action.payload
-                }    
 
         default:
             return state;

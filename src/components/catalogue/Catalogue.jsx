@@ -99,7 +99,7 @@ export default function Catalogue() {
     setPage(1);
   }
 
-  function handleChange(event, value) {
+  function handleChange(event, value) {   
     setPage(value);
   }
   useEffect(() => {
