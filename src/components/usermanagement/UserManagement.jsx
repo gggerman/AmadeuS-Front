@@ -5,7 +5,7 @@ import axios from 'axios';
 import { getAllUsers } from '../../redux/actions/users';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
-import { Grid, Container, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Snackbar } from '@material-ui/core';
+import { Grid, Container, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Modal, Snackbar } from '@material-ui/core';
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -48,13 +48,11 @@ export default function UserManagement(){
     async function handlePrivileges(user){
         user.isAdmin = !user.isAdmin;
         await axios.put(`${REACT_APP_SERVER}/users/${user._id}`, user);
-        setRender(`Change ${user}`);
         dispatch(getAllUsers());
     }
 
     async function handleDelete(id){
         await axios.delete(`${REACT_APP_SERVER}/users/${id}`);
-        setRender(`Change ${id}`);
         dispatch(getAllUsers());
         setOpenModal(false);
         setOpen(true);

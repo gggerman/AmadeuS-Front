@@ -14,11 +14,7 @@ export function getByName(name) {
                     loading: true
                 }
             })
-<<<<<<< HEAD
-            const products = await axios.get(`http://localhost:3001/products?name=${name}`)
-=======
             const products = await axios.get(`${REACT_APP_SERVER}/products?name=${name}`)
->>>>>>> main
             if (products.status === 200) {
                 return dispatch({
                     type: GET_ALL_PRODUCTS,

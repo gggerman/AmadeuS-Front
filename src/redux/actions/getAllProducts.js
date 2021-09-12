@@ -15,12 +15,7 @@ const getAllProducts = () => {
                     loading: true
                 }
             })
-<<<<<<< HEAD
-            const products = await axios.get('http://localhost:3001/products')
-            console.log(products)
-=======
             const products = await axios.get(`${REACT_APP_SERVER}/products`)
->>>>>>> main
             return dispatch({
                 type: GET_ALL_PRODUCTS,
                 payload: {

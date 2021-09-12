@@ -5,11 +5,7 @@ const { REACT_APP_SERVER } = process.env;
 export const addCategory = (  name  ) => {
     return async( dispatch ) => {
         try {
-<<<<<<< HEAD
-            await axios.post('http://localhost:3001/categories', { name } )
-=======
             await axios.post(`${REACT_APP_SERVER}/categories`, { name } )
->>>>>>> main
             dispatch({
                 type: ADD_CATEGORY
             })
