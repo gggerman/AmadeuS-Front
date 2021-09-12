@@ -94,9 +94,10 @@ const useStyles = makeStyles((theme) => ({
     const [idOrder, setIdOrder] = useState()
     console.log(idOrder)
     
+    const { REACT_APP_SERVER } = process.env;
     const getProductById = async () => {
       try{
-         const response = await axios.get(`http://localhost:3001/products/${id}`)
+         const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`)
           setDetail(response.data)
       }
       catch (error){
@@ -121,8 +122,7 @@ const useStyles = makeStyles((theme) => ({
       // .then( (response) => dispatch(addOrder(response)))   no funciona asi
       .catch((err) => console.log(err))
       
-
-      axios.post('http://localhost:3001/mercadopago/checkout', { name: detail.name, price: detail.price, quantity: quantity})
+      axios.post(`${REACT_APP_SERVER}/mercadopago/checkout`, { name: detail.name, price: detail.price, quantity: quantity})
       .then((response) => window.location = response.data )
       .catch((err) => console.log(err))
     }

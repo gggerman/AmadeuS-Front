@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -13,7 +13,11 @@ import {
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import { Link } from "react-router-dom";
-import { numberWithCommas } from "../../utils";
+import {numberWithCommas} from '../../utils';
+import addToCart from "../../redux/actions/addToCart";
+import { useDispatch } from "react-redux";
+import { UserContext } from "../shoppingcart/UserContext";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,9 +66,27 @@ export default function ProductCard(product) {
   const { id, name, price, image, stock } = product;
   //recibe de Products las props
   const classes = useStyles();
+  const {shoppingCart, setShoppingCart} = useContext( UserContext )
+  const {cartQuantity, cartItems} = shoppingCart
+  const dispatch = useDispatch()
+
+  
+  const agregar = (e) => {
+    setShoppingCart( cant => ({
+      ...cant,
+      cartQuantity: cartQuantity + 1,
+    }))
+    dispatch( addToCart (id))   
+  }
+  
+  useEffect(() => {
+    localStorage.setItem('cartItemsQuantity', JSON.stringify(cartQuantity)) 
+  }, [cartQuantity])
+
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root}>     
+
       <Link to={`/detail/${id}`} style={{ textDecoration: "none" }}>
         <CardMedia className={classes.media} image={image} />
         <CardContent>
@@ -96,8 +118,12 @@ export default function ProductCard(product) {
         <IconButton aria-label="share">
           <ShareIcon className={classes.icon} />
         </IconButton>
-        <Button variant="contained" className={classes.button}>
-          Add to Cart
+        <Button 
+            variant="contained" 
+            className={classes.button}
+            onClick={ agregar }
+            >
+           Add to Cart
         </Button>
       </CardActions>
     </Card>
