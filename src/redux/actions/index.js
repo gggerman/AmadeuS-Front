@@ -7,6 +7,7 @@ export const SORT_BY_PRICE = 'SORT_BY_PRICE'
 export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY'
 export const GET_DETAILS = 'GET_DETAILS'
 export const GET_ALL_CATEGORIES = 'GET_ALL_CATEGORIES'
+export const ADD_ORDER_ID = "ADD_ORDER_ID"
 
 //shoppingCartReducer
 export const ADD_TO_CART = 'ADD_TO_CART'

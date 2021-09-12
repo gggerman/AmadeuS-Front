@@ -14,6 +14,7 @@ import { useHistory } from "react-router";
 import { setSearchBar } from "../../redux/actions/searchBar";
 const { REACT_APP_SERVER } = process.env;
 
+
 const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
@@ -56,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SearchBar() {
+
+
   const [val, setVal] = useState([]);
   const classes = useStyles();
   const search = useSelector(({ app }) => app.searchBar);

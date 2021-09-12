@@ -19,6 +19,7 @@ import getAllProducts, {
 import { getAllCategories } from "../../redux/actions/getAllCategories";
 import { UserContext } from '../shoppingcart/UserContext';
 
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
