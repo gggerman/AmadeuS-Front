@@ -23,6 +23,7 @@ import ProductCard from "../productcard/ProductCard";
 import { numberWithCommas } from "../../utils";
 import { useHistory } from "react-router";
 import { setSearchBar } from "../../redux/actions/searchBar";
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -88,7 +89,7 @@ function SearchBar() {
     try {
       if (name.length > 0) {
         let response = await axios(
-          `https://musical-e-commerce.herokuapp.com/products?name=${name}`
+          `${REACT_APP_SERVER}/products?name=${name}`
         );
         console.log(response.status);
         if (response.status === 200) {

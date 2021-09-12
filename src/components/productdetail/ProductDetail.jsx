@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Nav from '../nav/Nav';
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
-
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -54,7 +54,7 @@ export default function ProductDetail() {
 
 const getProductById = async () => {
   try{
-     const response = await axios.get(`http://localhost:3001/products/${id}`)
+     const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`)
       setDetail(response.data)
   }
   catch (error){
