@@ -22,19 +22,16 @@ const AppRouter = () => {
           <Switch>
             {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Home} /> {/* Si se cambia a /products hay problemas con la autenticación */}
             <Route path="/detail/:id" component={ProductDetail} />
-            <Route path="/adminpanel" component={withAuthenticationRequired(AdminPanel)} />
+            <Route path="/adminpanel" component={AdminPanel} />
             <Route path="/addcategory" component={AddCategory} />
             <Route path="/addproduct" component={AddProduct} />
-
-
             <Route path="/order/:id" component = {Order} />
-
             <Route path="/editproduct/:id" component={AddProduct} />
             <Route path="/adduser" component={AddUser} />
             <Route path="/login" component={LoginLogout} />
-            <Redirect to="/" />
+            <Redirect to="/" /> {/* Si se cambia a /products hay problemas con la autenticación */}
 
           </Switch>
         </ThemeProvider>
