@@ -14,7 +14,7 @@ import getDetails from "../../redux/actions/getDetails";
 const useStyles = makeStyles((theme) => ({
   media: {
     width: "100%",
-    paddingTop: "80%", // 16:9
+    paddingTop: "70%", // 16:9
     margin: "0vh",
     backgroundSize: "contain",
     "&:hover": {
