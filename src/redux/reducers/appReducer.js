@@ -2,7 +2,6 @@ import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_C
 import { GET_ALL_CATEGORIES } from '../actions/index'
 import { ADD_USER, GET_ALL_USERS } from '../actions/index'
 
-
 const initialState = {
     productsLoaded: {
         data: [],
@@ -123,11 +122,11 @@ const appReducer = (state = initialState, action) => {
                 productsLoaded: filterCategory
             }
 
-        case GET_ALL_CATEGORIES:
-            return {
-                ...state,
-                categoriesLoaded: action.payload,
-            }
+            case GET_ALL_CATEGORIES:
+                return {
+                    ...state,
+                    categoriesLoaded: action.payload,
+                }               
 
         case ADD_CATEGORY:
             return state;

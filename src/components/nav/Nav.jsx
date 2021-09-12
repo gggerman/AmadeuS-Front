@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -15,7 +15,10 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchBar from "../searchbar/SearchBar";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from 'react-router-dom';
+import { UserContext } from "../shoppingcart/UserContext";
+import LoginLogout from "../account/LoginLogout";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -77,21 +80,23 @@ const useStyles = makeStyles((theme) => ({
   },
   offset: theme.mixins.toolbar,
   link: {
-
-    textDecoration: 'none',
-    color: theme.palette.primary.dark
+    textDecoration: "none",
+    color: theme.palette.primary.dark,
   },
-  logo: {
-    textDecoration: 'none',
-    color: 'white'
-  }
-
+  navDisplay: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
 }));
 
 export default function Nav() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const { isAuthenticated, user } = useAuth0();
+
+  console.log("nav", isAuthenticated);
+  console.log("nav-user", user);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -109,7 +114,10 @@ export default function Nav() {
     handleMobileMenuClose();
   };
 
-  const menuId = "primary-search-account-menu";
+  const {shoppingCart, setShoppingCart} = useContext( UserContext )
+  const {cartQuantity} = shoppingCart
+ 
+  const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -120,9 +128,9 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-
-      <Link to ='/adminpanel' className ={classes.link}><MenuItem >Perfil</MenuItem></Link>
-
+      <Link to="/adminpanel" className={classes.link}>
+        <MenuItem>Perfil</MenuItem>
+      </Link>
     </Menu>
   );
 
@@ -168,28 +176,27 @@ export default function Nav() {
   );
 
   return (
-    <div className={classes.grow}>
-
+    <div>
       <AppBar
         position="absolute"
         style={{ backgroundColor: "rgb(0, 23, 20)", height: "18%" }}
       >
         <Toolbar className={classes.navDisplay}>
-          <Link
-            to="/products"
+          <Link 
+            to="/"
             style={{ textDecoration: "none", color: "white" }}
           >
             <Typography className={classes.title} variant="h5" noWrap>
               Musical E-Commerce
             </Typography>
-
           </Link>
           <SearchBar />
-
+          
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            
+            <IconButton aria-label="show 4 new mails" color="inherit" component={ Link } to='/cart'>
+              <Badge badgeContent={cartQuantity} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -210,6 +217,13 @@ export default function Nav() {
             >
               <AccountCircle />
             </IconButton>
+            
+            <LoginLogout />
+
+            {/* <LoginLogout /> */}
+            {/* {isAuthenticated ? <Logout /> : <Login />} */}
+            {/* <Login /> */}
+            {/* <Logout /> */}
           </div>
         </Toolbar>
         {/* <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2vw'}}>
