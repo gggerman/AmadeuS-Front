@@ -10,6 +10,8 @@ import AddProduct from "../addproduct/AddProduct";
 import "../../App.css";
 import Stock from "../stock/Stock";
 import AddUser from "../adduser/AddUser";
+import Login from "../login/Login";
+import UserManagement from "../usermanagement/UserManagement";
 import LoginLogout from "../account/LoginLogout";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import Order from "../order/Order";
@@ -25,7 +27,7 @@ const AppRouter = () => {
 
   const adminAuth = function (component) {
     if (user) {
-      return user.email && user.email === "juanmhdz99@gmail.com"
+      return user.email && user.email === "crismaxbar@gmail.com"
         ? component
         : Home;
     } else if(isAuthenticated === false) {
@@ -55,6 +57,7 @@ const AppRouter = () => {
               <Route path="/adminpanel" component={adminAuth(AdminPanel)} />
               <Route path="/addcategory" component={adminAuth(AddCategory)} />
               <Route path="/addproduct" component={adminAuth(AddProduct)} />
+              <Route path="/usermanagement" component={adminAuth(UserManagement)} />
               <Route
                 path="/editproduct/:id"
                 component={adminAuth(AddProduct)}
