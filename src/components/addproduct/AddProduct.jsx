@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDetails } from "../../redux/actions/getDetails";
 import { useParams } from "react-router";
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -100,9 +101,9 @@ function AddProduct() {
     if (validate()) {
       console.log(input);
       if (input._id) {
-        axios.put(`https://musical-e-commerce.herokuapp.com/products/${input._id}`, input);
+        axios.put(`${REACT_APP_SERVER}/products/${input._id}`, input);
       } else {
-        axios.post("https://musical-e-commerce.herokuapp.com/products", input);
+        axios.post(`${REACT_APP_SERVER}/products`, input);
         setInput(initialInput);
       }
     }
