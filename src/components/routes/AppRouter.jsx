@@ -35,7 +35,7 @@ const [shoppingCart, setShoppingCart] = useState(initialState)
           <UserContext.Provider value={{shoppingCart, setShoppingCart}}>
             {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
-            <Route exact path="/products" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
             <Route path="/adminpanel" component={AdminPanel} />
             <Route path="/addcategory" component={AddCategory} />
