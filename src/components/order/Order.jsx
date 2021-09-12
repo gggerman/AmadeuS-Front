@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     const { id } = useParams()
     const [detail, setDetail] = useState({})
     const [quantity, setQuantity] = useState(1)
-
+    const { REACT_APP_SERVER } = process.env;
     const getProductById = async () => {
       try{
          const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`)

@@ -6,6 +6,7 @@ export function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 
+  //valida la palabra ingresada en el componente AddCategory.jsx
 export function validar( name, arr ) {
   name = name.trim();
   const result = arr.find( elem => elem.name.toLocaleLowerCase() === name.toLocaleLowerCase() ) 
