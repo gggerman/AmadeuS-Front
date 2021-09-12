@@ -2,8 +2,8 @@ import React, {useContext, useEffect, useState} from "react";
 import { Typography, Divider } from "@material-ui/core";
 import { CardMedia, Box, Grid, Button, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { Paper } from "@material-ui/core";
 import { useParams } from "react-router";
+import { Link } from 'react-router-dom';
 import Nav from '../nav/Nav';
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
@@ -39,16 +39,19 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light,
     },
     width: "20vh",
+    height: '7vh',
     fontSize: "2vh",
     marginRight: '4vh',
     marginLeft: '4vh'
   },
-  
+
 }));
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [detail, setDetail] = useState({})
+ 
+
 
   const classes = useStyles();
   console.log(detail)
@@ -87,7 +90,7 @@ export default function ProductDetail() {
         <div>
          <Nav />
        <Grid container style = { { marginTop: '-4vh'}}>
-        
+
         <Grid item xs ={6}>
             <CardMedia className={classes.media} image={detail.image} />
         </Grid>
@@ -107,7 +110,7 @@ export default function ProductDetail() {
 
 
               <Grid style = {{width:'600px',display: 'flex',justifyContent: 'center'}}>
-                
+
                 <Box> <img src={'https://img.icons8.com/color/480/mercado-pago.png'} className = {classes.mp} /></Box>
               
                 <Button  
@@ -117,9 +120,11 @@ export default function ProductDetail() {
                     >
                   Add to Cart
                 </Button>
-                <Button variant="contained" className={classes.button}>
-                  Buy
-                </Button>
+                <Link to={`/order/${id}`} style ={{textDecoration:'none'}}>
+                  <Button variant="contained" className={classes.button}>
+                    Comprar
+                  </Button>
+                </Link>
               </Grid>
 
               <Typography variant="body2" component="h3" className = {classes.container}>
@@ -132,7 +137,7 @@ export default function ProductDetail() {
         </div>
 
       }
-     
+
 
     </div>
   );

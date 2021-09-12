@@ -20,7 +20,7 @@ import { UserContext } from "../shoppingcart/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
-    flexGrow: 1,
+    // flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -78,9 +78,15 @@ const useStyles = makeStyles((theme) => ({
   },
   offset: theme.mixins.toolbar,
   link: {
+
     textDecoration: 'none',
     color: theme.palette.primary.dark
+  },
+  logo: {
+    textDecoration: 'none',
+    color: 'white'
   }
+
 }));
 
 export default function Nav() {
@@ -118,8 +124,9 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <Link to ='/adminpanel' className ={classes.link}><MenuItem >Profile</MenuItem></Link>
-      <MenuItem >My account</MenuItem>
+
+      <Link to ='/adminpanel' className ={classes.link}><MenuItem >Perfil</MenuItem></Link>
+
     </Menu>
   );
 
@@ -166,12 +173,21 @@ export default function Nav() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="absolute" style = {{backgroundColor: 'rgb(0, 23, 20)', height: '18%'}}>
-        <Toolbar className={classes.offset}>
-        
-          <Typography className={classes.title} variant="h5" noWrap>
-            Musical E-Commerce
-          </Typography>
+
+      <AppBar
+        position="absolute"
+        style={{ backgroundColor: "rgb(0, 23, 20)", height: "18%" }}
+      >
+        <Toolbar className={classes.navDisplay}>
+          <Link
+            to="/products"
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            <Typography className={classes.title} variant="h5" noWrap>
+              Musical E-Commerce
+            </Typography>
+
+          </Link>
           <SearchBar />
           
           <div className={classes.grow} />
@@ -188,7 +204,7 @@ export default function Nav() {
                 <FavoriteIcon />
               </Badge>
             </IconButton>
-            
+
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -200,15 +216,13 @@ export default function Nav() {
               <AccountCircle />
             </IconButton>
           </div>
-          
         </Toolbar>
       </AppBar>
       {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
       <div className={classes.offset}></div> {/* NO BORRAR */}
-      <div className={classes.offset}></div> {/* NO BORRAR */}  
+      <div className={classes.offset}></div> {/* NO BORRAR */}
       {renderMobileMenu}
       {renderMenu}
-      
     </div>
   );
 }

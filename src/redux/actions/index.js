@@ -13,3 +13,8 @@ export const ADD_TO_CART = 'ADD_TO_CART'
 export const DELETE_ONE_ITEM = 'DELETE_ONE_ITEM'
 export const CLEAN_CART = 'CLEAN_CART'
 export const BUY_CART = 'BUY_CART'
+
+//barra de busqueda
+export const SET_SEARCHBAR = 'SET_SEARCHBAR'
+export const ADD_USER = 'ADD_USER'
+export const GET_ALL_USERS = 'GET_ALL_USERS'
