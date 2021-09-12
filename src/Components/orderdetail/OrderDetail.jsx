@@ -81,7 +81,7 @@ useEffect(() => {
         <div>
          <CssBaseline>
         <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%', position: 'absolute'}}>
-          <Link to ="/products" style = {{margin: 'auto'}}>
+          <Link to ="/" style = {{margin: 'auto'}}>
           <img src ={logo} className={classes.icon}/>
           </Link>
         </AppBar>

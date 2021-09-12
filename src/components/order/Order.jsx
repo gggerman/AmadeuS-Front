@@ -95,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
     console.log(idOrder)
     
     const { REACT_APP_SERVER } = process.env;
+    
     const getProductById = async () => {
       try{
          const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`)

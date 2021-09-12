@@ -1,4 +1,4 @@
-import { ADD_ORDER_ID,  } from "."
+import { ADD_ORDER_ID,  } from "../actions/index";
 
  const addOrder = ( id ) => {
             return  {

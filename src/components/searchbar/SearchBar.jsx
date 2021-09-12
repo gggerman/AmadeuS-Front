@@ -14,7 +14,6 @@ import { useHistory } from "react-router";
 import { setSearchBar } from "../../redux/actions/searchBar";
 const { REACT_APP_SERVER } = process.env;
 
-const { REACT_APP_SERVER } = process.env
 
 const useStyles = makeStyles((theme) => ({
   search: {

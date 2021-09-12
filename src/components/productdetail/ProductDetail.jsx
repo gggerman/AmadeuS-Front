@@ -22,7 +22,7 @@ import addToCart from "../../redux/actions/addToCart";
 const useStyles = makeStyles((theme) => ({
   media: {
     width: "100%",
-    paddingTop: "80%", // 16:9
+    paddingTop: "70%", // 16:9
     margin: "0vh",
     backgroundSize: "contain",
     "&:hover": {
@@ -83,10 +83,13 @@ export default function ProductDetail() {
         </div>
       )}
       {!loading && success && (
-        <div>
-          <Grid container style={{ marginTop: "-4vh" }}>
+
+        <Grid container style={{ marginTop: "-4vh" }}>
+          
+          <Grid item xs={6} >
             <CardMedia className={classes.media} image={data.image} />
           </Grid>
+
           <Grid item xs={6}>
             <Typography
               component="h1"
@@ -111,13 +114,8 @@ export default function ProductDetail() {
             >
               {data.description}
             </Typography>
-            <Grid
-              style={{
-                width: "600px",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+
+            <Grid style={{ width: "600px",display: "flex", justifyContent: "center", }} >
               <Box>
                 {" "}
                 <img
@@ -165,7 +163,7 @@ export default function ProductDetail() {
               {data.brand}
             </Typography>
           </Grid>
-        </div>
+        </Grid>
       )}
     </>
   );

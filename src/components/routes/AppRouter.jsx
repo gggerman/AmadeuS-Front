@@ -14,7 +14,7 @@ import Stock from "../stock/Stock";
 import AddUser from "../adduser/AddUser";
 import LoginLogout from "../account/LoginLogout";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import Order from "../order/Order";
+
 import "../../App.css";
 import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
@@ -62,13 +62,13 @@ const [shoppingCart, setShoppingCart] = useState(initialState)
             <Route path="/orderdetail" component = {OrderDetail} />
       
 
-            <Redirect to="/products" />
-            <Route path="/editproduct/:id" component={AddProduct} />
+            
+            
             <Route path="/adduser" component={AddUser} />
             
             </UserContext.Provider>
             <Route path="/login" component={LoginLogout} /> 
-            <Route path="/order/:id" component={Order} />
+            
             <Redirect to="/" />
           </Switch>
         </ThemeProvider>

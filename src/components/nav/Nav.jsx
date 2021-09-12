@@ -19,7 +19,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from 'react-router-dom';
 import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
-import SearchBar from "../searchbar/SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
