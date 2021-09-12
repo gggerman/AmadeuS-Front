@@ -1,14 +1,34 @@
-import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY, ADD_CATEGORY, ADD_ORDER_ID } from '../actions/index'
-import { GET_ALL_CATEGORIES } from '../actions/index'
+import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY, ADD_CATEGORY, ADD_ORDER_ID, SET_SEARCHBAR, ADD_USER, GET_ALL_USERS, GET_ALL_CATEGORIES } from '../actions/index'
+
 
 
 const initialState = {
-    productsLoaded: [],
-    allProducts: [], //para el filtrado
+    productsLoaded: {
+        data: [],
+        success: undefined,
+        error: undefined,
+        loading: false
+    },
+    allProducts: {
+        data: [],
+        success: undefined,
+        error: undefined,
+        loading: false
+    }, //para el filtrado
+    searchBar: '',
     categoriesLoaded: [],
-    detail: {},
+    
+    detail: {
+        data: {},
+        success: undefined,
+        error: undefined,
+        loading: false
+    },
+    usersLoaded: [],
     order: '' //para asociar order con id
-}   
+},   
+    
+
 
 const appReducer = (state = initialState, action) => {
 
@@ -27,9 +47,10 @@ const appReducer = (state = initialState, action) => {
                 detail: action.payload
             }
 
-            case SORT_BY_NAME:
-                let sortName = action.payload ==='A - Z'? 
-                    state.productsLoaded.sort((a, b) => {
+        case SORT_BY_NAME:
+            let sortName = {
+                data: action.payload.data === 'A - Z' ?
+                    state.productsLoaded.data.sort((a, b) => {
                         if (a.name.toLowerCase() > b.name.toLowerCase()) {
                             return 1
                         }
@@ -38,7 +59,7 @@ const appReducer = (state = initialState, action) => {
                         }
                         return 0
                     })
-                    : state.productsLoaded.sort((a, b) => {
+                    : state.productsLoaded.data.sort((a, b) => {
                         if (a.name.toLowerCase() > b.name.toLowerCase()) {
                             return -1
                         }
@@ -46,56 +67,91 @@ const appReducer = (state = initialState, action) => {
                             return 1
                         }
                         return 0
-                    })
-                return {
+                    }),
+                success: true,
+                error: false,
+                loading: false
+            }
+            return {
                 ...state,
                 productsLoaded: sortName
             }
-
-            case SORT_BY_PRICE:
-                let sortPrice = action.payload === 'Lower to Higher'?
-                    state.productsLoaded.sort((a, b) => {
+        case SORT_BY_PRICE:
+            let sortPrice = {
+                data: action.payload.data === 'Lower to Higher' ?
+                    state.productsLoaded.data.sort((a, b) => {
                         return a.price - b.price
                     })
-                    : state.productsLoaded.sort((a, b) => {
+                    : state.productsLoaded.data.sort((a, b) => {
                         return b.price - a.price
-                    })
-                return {
+                    }),
+                success: true,
+                error: false,
+                loading: false
+            }
+            return {
                 ...state,
                 productsLoaded: sortPrice
             }
 
-            case FILTER_BY_CATEGORY:
-                let allProducts = state.allProducts
-                let filterCategory=[]
-                if(action.payload === 'All'){
-                    filterCategory = allProducts
-                } else {
-                    allProducts.forEach(product => {
-                        product.categories.forEach(p => {
-                            if(p.name === action.payload) filterCategory.push(product)
-                        })
-                    })
+        case FILTER_BY_CATEGORY:
+            let allProducts = state.allProducts
+            let filterCategory = {
+                data: [],
+                success: undefined,
+                error: undefined,
+                loading: true
+            }
+            if (action.payload.data === 'All') {
+                filterCategory = {
+                    data: allProducts.data,
+                    success: true,
+                    error: false,
+                    loading: false
                 }
-                return {
+            } else {
+                allProducts.data.forEach(product => {
+                    product.categories.forEach(p => {
+                        if (p.name === action.payload.data) {
+                            filterCategory.data.push(product)
+                        }
+                    })
+                    filterCategory.success = true
+                    filterCategory.error = false
+                    filterCategory.loading = false
+                })
+            }
+            return {
                 ...state,
                 productsLoaded: filterCategory
             }
 
-            case GET_ALL_CATEGORIES:
-                return {
-                    ...state,
-                    categoriesLoaded: action.payload,
-                }
+        case GET_ALL_CATEGORIES:
+            return {
+                ...state,
+                categoriesLoaded: action.payload,
+            }
 
-            case ADD_CATEGORY:
-                return state;
-            
-            case ADD_ORDER_ID:
+        case ADD_CATEGORY:
+            return state;
+        case SET_SEARCHBAR:
+            return {
+                ...state,
+                searchBar: action.payload
+            }
+        case ADD_USER:
+            return state;
+
+        case GET_ALL_USERS:
+            return {
+                ...state,
+                usersLoaded: action.payload,
+            }
+        case ADD_ORDER_ID:
                 return {
                     ...state,
                     order : action.payload
-                }
+                }    
 
         default:
             return state;

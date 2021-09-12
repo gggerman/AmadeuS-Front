@@ -7,3 +7,6 @@ export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY'
 export const GET_DETAILS = 'GET_DETAILS'
 export const GET_ALL_CATEGORIES = 'GET_ALL_CATEGORIES'
 export const ADD_ORDER_ID = "ADD_ORDER_ID"
+export const SET_SEARCHBAR = 'SET_SEARCHBAR'
+export const ADD_USER = 'ADD_USER'
+export const GET_ALL_USERS = 'GET_ALL_USERS'

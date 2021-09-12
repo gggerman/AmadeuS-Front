@@ -9,30 +9,33 @@ import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
 import Order from "../order/Order";
 import OrderDetail from './../../orderdetail/OrderDetail';
-
+import AddUser from "../adduser/AddUser";
+import LoginLogout from "../account/LoginLogout";
+import { withAuthenticationRequired } from '@auth0/auth0-react'
 const AppRouter = () => {
-
 
   return (
     <>
-      <div>
+      <div className='app'>
         <ThemeProvider theme={theme}>
-        
+
           <Switch>
             {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
-            <Route exact path="/products" component={Home} />
+            <Route exact path="/" component={Home} /> {/* Si se cambia a /products hay problemas con la autenticación */}
             <Route path="/detail/:id" component={ProductDetail} />
-
             <Route path="/adminpanel" component={AdminPanel} />
-            <Route path="/addcategory" component={AddCategory} />            
+            <Route path="/addcategory" component={AddCategory} />
             <Route path="/addproduct" component={AddProduct} />
-            
             <Route path="/order/:id" component = {Order} />
             <Route path="/orderdetail" component = {OrderDetail} />
       
 
             <Redirect to="/products" />
+            <Route path="/editproduct/:id" component={AddProduct} />
+            <Route path="/adduser" component={AddUser} />
+            <Route path="/login" component={LoginLogout} />
+            <Redirect to="/" /> {/* Si se cambia a /products hay problemas con la autenticación */}
 
           </Switch>
         </ThemeProvider>

@@ -10,6 +10,7 @@ const useStyles = makeStyles( (theme) => ({
         justifyContent: 'space-around',
         color: theme.palette.primary.contrastText,
         backgroundColor: 'rgb(0, 23, 20)'
+
     }
 }))
 

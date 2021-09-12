@@ -29,6 +29,7 @@
     position: absolute;
     background-color: white;
     right: 0;
+    width: 100%;
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;

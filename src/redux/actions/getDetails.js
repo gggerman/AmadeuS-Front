@@ -1,19 +1,38 @@
 import axios from "axios"
 import { GET_DETAILS, USER_ERRORS } from "."
+const { REACT_APP_SERVER } = process.env;
 
-const getDetails = (id) => {
+export const getDetails = (id) => {
     return async (dispatch) => {
         try {
-            const productDetail = await axios.get(`http://localhost:3001/${id}`)
+            dispatch({
+                type: GET_DETAILS,
+                payload: {
+                    data: {},
+                    success: undefined,
+                    error: undefined,
+                    loading: true
+                }
+            })
+            const productDetail = await axios.get(`${REACT_APP_SERVER}/products/${id}`)
             return dispatch({
                 type: GET_DETAILS,
-                payload: productDetail.data
+                payload: {
+                    data: productDetail.data,
+                    success: true,
+                    error: false,
+                    loading: false
+                }
             })
-
         } catch (error) {
             return dispatch({
-                type: USER_ERRORS,
-                payload: console.log(error)
+                type: GET_DETAILS,
+                payload: {
+                    data: [],
+                    success: false,
+                    error: error,
+                    loading: false
+                }
             })
         }
     }
