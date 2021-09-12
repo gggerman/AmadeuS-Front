@@ -19,7 +19,7 @@ import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 
 const AppRouter = () => {
-  const { user } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
 
   console.log("admin", user);
 
@@ -28,6 +28,8 @@ const AppRouter = () => {
       return user.email && user.email === "juanmhdz99@gmail.com"
         ? component
         : Home;
+    } else if(isAuthenticated === false) {
+      return Home
     }
   };
   // const [quantityCart, setQuantityCart] = useState(0)
@@ -61,8 +63,7 @@ const AppRouter = () => {
               <Route path="/order/:id" component={Order} />
               <Route path="/adduser" component={AddUser} />
               <Route path="/login" component={LoginLogout} />
-              <Route path="/order/:id" component={Order} />
-              <Redirect to="/" />
+              {/* <Redirect to="/" /> */}
             </UserContext.Provider>
           </Switch>
         </ThemeProvider>
