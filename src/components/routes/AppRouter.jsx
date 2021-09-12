@@ -16,8 +16,7 @@ import Order from "../order/Order";
 import "../../App.css";
 import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
-import '../../App.css'
- 
+import "../../App.css";
 
 const AppRouter = () => {
   const { user } = useAuth0();
@@ -31,38 +30,40 @@ const AppRouter = () => {
         : Home;
     }
   };
-// const [quantityCart, setQuantityCart] = useState(0)
-const initialState = {
-  cartQuantity: 0,
-  cartItems: []
-}
+  // const [quantityCart, setQuantityCart] = useState(0)
+  const initialState = {
+    cartQuantity: 0,
+    cartItems: [],
+  };
 
-const [shoppingCart, setShoppingCart] = useState(initialState)
+  const [shoppingCart, setShoppingCart] = useState(initialState);
 
   return (
     <>
       <div className="app">
         <ThemeProvider theme={theme}>
           <Switch>
-          {/* <UserContext.Provider value={{quantityCart, setQuantityCart}}> */}
-          <UserContext.Provider value={{shoppingCart, setShoppingCart}}>
-            {/* El catalogo se tiene que visualizar en la ruta /products
+            {/* <UserContext.Provider value={{quantityCart, setQuantityCart}}> */}
+            <UserContext.Provider value={{ shoppingCart, setShoppingCart }}>
+              {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
-            <Route exact path="/" component={Home} />
-            <Route path="/detail/:id" component={ProductDetail} />
-            <Route path="/stock" component={adminAuth(Stock)} />
-            <Route path="/adminpanel" component={adminAuth(AdminPanel)} />
-            <Route path="/addcategory" component={adminAuth(AddCategory)} />
-            <Route path="/addproduct" component={adminAuth(AddProduct)} />
-            <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
-            <Route path='/cart' component={ ShoppingCart } />        
-            <Route path="/order/:id" component = {Order} />
-            <Route path="/adduser" component={AddUser} />
-            
+              <Route exact path="/" component={Home} />
+              <Route path="/detail/:id" component={ProductDetail} />
+              <Route path="/stock" component={adminAuth(Stock)} />
+              <Route path="/adminpanel" component={adminAuth(AdminPanel)} />
+              <Route path="/addcategory" component={adminAuth(AddCategory)} />
+              <Route path="/addproduct" component={adminAuth(AddProduct)} />
+              <Route
+                path="/editproduct/:id"
+                component={adminAuth(AddProduct)}
+              />
+              <Route path="/cart" component={ShoppingCart} />
+              <Route path="/order/:id" component={Order} />
+              <Route path="/adduser" component={AddUser} />
+              <Route path="/login" component={LoginLogout} />
+              <Route path="/order/:id" component={Order} />
+              <Redirect to="/" />
             </UserContext.Provider>
-            <Route path="/login" component={LoginLogout} /> 
-            <Route path="/order/:id" component={Order} />
-            <Redirect to="/" />
           </Switch>
         </ThemeProvider>
       </div>

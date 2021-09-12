@@ -1,23 +1,15 @@
-import {
-  Typography,
-  Divider,
-  CircularProgress,
-  CardMedia,
-  Box,
-  Grid,
-  Button,
-} from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import { Typography, Divider, CircularProgress } from "@material-ui/core";
+import { CardMedia, Box, Grid, Button, Container } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import Nav from "../nav/Nav";
 import { numberWithCommas } from "../../utils";
-import { useSelector, useDispatch } from "react-redux";
-import getDetails from "../../redux/actions/getDetails";
-import { Link } from "react-router-dom";
-import React, { useContext, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/styles";
-import axios from "axios";
 import { UserContext } from "../shoppingcart/UserContext";
+import { useDispatch, useSelector } from "react-redux";
 import addToCart from "../../redux/actions/addToCart";
+import getDetails from "../../redux/actions/getDetails";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -45,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light,
     },
     width: "20vh",
+    height: "7vh",
     fontSize: "2vh",
     marginRight: "4vh",
     marginLeft: "4vh",
@@ -52,14 +45,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductDetail() {
-  const [detail, setDetail] = useState({});
-  const { data, success, loading } = useSelector(({ app }) => app.detail);
-  const dispatch = useDispatch();
-  const classes = useStyles();
   const { id } = useParams();
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const { data, success, loading } = useSelector(({ app }) => app.detail);
   const { shoppingCart, setShoppingCart } = useContext(UserContext);
   const { cartQuantity } = shoppingCart;
-  const { REACT_APP_SERVER } = process.env;
 
   const handleAdd = (e) => {
     setShoppingCart((cant) => ({
@@ -75,98 +66,100 @@ export default function ProductDetail() {
   }, [dispatch, id]);
 
   return (
-    <>
-      <Nav />
-      {loading && (
-        <div className="loading">
-          <CircularProgress />
-        </div>
-      )}
-      {!loading && success && (
-        <div>
+    <div>
+      <div>
+        <Nav />
+        {loading && (
+          <div className="loading">
+            <CircularProgress />
+          </div>
+        )}
+        {!loading && success && (
           <Grid container style={{ marginTop: "-4vh" }}>
-            <CardMedia className={classes.media} image={data.image} />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography
-              component="h1"
-              variant="h4"
-              className={classes.container}
-            >
-              {data.name}
-              <Divider variant="middle" light />
-            </Typography>
-            <Typography
-              variant="h3"
-              component="h2"
-              className={classes.container}
-            >
-              ${numberWithCommas(data.price)}
-              <Divider variant="fullwidth" />
-            </Typography>
-            <Typography
-              component="p"
-              variant="body2"
-              className={classes.container}
-            >
-              {data.description}
-            </Typography>
-            <Grid
-              style={{
-                width: "600px",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Box>
-                {" "}
-                <img
-                  src={"https://img.icons8.com/color/480/mercado-pago.png"}
-                  className={classes.mp}
-                />
-              </Box>
-
-              <Button
-                variant="contained"
-                className={classes.button}
-                onClick={handleAdd}
-              >
-                Add to Cart
-              </Button>
-              <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
-                <Button variant="contained" className={classes.button}>
-                  Comprar
-                </Button>
-              </Link>
+            <Grid item xs={6}>
+              <CardMedia className={classes.media} image={data.image} />
             </Grid>
-            {data.stock === 0 ? (
+            <Grid item xs={6}>
+              <Typography
+                component="h1"
+                variant="h4"
+                className={classes.container}
+              >
+                {data.name}
+                <Divider variant="middle" light />
+              </Typography>
+              <Typography
+                variant="h3"
+                component="h2"
+                className={classes.container}
+              >
+                ${numberWithCommas(data.price)}
+                <Divider variant="fullwidth" />
+              </Typography>
+              <Typography
+                component="p"
+                variant="body2"
+                className={classes.container}
+              >
+                {data.description}
+              </Typography>
+              <Grid
+                style={{
+                  width: "600px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Box>
+                  {" "}
+                  <img
+                    src={"https://img.icons8.com/color/480/mercado-pago.png"}
+                    className={classes.mp}
+                  />
+                </Box>
+
+                <Button
+                  variant="contained"
+                  className={classes.button}
+                  onClick={handleAdd}
+                >
+                  Add to Cart
+                </Button>
+                <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
+                  <Button variant="contained" className={classes.button}>
+                    Comprar
+                  </Button>
+                </Link>
+              </Grid>
+              {data.stock === 0 ? (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  component="h3"
+                  className={classes.container}
+                >
+                  Sin stock
+                </Typography>
+              ) : (
+                <Typography
+                  variant="body2"
+                  component="h3"
+                  className={classes.container}
+                >
+                  Stock: {data.stock}
+                </Typography>
+              )}
               <Typography
                 variant="body2"
-                color="error"
                 component="h3"
                 className={classes.container}
               >
-                Sin stock
+                {data.brand}
               </Typography>
-            ) : (
-              <Typography
-                variant="body2"
-                component="h3"
-                className={classes.container}
-              >
-                Stock: {data.stock}
-              </Typography>
-            )}
-            <Typography
-              variant="body2"
-              component="h3"
-              className={classes.container}
-            >
-              {data.brand}
-            </Typography>
+            </Grid>
           </Grid>
-        </div>
-      )}
-    </>
+        )}
+      </div>
+    </div>
   );
 }
