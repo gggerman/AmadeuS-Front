@@ -27,7 +27,7 @@ const AppRouter = () => {
 
   const adminAuth = function (component) {
     if (user) {
-      return user.email && user.email === "crismaxbar@gmail.com"
+      return user.email && user.email === "crismaxbar@gmail.com" || "juanmhdz99@gmail.com"
         ? component
         : Home;
     } else if(isAuthenticated === false) {
