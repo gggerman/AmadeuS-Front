@@ -8,7 +8,7 @@ import { AddCategory } from "../addcategory/AddCategory";
 import AdminPanel from "../adminpanel/AdminPanel";
 import AddProduct from "../addproduct/AddProduct";
 import Order from "../order/Order";
- 
+import OrderDetail from './../../orderdetail/OrderDetail';
 
 const AppRouter = () => {
 
@@ -29,6 +29,7 @@ const AppRouter = () => {
             <Route path="/addproduct" component={AddProduct} />
             
             <Route path="/order/:id" component = {Order} />
+            <Route path="/orderdetail" component = {OrderDetail} />
       
 
             <Redirect to="/products" />

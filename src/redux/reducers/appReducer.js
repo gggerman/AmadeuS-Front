@@ -1,4 +1,4 @@
-import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY, ADD_CATEGORY } from '../actions/index'
+import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY, ADD_CATEGORY, ADD_ORDER_ID } from '../actions/index'
 import { GET_ALL_CATEGORIES } from '../actions/index'
 
 
@@ -6,8 +6,9 @@ const initialState = {
     productsLoaded: [],
     allProducts: [], //para el filtrado
     categoriesLoaded: [],
-    detail: {}
-}
+    detail: {},
+    order: '' //para asociar order con id
+}   
 
 const appReducer = (state = initialState, action) => {
 
@@ -89,6 +90,12 @@ const appReducer = (state = initialState, action) => {
 
             case ADD_CATEGORY:
                 return state;
+            
+            case ADD_ORDER_ID:
+                return {
+                    ...state,
+                    order : action.payload
+                }
 
         default:
             return state;
