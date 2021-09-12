@@ -25,5 +25,5 @@ yarn-error.log*
 # package-lock.json
 package-lock.json
 
-#dotenv
+# dotenv environment variables file
 .env
