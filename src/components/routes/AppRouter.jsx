@@ -11,7 +11,8 @@ import Order from "../order/Order";
 import '../../App.css'
 import AddUser from "../adduser/AddUser";
 import LoginLogout from "../account/LoginLogout";
-import { withAuthenticationRequired } from '@auth0/auth0-react'
+import Account from "../account/Account";
+
 const AppRouter = () => {
 
   return (
@@ -31,6 +32,7 @@ const AppRouter = () => {
             <Route path="/editproduct/:id" component={AddProduct} />
             <Route path="/adduser" component={AddUser} />
             <Route path="/login" component={LoginLogout} />
+            <Route path="/account" component={Account} />
             <Redirect to="/" /> {/* Si se cambia a /products hay problemas con la autenticación */}
 
           </Switch>
