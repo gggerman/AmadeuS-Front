@@ -88,11 +88,9 @@ export default function AdminPanel() {
             </Typography>
           </Card>
         </Link>
-        <Link to="" className={classes.link}>
+        <Link to="/usermanagement" className={classes.link}>
           <Card className={classes.root}>
-            <Typography component="h1" variant="h5">
-              Administrar Usuarios
-            </Typography>
+            <Typography component="h1" variant='h5'>Administrar Usuarios</Typography>
           </Card>
         </Link>
         <Link to="" className={classes.link}>

@@ -226,6 +226,13 @@ export default function Nav() {
             {/* <Logout /> */}
           </div>
         </Toolbar>
+        {/* <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2vw'}}>
+          <Link to='/adduser' style={{ textDecoration: "none", color:"#ffffff" }}>
+            <Typography variant="p" noWrap>
+              Registrate
+            </Typography>
+          </Link>
+        </div> */}
       </AppBar>
       {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
       <div className={classes.offset}></div> {/* NO BORRAR */}

@@ -12,43 +12,46 @@ import OrderDetail from '../orderdetail/OrderDetail';
 import "../../App.css";
 import Stock from "../stock/Stock";
 import AddUser from "../adduser/AddUser";
+import Login from "../login/Login";
+import UserManagement from "../usermanagement/UserManagement";
 import LoginLogout from "../account/LoginLogout";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 import "../../App.css";
 import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
-import '../../App.css'
- 
+import "../../App.css";
 
 const AppRouter = () => {
-  const { user } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
 
   console.log("admin", user);
 
   const adminAuth = function (component) {
     if (user) {
-      return user.email && user.email === "juanmhdz99@gmail.com"
+      return user.email && user.email === "crismaxbar@gmail.com"
         ? component
         : Home;
+    } else if(isAuthenticated === false) {
+      return Home
     }
   };
-// const [quantityCart, setQuantityCart] = useState(0)
-const initialState = {
-  cartQuantity: 0,
-  cartItems: []
-}
+  // const [quantityCart, setQuantityCart] = useState(0)
+  const initialState = {
+    cartQuantity: 0,
+    cartItems: [],
+  };
 
-const [shoppingCart, setShoppingCart] = useState(initialState)
+  const [shoppingCart, setShoppingCart] = useState(initialState);
 
   return (
     <>
       <div className="app">
         <ThemeProvider theme={theme}>
           <Switch>
-          {/* <UserContext.Provider value={{quantityCart, setQuantityCart}}> */}
-          <UserContext.Provider value={{shoppingCart, setShoppingCart}}>
-            {/* El catalogo se tiene que visualizar en la ruta /products
+            {/* <UserContext.Provider value={{quantityCart, setQuantityCart}}> */}
+            <UserContext.Provider value={{ shoppingCart, setShoppingCart }}>
+              {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
             <Route exact path="/" component={Home} />
             <Route path="/detail/:id" component={ProductDetail} />
@@ -60,10 +63,7 @@ const [shoppingCart, setShoppingCart] = useState(initialState)
             <Route path='/cart' component={ ShoppingCart } />        
             <Route path="/order/:id" component = {Order} />
             <Route path="/orderdetail" component = {OrderDetail} />
-      
-
-            
-            
+            <Route path="/usermanagement" component={adminAuth(UserManagement)} />
             <Route path="/adduser" component={AddUser} />
             
             </UserContext.Provider>
