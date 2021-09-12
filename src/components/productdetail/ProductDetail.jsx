@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { Typography, Divider } from "@material-ui/core";
 import { CardMedia, Box, Grid, Button, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -7,6 +7,10 @@ import { Link } from 'react-router-dom';
 import Nav from '../nav/Nav';
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
+import { UserContext } from "../shoppingcart/UserContext";
+import { useDispatch } from "react-redux";
+import addToCart from "../../redux/actions/addToCart";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -46,25 +50,33 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductDetail() {
   const { id } = useParams();
   const [detail, setDetail] = useState({})
- 
-
-
   const classes = useStyles();
-  console.log(detail)
-
-const getProductById = async () => {
-  try{
-     const response = await axios.get(`http://localhost:3001/products/${id}`)
-      setDetail(response.data)
+  const dispatch = useDispatch()
+  const {shoppingCart, setShoppingCart} = useContext( UserContext )
+  const {cartQuantity} = shoppingCart
+  const { REACT_APP_SERVER } = process.env;
+  const getProductById = async () => {
+          
+    try{
+      const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`)
+        setDetail(response.data)
+    }
+    catch (error){
+        console.log(error)
+    }
   }
-  catch (error){
-      console.log(error)
-  }
-}
 
-useEffect(() => {
-  getProductById(id) 
-}, [])
+  useEffect(() => {
+    getProductById(id) 
+  }, [id])
+
+  const handleAdd = (e) => {
+    setShoppingCart( cant => ({
+      ...cant,
+      cartQuantity: cartQuantity  + 1
+  }))
+    dispatch( addToCart(id))
+  }
 
 
   return (
@@ -96,8 +108,12 @@ useEffect(() => {
               <Grid style = {{width:'600px',display: 'flex',justifyContent: 'center'}}>
 
                 <Box> <img src={'https://img.icons8.com/color/480/mercado-pago.png'} className = {classes.mp} /></Box>
-
-                <Button variant="contained" className={classes.button}>
+              
+                <Button  
+                    variant="contained" 
+                    className={classes.button}
+                    onClick={ handleAdd }
+                    >
                   Add to Cart
                 </Button>
                 <Link to={`/order/${id}`} style ={{textDecoration:'none'}}>
