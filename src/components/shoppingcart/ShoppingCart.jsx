@@ -28,6 +28,8 @@ const useStyles = makeStyles( ( theme ) =>({
         backgroundSize: 'contain',
         margin: 'auto'
       },
+    appBar: theme.mixins.toolbar
+    
 }) )
 
 
@@ -78,6 +80,7 @@ console.log(shoppingCartProducts)
                     <img src ={logo} className={classes.icon}/>
                     </Link>
                 </AppBar>
+                <div className={classes.appBar}></div>
                 <Container maxWidth="xl" style={{ backgroundColor: '#EEEBEB', height: '150vh', border:'1px solid #E7E4E4' }} >
                     <div className={classes.root}>
                         <Box flexGrow={1} marginLeft={5} >
@@ -106,10 +109,11 @@ console.log(shoppingCartProducts)
                     <Divider />
                     <Box>
                         <Typography variant='h4'>
-                        Total de la compra: {
+                        Total de la compra: 
+                        {
                         shoppingCartProducts.reduce((acc, item) => {
                             return (
-                             acc += item.price
+                             acc += item.price * item.quantity
                             )
                         }, 0
                         )}

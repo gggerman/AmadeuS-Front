@@ -10,6 +10,7 @@ import { UserContext } from './UserContext';
 import React from 'react'
 import addToCart from '../../redux/actions/addToCart';
 import { numberWithCommas } from '../../utils';
+import { decrementQuantityCart } from '../../redux/actions/decrementQuantityCart';
 
 
 
@@ -45,8 +46,10 @@ const ShoppingCartItem = ({_id, name, description, price, stock, brand, image, c
   const [totalValue, setTotalValue] = useState(price) //arreglar
   const dispatch = useDispatch()
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
-  const {cartQuantity} = shoppingCart
-  
+  const {cartQuantity, totalPurchase} = shoppingCart
+  const [sumTotalValues, setSumTotalValues] = useState()
+
+
   const increment = (e) => {
     //   console.log(e)
       setCounter( counter + 1 )
@@ -58,8 +61,9 @@ const ShoppingCartItem = ({_id, name, description, price, stock, brand, image, c
       // setTotalValue(() => price * counter)
   }
 
-  const decrement = () => {
+  const decrement = (e) => {
       setCounter( counter - 1 )
+      dispatch( decrementQuantityCart(_id) )
       if( cartQuantity > 0){
         setShoppingCart( cant => ({
             ...cant,
