@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   media: {
     width: "100%",
     paddingTop: "70%", // 16:9
-    margin: "0vh",
+    marginTop: "5vh",
     backgroundSize: "contain",
     "&:hover": {
       backgroundSize: "larger",
@@ -73,7 +73,7 @@ export default function ProductDetail() {
           </div>
         )}
         {!loading && success && (
-          <Grid container style={{ marginTop: "-4vh" }}>
+          <Grid container style={{ marginTop: "-3vh" }}>
             <Grid item xs={6}>
               <CardMedia className={classes.media} image={data.image} />
             </Grid>
