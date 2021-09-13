@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import ProductDetail from "../productdetail/ProductDetail";
 import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
@@ -29,7 +28,7 @@ const AppRouter = () => {
 
   const adminAuth = function (component) {
     if (user) {
-      return user.email && user.email === "crismaxbar@gmail.com" || 'heisjuanpablo@gmail.com' || "leandrobuzeta@gmail.com" || "juanmhdz99@gmail.com"
+      return user.email && user.email === "crismaxbar@gmail.com" || user.email === 'heisjuanpablo@gmail.com' || user.email === "leandrobuzeta@gmail.com" || user.email === "juanmhdz99@gmail.com"
         ? component
         : Home;
     } else if (isAuthenticated === false) {
