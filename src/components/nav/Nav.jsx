@@ -20,6 +20,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
+import logo from './logo.jpg'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -87,6 +88,13 @@ const useStyles = makeStyles((theme) => ({
   navDisplay: {
     display: "flex",
     justifyContent: "space-between",
+  },
+  icon: {
+    marginTop: '2vh',
+    width: '8vh',
+    backgroundSize: 'contain',
+    margin: 'auto',
+    borderRadius: '6px'
   },
 }));
 
@@ -189,9 +197,7 @@ export default function Nav() {
       >
         <Toolbar className={classes.navDisplay}>
           <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            <Typography className={classes.title} variant="h5" noWrap>
-              Musical E-Commerce
-            </Typography>
+            <img src ={logo} className={classes.icon}/>
           </Link>
           <SearchBar />
           
