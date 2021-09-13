@@ -118,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
     const handleCheckout = () => {
       //axios.post a nuestra base de datos con status 'pending? 
       //axios.post('http://localhost:3001/orders, toda la info: detail.name, detail.price, detail.quantity, detail.id, buyer,detail.stock, detail.categories)
-      axios.post('http://localhost:3001/orders', { products: detail.name })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name })
       .then((response) => setIdOrder(response.data)) //estado de redux para guardar ese id y dps que lo consuma OrderDetail no estaria guardando en redux
       // .then( (response) => dispatch(addOrder(response)))   no funciona asi
       .catch((err) => console.log(err))
