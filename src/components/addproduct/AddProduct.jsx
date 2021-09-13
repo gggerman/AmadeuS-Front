@@ -125,23 +125,36 @@ function AddProduct() {
   const [input, setInput] = useState(initialInput);
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
-  const { data, loading, success } = useSelector(({ app }) => app.detail);
+  // const { data, loading, success } = useSelector(({ app }) => app.detail);
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  useEffect(() => {
-    dispatch(getAllCategories());
-    if (id) {
-      dispatch(getDetails(id));
+  const getProductById = async () => {
+    try {
+      const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`);
+      setInput(response.data);
+    } catch (error) {
+      console.log(error);
     }
-  }, [dispatch]);
+  };
 
   useEffect(() => {
-    if (data._id) {
-      setInput(data);
-    }
-  }, [data]);
+    dispatch(getAllCategories());
+    // if (id) {
+    //   dispatch(getDetails(id));
+    // }
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   if (data._id) {
+  //     setInput(data);
+  //   }
+  // }, [data]);
+
+  useEffect(() => {
+    getProductById(id) 
+  }, [id])
 
   const handleInputChange = (e) => {
     setInput({
@@ -429,7 +442,7 @@ function AddProduct() {
               className={classes.container}
             >
               ${input.price}
-              <Divider variant="fullwidth" />
+              <Divider />
             </Typography>
             <Typography
               component="p"
