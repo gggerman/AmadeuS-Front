@@ -8,7 +8,7 @@ import { AddCategory } from "../addcategory/AddCategory";
 import AddProduct from "../addproduct/AddProduct";
 import AdminPanel from "../adminpanel/AdminPanel";
 import Order from "../order/Order";
-import OrderDetail from '../orderdetail/OrderDetail';
+import OrderDetail from "../orderdetail/OrderDetail";
 import "../../App.css";
 import Stock from "../stock/Stock";
 import AddUser from "../adduser/AddUser";
@@ -31,7 +31,7 @@ const AppRouter = () => {
 
   const adminAuth = function (component) {
     if (user) {
-      return user.email && user.email === "crismaxbar@gmail.com" || 'heisjuanpablo@gmail.com' || "leandrobuzeta@gmail.com"
+      return user.email && user.email === "crismaxbar@gmail.com" || 'heisjuanpablo@gmail.com' || "leandrobuzeta@gmail.com" || "juanmhdz99@gmail.com"
         ? component
         : Home;
     } else if (isAuthenticated === false) {

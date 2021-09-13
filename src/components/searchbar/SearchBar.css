@@ -16,7 +16,8 @@
     position: relative;
   }
   .searchbox__result a {
-    max-height: 50px;
+    max-height: 75px;
+    min-height: 75px;
     transition: all 0.2s;
     padding: 5px 10px;
     display: flex;

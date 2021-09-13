@@ -1,23 +1,22 @@
-import { useAuth0 } from '@auth0/auth0-react'
-import { Link } from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
+import { Button, MenuItem } from "@material-ui/core";
 
 export default function LoginLogout() {
-    const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
-    // console.log('isAuthenticated', isAuthenticated)
-    // console.log('user', user)
+  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+  // console.log('isAuthenticated', isAuthenticated)
+  // console.log('user', user)
 
-    return (
-        <div>
-            <div>
-                {
-                    isAuthenticated
-                        ? <button onClick={() => logout()}>LOGOUT</button>
-                        : <button onClick={() => loginWithRedirect()}>LOGIN</button>
-                }
-                <Link to='/account'>
-                    <button>ACCOUNT</button>
-                </Link>
-            </div>
-        </div>
-    )
+  return (
+    <div>
+      {isAuthenticated ? (
+        <MenuItem onClick={() => logout()}>
+          Cerrar sesión
+        </MenuItem>
+      ) : (
+        <MenuItem onClick={() => loginWithRedirect()}>
+          Acceder
+        </MenuItem>
+      )}
+    </div>
+  );
 }
