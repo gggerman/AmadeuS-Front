@@ -12,12 +12,11 @@ import OrderDetail from '../orderdetail/OrderDetail';
 import "../../App.css";
 import Stock from "../stock/Stock";
 import AddUser from "../adduser/AddUser";
-import Login from "../login/Login";
 import UserManagement from "../usermanagement/UserManagement";
 import LoginLogout from "../account/LoginLogout";
 import Account from "../account/Account";
+import Profile from "../account/Profile";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-
 import "../../App.css";
 import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
@@ -30,14 +29,14 @@ const AppRouter = () => {
 
   const adminAuth = function (component) {
     if (user) {
-      return user.email && user.email === "crismaxbar@gmail.com"
+      return user.email && user.email === "crismaxbar@gmail.com" || 'heisjuanpablo@gmail.com'
         ? component
         : Home;
     } else if (isAuthenticated === false) {
       return Home
     }
   };
-  // const [quantityCart, setQuantityCart] = useState(0)
+
   const initialState = {
     cartQuantity: 0,
     cartItems: [],
@@ -62,11 +61,12 @@ const AppRouter = () => {
               <Route path="/addproduct" component={adminAuth(AddProduct)} />
               <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
               <Route path='/cart' component={ShoppingCart} />
-              <Route path="/order/:id" component={Order} />
+              <Route path="/order/:id" component={withAuthenticationRequired(Order)} />
               <Route path="/orderdetail" component={OrderDetail} />
               <Route path="/usermanagement" component={adminAuth(UserManagement)} />
               <Route path="/adduser" component={AddUser} />
               <Route path="/account" component={Account} />
+              <Route path="/profile" component={Profile} />
             </UserContext.Provider>
             <Route path="/login" component={LoginLogout} />
             <Redirect to="/" />
@@ -76,5 +76,4 @@ const AppRouter = () => {
     </>
   );
 };
-
 export default AppRouter;

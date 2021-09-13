@@ -5,6 +5,7 @@ import logo from './logo.jpg';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import { numberWithCommas } from '../../utils';
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
     media: {
@@ -58,7 +59,7 @@ console.log(status) //status de MP:  hay que modificar el status de nuestra orde
 
 const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
   try{
-     const response = await axios.get(`http://localhost:3001/orders/${orderId}`)
+     const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`)
       setInfoOrder(response.data)
   }
   catch (error){
@@ -72,7 +73,7 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-  axios.put(`http://localhost:3001/orders/${orderId}`, status)
+  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, status)
 }, [])
 
 // a su vez habria que hacer un axios.put en la order de nuestra base de datos para actualizar su status 
