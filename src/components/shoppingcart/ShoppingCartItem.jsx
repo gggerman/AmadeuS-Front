@@ -9,6 +9,7 @@ import deleteOneItem from '../../redux/actions/deleteOneItem';
 import { UserContext } from './UserContext';
 import React from 'react'
 import addToCart from '../../redux/actions/addToCart';
+import { numberWithCommas } from '../../utils';
 
 
 
@@ -85,9 +86,9 @@ const ShoppingCartItem = ({_id, name, description, price, stock, brand, image, c
                 <Cancel/>
             </IconButton>
         </Box>
-        <Box marginRight={5} >            
-            <Typography variant='body1' align='center'>
-                $ {totalValue *  counter} 
+        <Box marginRight={7}>            
+            <Typography variant='body1'>
+                $ {numberWithCommas(totalValue * counter)} 
             </Typography>
         </Box>
 

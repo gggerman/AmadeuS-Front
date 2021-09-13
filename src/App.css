@@ -4,6 +4,7 @@ html, body, #root, .app {
 
 .app {
   display: grid;
+  align-items: flex-start;
 }
 
 .makeStyles-home-1 {
@@ -15,4 +16,5 @@ html, body, #root, .app {
 .loading {
   display: flex;
   justify-content: center;
+  align-items: center;
 }

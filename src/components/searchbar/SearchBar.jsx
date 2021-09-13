@@ -6,24 +6,14 @@ import { alpha, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { getByName } from "../../redux/actions/getByName";
 import { Link } from "react-router-dom";
-import { Autocomplete } from "@material-ui/lab";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Divider,
-  Grid,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Card, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import "./SearchBar.css";
-import ProductCard from "../productcard/ProductCard";
 import { numberWithCommas } from "../../utils";
 import { useHistory } from "react-router";
 import { setSearchBar } from "../../redux/actions/searchBar";
 const { REACT_APP_SERVER } = process.env;
+
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -67,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SearchBar() {
+
+
   const [val, setVal] = useState([]);
   const classes = useStyles();
   const search = useSelector(({ app }) => app.searchBar);
@@ -75,14 +67,14 @@ function SearchBar() {
   const dispatch = useDispatch();
   const [focused, setFocused] = useState(false);
   const history = useHistory();
-  const input = useRef()
+  const input = useRef();
 
   function handleSubmit(e) {
     e.preventDefault();
     history.push("/");
     dispatch(setSearchBar(name));
     dispatch(getByName(name));
-    input.current.blur()
+    input.current.blur();
   }
 
   async function doSearch() {
@@ -91,7 +83,6 @@ function SearchBar() {
         let response = await axios.get(
           `${REACT_APP_SERVER}/products?name=${name}`
         );
-        console.log(response.status);
         if (response.status === 200) {
           setSearchResults(await response.data);
         }
@@ -186,9 +177,14 @@ function SearchBar() {
                           })`,
                         }}
                       ></div>
-                      <Typography variant="body2" component="h3">
-                        {r.name}
-                      </Typography>
+                      <div>
+                        <Typography variant="body2" component="h3">
+                          ${numberWithCommas(r.price)}
+                        </Typography>
+                        <Typography variant="body2" component="h3">
+                          {r.name}
+                        </Typography>
+                      </div>
                     </Link>
                   </div>
                 ))

@@ -19,6 +19,7 @@ import getAllProducts, {
 import { getAllCategories } from "../../redux/actions/getAllCategories";
 import { UserContext } from '../shoppingcart/UserContext';
 
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -114,6 +115,7 @@ export default function Catalogue() {
   function handleChange(event, value) {
     setPage(value);
   }
+  
   useEffect(() => {
     dispatch(filterByCategory(select.filter));
   }, [select.filter]);
@@ -121,7 +123,7 @@ export default function Catalogue() {
   return (
     <>
       {loading && (
-        <div className='loading'>
+        <div className="loading">
           <CircularProgress />
         </div>
       )}
