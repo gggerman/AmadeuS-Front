@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import {
-  makeStyles,
-  CssBaseline,
-  AppBar,
-  Container,
-  Typography,
-  Divider,
-  Box,
-  CardMedia,
-} from "@material-ui/core";
-import logo from "./logo.jpg";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { numberWithCommas } from "../../utils";
+import React, { useEffect, useState } from 'react';
+import { useLocation, Link } from 'react-router-dom';
+import {makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia} from '@material-ui/core';
+import logo from './logo.jpg';
+import axios from 'axios';
+import {useSelector} from 'react-redux';
+import { numberWithCommas } from '../../utils';
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -72,29 +64,33 @@ export default function OrderDetail() {
     }
   };
 
-  useEffect(() => {
+const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
+  try{
+     const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`)
+      setInfoOrder(response.data)
+  }
+  catch (error){
+      console.log(error)
+  }
+}
+
+useEffect(() => {
     // me traigo con redux el id de Order addOrder
-    getOrderById(orderId);
-  }, []);
+    getOrderById(orderId)
+}, [])
 
-  useEffect(() => {
-    axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, status);
-  }, []);
+useEffect(() => {
+  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, status)
+}, [])
 
-  // a su vez habria que hacer un axios.put en la order de nuestra base de datos para actualizar su status
+// a su vez habria que hacer un axios.put en la order de nuestra base de datos para actualizar su status 
 
-  return (
-    <div>
-      <CssBaseline>
-        <AppBar
-          style={{
-            backgroundColor: "rgb(0, 23, 20)",
-            height: "10%",
-            position: "absolute",
-          }}
-        >
-          <Link to="/" style={{ margin: "auto" }}>
-            <img src={logo} className={classes.icon} />
+    return (
+        <div>
+         <CssBaseline>
+        <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%', position: 'absolute'}}>
+          <Link to ="/" style = {{margin: 'auto'}}>
+          <img src ={logo} className={classes.icon}/>
           </Link>
         </AppBar>
 
@@ -137,5 +133,3 @@ export default function OrderDetail() {
     </div>
   );
 }
-
-// http://localhost:3000/orderdetail?collection_id=16911216892&collection_status=approved&payment_id=16911216892&status=approved&external_reference=null&payment_type=credit_card&merchant_order_id=3245729926&preference_id=672708410-71d2d278-158e-48f7-baa0-52c1ff053701&site_id=MLA&processing_mode=aggregator&merchant_account_id=null

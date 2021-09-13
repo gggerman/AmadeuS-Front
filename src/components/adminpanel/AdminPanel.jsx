@@ -93,7 +93,7 @@ export default function AdminPanel() {
             <Typography component="h1" variant='h5'>Administrar Usuarios</Typography>
           </Card>
         </Link>
-        <Link to="" className={classes.link}>
+        <Link to="/sales" className={classes.link}>
           <Card className={classes.root}>
             <Typography component="h1" variant="h5">
               Historial de Ventas
