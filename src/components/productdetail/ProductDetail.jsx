@@ -67,8 +67,6 @@ export default function ProductDetail() {
 
   return (
     <div>
-      <div>
-        <Nav />
         {loading && (
           <div className="loading">
             <CircularProgress />
@@ -160,6 +158,5 @@ export default function ProductDetail() {
           </Grid>
         )}
       </div>
-    </div>
   );
 }

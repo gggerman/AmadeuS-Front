@@ -181,8 +181,11 @@ export default function Nav() {
   return (
     <div>
       <AppBar
-        position="absolute"
-        style={{ backgroundColor: "rgb(0, 23, 20)", height: "18%" }}
+        style={{
+          position: "sticky",
+          backgroundColor: "rgb(0, 23, 20)",
+          height: "100%",
+        }}
       >
         <Toolbar className={classes.navDisplay}>
           <Link to="/" style={{ textDecoration: "none", color: "white" }}>
@@ -232,8 +235,8 @@ export default function Nav() {
         </div> */}
       </AppBar>
       {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
-      <div className={classes.offset}></div> {/* NO BORRAR */}
-      <div className={classes.offset}></div> {/* NO BORRAR */}
+      {/* <div className={classes.offset}></div> NO BORRAR */}
+      {/* <div className={classes.offset}></div> NO BORRAR */}
       {renderMobileMenu}
       {renderMenu}
     </div>
