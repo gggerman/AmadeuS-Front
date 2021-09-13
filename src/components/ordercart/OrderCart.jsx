@@ -14,8 +14,8 @@ const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
     media: {
-      width: '100%',
-      paddingTop: "80%", // 16:9
+      width: '50%',
+      paddingTop: "20%", // 16:9
       margin: "0vh",
       backgroundSize: 'contain',
       "&:hover": {
@@ -32,23 +32,15 @@ const useStyles = makeStyles((theme) => ({
     containerIzq: {
       display: 'flex',
       flexDirection: 'column',
-     
+      justifyContent:'space-around',
       alignItems: 'center',
       width: "60%",
       height: '70vh',
       backgroundColor:'RGB(245, 245, 244)',
       margin: '2%',
-      paddingTop: '2%',
       borderRadius: '5px',
-    
-    },
-    root: {      
-      display: 'flex',
-      flexDirection:'row',
-      justifyContent: 'space-between',
-      width: '100%',  
-      flexGrow: 1,
-
+      
+      
     },
     containerDer: {
       display: 'flex',
@@ -92,37 +84,27 @@ const useStyles = makeStyles((theme) => ({
        
     }
   }));         
-  
+  //como hacer para unificar la preview de la compra en este solo componente, ya sea que venga desde Cart o ProdDetail
+  //en principio estaria controlado por el id que llega por params, si venimos desde cart a order no le pasariamos id
+  //detail por lo tanto tiraria undefined, no habria id
   export default function Order() {
+    const { REACT_APP_SERVER } = process.env;
     const classes = useStyles()
     const dispatch = useDispatch()
+    const cartProducts = useSelector(state => state.cart.cart)
+    console.log(cartProducts)
     
 
-    const { id } = useParams()
-    
-    const [detail, setDetail] = useState({})
+    const { id } = useParams() //el id usado es el id de la orden
+
+
     const [quantity, setQuantity] = useState(1)
 
     const [idOrder, setIdOrder] = useState()
-    console.log(detail)
+ 
     
-    const { REACT_APP_SERVER } = process.env;
     
-    const getProductById = async () => {
-      try{
-         const response = await axios.get(`${REACT_APP_SERVER}/products/${id}`)
-          setDetail(response.data)
-      }
-      catch (error){
-          console.log(error)
-      }
-    }
-   
     
-    useEffect(() => {
-      getProductById(id) 
-    }, [])
-   
 
     useEffect(() => {            
       dispatch(addOrder(idOrder))
@@ -130,12 +112,13 @@ const useStyles = makeStyles((theme) => ({
 
 
     const handleCheckout = () => {
-      
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name })
+     
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name) })
       .then((response) => setIdOrder(response.data)) 
+  
       .catch((err) => console.log(err))
       
-      axios.post(`${REACT_APP_SERVER}/mercadopago/checkout`, { name: detail.name, price: detail.price, quantity: quantity})
+      axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts})
       .then((response) => window.location = response.data )
       .catch((err) => console.log(err))
     }
@@ -157,84 +140,75 @@ const useStyles = makeStyles((theme) => ({
 
           
           <Container className={classes.containerIzq}>
-             
-          
-           <Box>
-              <Typography component ="h1" variant= "h5" style = {{marginTop: '-2vh', marginBottom: '10vh'}}> ¿Como queres recibir o retirar tu compra?</Typography>
+            <Box>
+              <Typography component ="h1" variant= "h5" style = {{marginTop: '-2vh'}}> ¿Como queres recibir o retirar tu compra?</Typography>
             </Box>
 
-            
-           <div className={classes.root}> 
-              <Box>
-                <Typography component ="h1" variant = "h6">Recibir Compra</Typography>
-              </Box>
-              <Box>
-                <Typography component ="h4" variant = "h6">Agregar</Typography>
-              </Box>
-              <Box>
-                <Typography component ="h4">Tu Domicilio</Typography>
-              </Box>
-
-           </div>  
-           <div className={classes.root}> 
+              <Container style = {{backgroundColor: 'white', height: '80%'}}>
                 <Box>
                  <Typography component ="h1" variant = "h6">Recibir Compra</Typography>
-                </Box>
+                 <Typography component ="h4">Tu Domicilio</Typography>
+                 </Box>
+
                 <Box>
-                <Typography component ="h4" variant = "h6">Elegir</Typography>
-                </Box>
-                <Box>
+                 <Typography component ="h1" variant = "h6">Recibir Compra</Typography>
                  <Typography component ="h4">Correo</Typography>
-                </Box>
-                
-           </div>
-             
-           <div className={classes.root}> 
-                 <Box>
-                   <Typography component="h1" variant = "h6">Retirar Compra </Typography>
-                 </Box>
-                 <Box>
-                  <Typography component ="h4">Ver</Typography>
-                 </Box>
-                 <Box>
+                </Box>  
+
+                <Box>
+                  <Typography component="h1" variant = "h6">Retirar Compra </Typography>
                   <Typography component ="h4">Domicilio de la Tienda</Typography>
                  </Box>
-           </div>
-                                 
+
+              </Container>  
+              
           
           </Container>
 
 
           <Container className={classes.containerDer}>
 
-
-            <Box style = {{display:'flex', justifyContent:'center', marginTop: '3vh'}}>
-                <CardMedia className={classes.media}> <img src={detail.image} className={classes.img} /> 
-                </CardMedia>
-             </Box>
-             <Typography component="h1" variant ='body1' >
-               {detail.name}
-             </Typography>
-
-             <Box style = {{display: 'flex', justifyContent: 'space-evenly'}}>
-                <Typography component="h1" variant ='h5' >
-                Total:
+          { 
+            cartProducts.map(({image}) => {
+              return (
+                <Container>
+                    <CardMedia className={classes.media}> <img src={image} className = {classes.img}/> 
+                    </CardMedia>
+                </Container>
+              )
+            }) }
+            {
+              cartProducts.map(({name}) => {
+                return ( 
+                  <>
+                <Typography component="h4" variant ='body2' >
+                {name}
                 </Typography>
-                {detail.price && <Typography component="h1" variant ='h5' >
-                $ {numberWithCommas(detail.price * quantity)}
-                </Typography>}
-                
-             </Box>
-             <Typography component ="h4">Stock Disponible: {detail.stock}</Typography>
+                  </>
+                )
+              })
+            }
 
-             <Typography component="p" variant ='body2' >
-               Stock Disponible:  {detail.stock}
-             </Typography>
+                <Box style = {{display: 'flex', justifyContent: 'space-evenly'}}>
+                  <Typography component="h1" variant ='h5' >
+                  Total:
+                  </Typography>
+                  <Typography component="h1" variant ='h5' > 
+                  $ {numberWithCommas(cartProducts.reduce((acc, item) => {
+                            return (
+                             acc += item.price
+                            )
+                        }, 0
+                        ))
+                    }
+                  </Typography>
+               </Box>
+            
+
+
              <Divider variant = "middle" style ={{width: '100%'}}/>                 
-               <label>Cantidad: 
-                 <input type="number" min = "1" max ={detail.stock} defaultValue = "1" onChange={handleQuantity}/>
                
-               </label>
+
              <Button variant="contained" className={classes.button} onClick ={handleCheckout}>
                     Continuar
              </Button>

@@ -60,6 +60,14 @@ const useStyles = makeStyles((theme) => ({
     width: "16vh",
     fontSize: "1.6vh",
   },
+  link: {
+    color: theme.palette.primary.dark,
+    textDecoration: 'none',
+    "&:focus": {
+      color: theme.palette.primary.light
+    }
+
+  }
 }));
 
 export default function ProductCard(product) {
@@ -87,7 +95,7 @@ export default function ProductCard(product) {
   return (
     <Card className={classes.root}>     
 
-      <Link to={`/detail/${id}`} style={{ textDecoration: "none" }}>
+      <Link to={`/detail/${id}`} className ={classes.link}>
         <CardMedia className={classes.media} image={image} />
         <CardContent>
           <Typography component="h1" className={classes.price}>
