@@ -1,16 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { Typography, Container, CardMedia, makeStyles } from '@material-ui/core';
+import { numberWithCommas } from '../../utils';
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
+    root:{
+        width: '100%',
+        margin: "3vh",
+        display: 'flex', 
+        justifyContent: 'space-around',
+        border: '1px solid black'
+    },
     media: {
       width: '50vh',
       margin: "0vh",
       backgroundSize: 'contain',
-      "&:hover": {
-        backgroundSize: "larger"
-         }
+    
     },
     img: {
       width: '20%',
@@ -42,7 +48,7 @@ export default function Sales(){
 
 
     return (
-        <div>
+        <Container>
             {   orders &&
                 orders.map((order, i) => {
                     if(order.status === 'approved'){
@@ -50,14 +56,31 @@ export default function Sales(){
                             <>  
                             {
                                 
-                                    <Container >
-                                        <CardMedia className = {classes.media} > <img src={order.products.map((product) => product.image)} className={classes.img} /> 
+                                    <Container className ={classes.root}>
+
+                                        <CardMedia className = {classes.media} > 
+                                        {order.products.map((product) => <img src = {product.image} className={classes.img}  />)}
+
                                         </CardMedia>
-                                        <Typography>
+                                        <Typography variant="body2" component="h3">
                                             {order.products.map((product) => product.name)}
                                         </Typography>
+
                                         <Typography>
-                                            {order.status}
+                                            Total Venta : $ 
+                                            {   numberWithCommas(
+                                                order.products.reduce((acc, item) => {
+                                                    return (
+                                                        acc += item.price
+                                                    
+                                                    )
+                                                }, 0) )
+
+                                            }
+
+                                        </Typography>
+                                        <Typography>
+                                            Forma de Entrega: {order.shipping}
                                         </Typography>
 
                                     </Container>
@@ -71,6 +94,6 @@ export default function Sales(){
                 })
             }
             
-        </div>
+        </Container>
     )
 }
