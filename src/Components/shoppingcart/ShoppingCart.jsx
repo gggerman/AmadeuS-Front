@@ -75,7 +75,7 @@ console.log('cartItems', cartItems)
                     <hr />
                     <Box>
                         <Typography variant='h4'>
-                        total de la compra
+                        Total de la compra
                         </Typography>
                     </Box>
                     <hr />

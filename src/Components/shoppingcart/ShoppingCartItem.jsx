@@ -54,7 +54,7 @@ const ShoppingCartItem = ({_id, name, description, price, stock, brand, image, c
           cartQuantity: cartQuantity  + 1
       }))
       dispatch( addToCart(_id))
-    //   setTotalValue((price) => price * counter)
+      // setTotalValue(() => price * counter)
   }
 
   const decrement = () => {
@@ -65,7 +65,7 @@ const ShoppingCartItem = ({_id, name, description, price, stock, brand, image, c
             cartQuantity: cartQuantity  - 1
         }))
         }
-    //   setTotalValue((price) => (price * counter))
+      // setTotalValue((price) =>  price * counter)
   }
 
   const handleDelete = (e) => {      
@@ -85,14 +85,14 @@ const ShoppingCartItem = ({_id, name, description, price, stock, brand, image, c
                 <Cancel/>
             </IconButton>
         </Box>
-        <Box marginRight={7}>            
-            <Typography variant='body1'>
-                $ {totalValue} 
+        <Box marginRight={5} >            
+            <Typography variant='body1' align='center'>
+                $ {totalValue *  counter} 
             </Typography>
         </Box>
 
-        <Box flexGrow={1}>
-            <Box border={1} width='fit-content'>           
+        <Box mr={5}>
+            <Box border={1} color='gray' width='fit-content'>           
                 <IconButton aria-label='remove' onClick={decrement} disabled={counter === 1 || counter === 0 }>
                     <RemoveIcon/>
                 </IconButton>
@@ -103,7 +103,7 @@ const ShoppingCartItem = ({_id, name, description, price, stock, brand, image, c
             </Box>
             
             <Box>
-                <Typography variant='subtitle2'>
+                <Typography variant='subtitle2' align='center'>
                     {stock} unidades
                 </Typography>
             </Box>
