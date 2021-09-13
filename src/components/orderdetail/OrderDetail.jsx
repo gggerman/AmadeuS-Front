@@ -8,54 +8,53 @@ import { numberWithCommas } from '../../utils';
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
-    media: {
-      width: '50vh',
-      margin: "0vh",
-      backgroundSize: 'contain',
-      "&:hover": {
-        backgroundSize: "larger"
-         }
+  media: {
+    width: "50vh",
+    margin: "0vh",
+    backgroundSize: "contain",
+    "&:hover": {
+      backgroundSize: "larger",
     },
-    img: {
-      width: '20%',
-      backgroundSize: 'contain',
-      
-    }, 
-    container: {
-        height: '100vh',
-        width: '100%',
-        marginTop: '10vh', 
-        display: 'flex',
-        backgroundColor: 'RGB(238, 238, 238)'
-    },
-    icon: {
-      width: '8vh',
-      backgroundSize: 'contain',
-      margin: 'auto'
-    },
-    box: {
-      display: 'flex',
-      justifyContent: 'row',
-      
-    }
-  }));
+  },
+  img: {
+    width: "20%",
+    backgroundSize: "contain",
+  },
+  container: {
+    height: "100vh",
+    width: "100%",
+    marginTop: "10vh",
+    display: "flex",
+    backgroundColor: "RGB(238, 238, 238)",
+  },
+  icon: {
+    width: "8vh",
+    backgroundSize: "contain",
+    margin: "auto",
+  },
+  box: {
+    display: "flex",
+    justifyContent: "row",
+  },
+}));
 
-export default function OrderDetail () {
-const classes = useStyles()
-const orderId = useSelector((state) => state.app.order) //me traigo el orderId generado en Order, por ahora me tira undefined
-const [infoOrder, setInfoOrder] = useState({})
+export default function OrderDetail() {
+  const classes = useStyles();
+  const orderId = useSelector((state) => state.app.order); //me traigo el orderId generado en Order, por ahora me tira undefined
+  const [infoOrder, setInfoOrder] = useState({});
+  const { REACT_APP_SERVER } = process.env;
 
-console.log(infoOrder)
+  console.log(infoOrder);
 
-const query = new URLSearchParams(useLocation().search);
+  const query = new URLSearchParams(useLocation().search);
 
-const collection_id = query.get('collection_id')
-const status = query.get('status')
-const merchant_order_id = query.get('merchant_order_id')
+  const collection_id = query.get("collection_id");
+  const status = query.get("status");
+  const merchant_order_id = query.get("merchant_order_id");
 
+  console.log(status); //status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
 
-console.log(status) //status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
-
+  
 
 const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
   try{
@@ -72,11 +71,11 @@ useEffect(() => {
     getOrderById(orderId)
 }, [])
 
+//--------------ACTUALIZAMOS LA ORDEN EN NUESTRA DB CON EL STATUS QUE DEVUELVE MP--------------//
 useEffect(() => {
-  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, status)
-}, [])
-
-// a su vez habria que hacer un axios.put en la order de nuestra base de datos para actualizar su status 
+  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, {status: status}) 
+}, [infoOrder])
+ 
 
     return (
         <div>
@@ -88,41 +87,41 @@ useEffect(() => {
         </AppBar>
 
         <Container className={classes.container}>
-            {
-                status === 'approved' ? 
+          {status === "approved" ? (
+            <Container>
+              <Typography
+                style={{ textAlign: "center" }}
+                component="h2"
+                variant="body1"
+              >
+                Tu compra fue un exito
+              </Typography>
 
-                  <Container>
-                    <Typography style = {{textAlign: 'center'}} component = "h2" variant ="body1">
-                        Tu compra fue un exito
-                    </Typography> 
-
-                    { infoOrder.products && 
-                      infoOrder.products.map((product) => {
-                        return (
-                        <Box className = {classes.box}>
-                          <CardMedia className = {classes.media} > <img src={product.image} className={classes.img} /> 
-                          </CardMedia>
-                          <Typography> {product.name}</Typography>
-                          <Typography> ${ numberWithCommas(product.price)}</Typography>
-                          <Typography> {product.brand}</Typography>
-
-                         </Box>
-                        )
-                      })
-                    }
-                    
-                       
-                  </Container>  
-                       : 
-                        <Typography style = {{textAlign: 'center'}}>
-                        no tenes fondos raton o tipeaste mal
-                        </Typography>  
-            }
-            
+              {infoOrder.products &&
+                infoOrder.products.map((product) => {
+                  return (
+                    <Box className={classes.box}>
+                      <CardMedia className={classes.media}>
+                        {" "}
+                        <img src={product.image} className={classes.img} />
+                      </CardMedia>
+                      <Typography> {product.name}</Typography>
+                      <Typography>
+                        {" "}
+                        ${numberWithCommas(product.price)}
+                      </Typography>
+                      <Typography> {product.brand}</Typography>
+                    </Box>
+                  );
+                })}
+            </Container>
+          ) : (
+            <Typography style={{ textAlign: "center" }}>
+              no tenes fondos raton o tipeaste mal
+            </Typography>
+          )}
         </Container>
-    
-
-        </CssBaseline>    
-        </div>
-    )
+      </CssBaseline>
+    </div>
+  );
 }

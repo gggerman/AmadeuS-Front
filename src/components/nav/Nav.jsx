@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -9,6 +9,7 @@ import {
   Badge,
   MenuItem,
   Menu,
+  Button,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -16,9 +17,10 @@ import MailIcon from "@material-ui/icons/Mail";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import SearchBar from "../searchbar/SearchBar";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
+import logo from './logo.jpg'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -87,6 +89,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
   },
+  icon: {
+    marginTop: '2vh',
+    width: '8vh',
+    backgroundSize: 'contain',
+    margin: 'auto',
+    borderRadius: '6px'
+  },
 }));
 
 export default function Nav() {
@@ -114,10 +123,10 @@ export default function Nav() {
     handleMobileMenuClose();
   };
 
-  const {shoppingCart, setShoppingCart} = useContext( UserContext )
-  const {cartQuantity} = shoppingCart
- 
-  const menuId = 'primary-search-account-menu';
+  const { shoppingCart, setShoppingCart } = useContext(UserContext);
+  const { cartQuantity } = shoppingCart;
+
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -128,6 +137,8 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      <LoginLogout />
+
       <Link to="/adminpanel" className={classes.link}>
         <MenuItem>Perfil</MenuItem>
       </Link>
@@ -178,24 +189,26 @@ export default function Nav() {
   return (
     <div>
       <AppBar
-        position="absolute"
-        style={{ backgroundColor: "rgb(0, 23, 20)", height: "18%" }}
+        style={{
+          position: "sticky",
+          backgroundColor: "rgb(0, 23, 20)",
+          height: "100%",
+        }}
       >
         <Toolbar className={classes.navDisplay}>
-          <Link 
-            to="/"
-            style={{ textDecoration: "none", color: "white" }}
-          >
-            <Typography className={classes.title} variant="h5" noWrap>
-              Musical E-Commerce
-            </Typography>
+          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+            <img src ={logo} className={classes.icon}/>
           </Link>
           <SearchBar />
           
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            
-            <IconButton aria-label="show 4 new mails" color="inherit" component={ Link } to='/cart'>
+            <IconButton
+              aria-label="show 4 new mails"
+              color="inherit"
+              component={Link}
+              to="/cart"
+            >
               <Badge badgeContent={cartQuantity} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
@@ -217,13 +230,6 @@ export default function Nav() {
             >
               <AccountCircle />
             </IconButton>
-            
-            <LoginLogout />
-
-            {/* <LoginLogout /> */}
-            {/* {isAuthenticated ? <Logout /> : <Login />} */}
-            {/* <Login /> */}
-            {/* <Logout /> */}
           </div>
         </Toolbar>
         {/* <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2vw'}}>
@@ -235,8 +241,8 @@ export default function Nav() {
         </div> */}
       </AppBar>
       {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
-      <div className={classes.offset}></div> {/* NO BORRAR */}
-      <div className={classes.offset}></div> {/* NO BORRAR */}
+      {/* <div className={classes.offset}></div> NO BORRAR */}
+      {/* <div className={classes.offset}></div> NO BORRAR */}
       {renderMobileMenu}
       {renderMenu}
     </div>
