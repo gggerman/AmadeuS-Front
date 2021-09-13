@@ -127,15 +127,15 @@ useEffect(() => {
 
                     <Divider />
 
-                    <Link to={`/ordercart/${idOrder}`} style={{ textDecoration: "none" }}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            // onClick ={handleCheckout}
-                        >
-                            Comprar
-                        </Button>
-                    </Link>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        disabled={shoppingCartProducts.length === 0}
+                        component={Link} to={`/ordercart/${idOrder}`}
+                    >
+                        Comprar
+                    </Button>
+                    
                 </Container>           
          </div>
   );
