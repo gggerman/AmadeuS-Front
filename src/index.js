@@ -5,25 +5,18 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
-import { Auth0Provider } from '@auth0/auth0-react'
-
-const { REACT_APP_AUTH0_DOMAIN, REACT_APP_AUTH0_CLIENT_ID } = process.env;
+import Auth0ProviderWithHistory from './utils/Auth0ProviderWithHistory';
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Auth0Provider
-      domain={REACT_APP_AUTH0_DOMAIN}
-      clientId={REACT_APP_AUTH0_CLIENT_ID}
-      redirectUri={window.location.origin}
-      >
-      <PersistGate persistor = {persistor}>
-        <App />
-      </PersistGate>
-
-      </Auth0Provider>
-
+      <Auth0ProviderWithHistory>
+        <PersistGate persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Auth0ProviderWithHistory>
     </BrowserRouter>
   </Provider>,
   document.getElementById("root")
 );
+
