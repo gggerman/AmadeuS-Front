@@ -13,9 +13,6 @@ import "../../App.css";
 import Stock from "../stock/Stock";
 import AddUser from "../adduser/AddUser";
 import UserManagement from "../usermanagement/UserManagement";
-import LoginLogout from "../account/LoginLogout";
-// import Account from "../account/Account";
-// import Profile from "../account/Profile";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import OrderCart from '../ordercart/OrderCart';
 import Sales from '../sales/Sales';
@@ -23,6 +20,7 @@ import "../../App.css";
 import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
+import Detail from "../detail/Detail";
 
 const AppRouter = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -56,7 +54,7 @@ const AppRouter = () => {
               {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
             <Route exact path="/" component={Home} />
-            <Route path="/detail/:id" component={ProductDetail} />
+            <Route path="/detail/:id" component={Detail} />
             <Route path="/stock" component={adminAuth(Stock)} />
             <Route path="/adminpanel" component={adminAuth(AdminPanel)} />
             <Route path="/addcategory" component={adminAuth(AddCategory)} />

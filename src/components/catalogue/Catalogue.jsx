@@ -121,7 +121,7 @@ export default function Catalogue() {
   }, [select.filter]);
 
   return (
-    <>
+    <div style={{marginTop:'3vh'}}>
       {loading && (
         <div className="loading">
           <CircularProgress />
@@ -209,6 +209,6 @@ export default function Catalogue() {
           </Grid>
         </>
       )}
-    </>
+    </div>
   );
 }
