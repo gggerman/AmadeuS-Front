@@ -4,7 +4,6 @@ import {BottomNavigation, BottomNavigationAction, CssBaseline, Typography} from 
 
 const useStyles = makeStyles( (theme) => ({
     footer:{
-        position: 'sticky',
         bottom: 0,
         display: 'flex',
         justifyContent: 'space-around',

@@ -126,5 +126,3 @@ useEffect(() => {
         </div>
     )
 }
-
-// http://localhost:3000/orderdetail?collection_id=16911216892&collection_status=approved&payment_id=16911216892&status=approved&external_reference=null&payment_type=credit_card&merchant_order_id=3245729926&preference_id=672708410-71d2d278-158e-48f7-baa0-52c1ff053701&site_id=MLA&processing_mode=aggregator&merchant_account_id=null
