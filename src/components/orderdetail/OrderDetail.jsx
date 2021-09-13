@@ -54,15 +54,7 @@ export default function OrderDetail() {
 
   console.log(status); //status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
 
-  const getOrderById = async () => {
-    //me traigo la info de la compra con el id que guarde en Redux
-    try {
-      const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`);
-      setInfoOrder(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  
 
 const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
   try{
