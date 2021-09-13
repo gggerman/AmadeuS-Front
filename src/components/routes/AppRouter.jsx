@@ -16,7 +16,8 @@ import Login from "../login/Login";
 import UserManagement from "../usermanagement/UserManagement";
 import LoginLogout from "../account/LoginLogout";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-
+import OrderCart from '../ordercart/OrderCart';
+import Sales from '../sales/Sales';
 import "../../App.css";
 import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
@@ -29,7 +30,7 @@ const AppRouter = () => {
 
   const adminAuth = function (component) {
     if (user) {
-      return user.email && user.email === "crismaxbar@gmail.com"
+      return user.email && user.email === "leandrobuzeta@gmail.com"
         ? component
         : Home;
     } else if(isAuthenticated === false) {
@@ -62,9 +63,11 @@ const AppRouter = () => {
             <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
             <Route path='/cart' component={ ShoppingCart } />        
             <Route path="/order/:id" component = {Order} />
+            <Route path ="/ordercart/:id" component = {OrderCart} />
             <Route path="/orderdetail" component = {OrderDetail} />
             <Route path="/usermanagement" component={adminAuth(UserManagement)} />
             <Route path="/adduser" component={AddUser} />
+            <Route path ="/sales" component={Sales} />
             
             </UserContext.Provider>
             <Route path="/login" component={LoginLogout} /> 

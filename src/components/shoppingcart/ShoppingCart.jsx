@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import AppBar from '@material-ui/core/AppBar';
 import ShoppingCartItem from './ShoppingCartItem'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import cleanCart from '../../redux/actions/cleanCart';
@@ -14,6 +15,7 @@ import { UserContext } from './UserContext';
 import { numberWithCommas } from '../../utils';
 import axios from 'axios'
 import addOrder from './../../redux/actions/addOrder';
+import logo from './logo.jpg'
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles( ( theme ) =>({
@@ -21,6 +23,11 @@ const useStyles = makeStyles( ( theme ) =>({
         display: 'flex',
         alignItems: 'center',       
     },
+    icon: {
+        width: '8vh',
+        backgroundSize: 'contain',
+        margin: 'auto'
+      },
 }) )
 
 
@@ -45,18 +52,13 @@ const handleDeleteAll = () => {
     localStorage.setItem('cartItem', JSON.stringify([])) 
 }
 
-const handleCheckout = () => {
-    //axios.post a nuestra base de datos con status 'pending? 
-    //axios.post('http://localhost:3001/orders, toda la info: detail.name, detail.price, detail.quantity, detail.id, buyer,detail.stock, detail.categories)
-    axios.post('http://localhost:3001/orders', { products: shoppingCartProducts })
-    .then((response) => setIdOrder(response.data)) //estado de redux para guardar ese id y dps que lo consuma OrderDetail no estaria guardando en redux
-    // .then( (response) => dispatch(addOrder(response)))   no funciona asi
+
+
+useEffect(() => {
+    axios.post(`${REACT_APP_SERVER}/orders`, { products: shoppingCartProducts.map((item) => item.name) })
+    .then((response) => setIdOrder(response.data)) //guardamos el id de la orden en redux
     .catch((err) => console.log(err))
-    
-    axios.post(`${REACT_APP_SERVER}/mercadopago/checkout`, {shoppingCartProducts})
-    .then((response) => window.location = response.data )
-    .catch((err) => console.log(err))
-  }
+}, [])
 
   useEffect(() => {            
     dispatch(addOrder(idOrder))
@@ -71,6 +73,11 @@ console.log(shoppingCartProducts)
         <div>        
              
             <CssBaseline />
+                <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%', position: 'absolute'}}>
+                    <Link to ="/" style = {{margin: 'auto'}}>
+                    <img src ={logo} className={classes.icon}/>
+                    </Link>
+                </AppBar>
                 <Container maxWidth="xl" style={{ backgroundColor: '#EEEBEB', height: '150vh', border:'1px solid #E7E4E4' }} >
                     <div className={classes.root}>
                         <Box flexGrow={1} marginLeft={5} >
@@ -96,7 +103,7 @@ console.log(shoppingCartProducts)
                         ))
                         }
                     
-                    <hr />
+                    <Divider />
                     <Box>
                         <Typography variant='h4'>
                         Total de la compra: {
@@ -110,15 +117,17 @@ console.log(shoppingCartProducts)
                         
                     </Box>
 
-                    <hr />
-                    {/* aca hay que agregar a donde redirige, por ahora lo hace al home */}
+                    <Divider />
+                    
+                    <Link to ={`/ordercart/${idOrder}`} style ={{textDecoration: 'none'}}>
                     <Button 
                         variant='contained' 
                         color='primary'
-                        onClick ={handleCheckout}
+                        // onClick ={handleCheckout}
                         >
                         Comprar
                     </Button>
+                    </Link>
                 </Container>                   
         </div>
     )

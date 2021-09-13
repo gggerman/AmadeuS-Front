@@ -5,6 +5,7 @@ import logo from './logo.jpg';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import { numberWithCommas } from '../../utils';
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
     media: {
@@ -58,7 +59,7 @@ console.log(status) //status de MP:  hay que modificar el status de nuestra orde
 
 const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
   try{
-     const response = await axios.get(`http://localhost:3001/orders/${orderId}`)
+     const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`)
       setInfoOrder(response.data)
   }
   catch (error){
@@ -72,7 +73,7 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-  axios.put(`http://localhost:3001/orders/${orderId}`, status)
+  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, status)
 }, [])
 
 // a su vez habria que hacer un axios.put en la order de nuestra base de datos para actualizar su status 
@@ -125,5 +126,3 @@ useEffect(() => {
         </div>
     )
 }
-
-// http://localhost:3000/orderdetail?collection_id=16911216892&collection_status=approved&payment_id=16911216892&status=approved&external_reference=null&payment_type=credit_card&merchant_order_id=3245729926&preference_id=672708410-71d2d278-158e-48f7-baa0-52c1ff053701&site_id=MLA&processing_mode=aggregator&merchant_account_id=null
