@@ -72,11 +72,11 @@ useEffect(() => {
     getOrderById(orderId)
 }, [])
 
+//--------------ACTUALIZAMOS LA ORDEN EN NUESTRA DB CON EL STATUS QUE DEVUELVE MP--------------//
 useEffect(() => {
-  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, status)
-}, [])
-
-// a su vez habria que hacer un axios.put en la order de nuestra base de datos para actualizar su status 
+  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, {status: status}) 
+}, [infoOrder])
+ 
 
     return (
         <div>
