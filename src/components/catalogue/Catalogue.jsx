@@ -62,7 +62,7 @@ export default function Catalogue() {
     dispatch(getAllCategories());
     setShoppingCart( prev => ({
       ...prev,
-      cartQuantity: JSON.parse(localStorage.getItem('cartItemsQuantity'))
+      cartQuantity: JSON.parse(localStorage.getItem('cant'))
   }))
   }, [dispatch]);
 
@@ -119,6 +119,7 @@ export default function Catalogue() {
   useEffect(() => {
     dispatch(filterByCategory(select.filter));
   }, [select.filter]);
+  
 
   return (
     <div style={{marginTop:'3vh'}}>

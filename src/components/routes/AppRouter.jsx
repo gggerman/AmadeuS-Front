@@ -28,7 +28,7 @@ const AppRouter = () => {
 
   const adminAuth = function (component) {
     if (user) {
-      return user.email && user.email === "crismaxbar@gmail.com" || user.email === 'heisjuanpablo@gmail.com' || user.email === "leandrobuzeta@gmail.com" || user.email === "juanmhdz99@gmail.com"
+      return user.email && user.email === "crismaxbar@gmail.com" || user.email === 'heisjuanpablo@gmail.com' || user.email === "leandrobuzeta@gmail.com" || user.email === "juanmhdz99@gmail.com" || user.email === "martinmilone2011@gmail.com"
         ? component
         : Home;
     } else if (isAuthenticated === false) {
@@ -36,8 +36,9 @@ const AppRouter = () => {
     }
   };
 
+
   const initialState = {
-    cartQuantity: 0,
+    cartQuantity: JSON.parse(window.localStorage.getItem('cant')),
     cartItems: [],
   };
 
@@ -65,7 +66,7 @@ const AppRouter = () => {
             <Route path="/orderdetail" component = {OrderDetail} />
             <Route path="/usermanagement" component={adminAuth(UserManagement)} />
             <Route path="/adduser" component={AddUser} />
-            <Route path ="/sales" component={Sales} />
+            <Route path ="/sales" component={adminAuth(Sales)} />
             </UserContext.Provider>
             <Redirect to="/" />
           </Switch>
