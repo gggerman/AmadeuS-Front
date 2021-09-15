@@ -18,7 +18,6 @@ import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
 import { useDispatch } from "react-redux";
 import { UserContext } from "../shoppingcart/UserContext";
-import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,18 +77,20 @@ export default function ProductCard(product) {
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity, cartItems} = shoppingCart
   const dispatch = useDispatch()
-
   
   const agregar = (e) => {
-    setShoppingCart( cant => ({
-      ...cant,
+    setShoppingCart( value => ({
+      ...value,
       cartQuantity: cartQuantity + 1,
     }))
     dispatch( addToCart (id))   
   }
   
   useEffect(() => {
-    localStorage.setItem('cartItemsQuantity', JSON.stringify(cartQuantity)) 
+    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+      return () =>{
+        window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+      }
   }, [cartQuantity])
 
 
