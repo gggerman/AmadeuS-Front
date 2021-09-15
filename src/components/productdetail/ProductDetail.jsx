@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import addToCart from "../../redux/actions/addToCart";
 import getDetails from "../../redux/actions/getDetails";
 
+
 const useStyles = makeStyles((theme) => ({
   media: {
     width: "100%",
@@ -51,11 +52,11 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
   const { data, success, loading } = useSelector(({ app }) => app.detail);
   const { shoppingCart, setShoppingCart } = useContext(UserContext);
-  const { cartQuantity } = shoppingCart;
-
+  const { cartQuantity } = shoppingCart; 
+  
   const handleAdd = (e) => {
-    setShoppingCart((cant) => ({
-      ...cant,
+    setShoppingCart((value) => ({
+      ...value,
       cartQuantity: cartQuantity + 1,
     }));
     dispatch(addToCart(id));

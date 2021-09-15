@@ -31,8 +31,6 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-
-
 const ShoppingCart = () => {
 
 const classes = useStyles()
@@ -42,14 +40,12 @@ const {cartQuantity, cartItems} = shoppingCart
 const dispatch = useDispatch()
 const [idOrder, setIdOrder] = useState()
 
-const handleDeleteAll = () => {
+const handleDeleteAll = () => { 
     dispatch(cleanCart());
-    setShoppingCart((cant) => ({
-      ...cant,
+    setShoppingCart((value) => ({
+      ...value,
       cartQuantity: 0,
     }));
-    localStorage.setItem("cartItemsQuantity", JSON.stringify(cartQuantity));
-    localStorage.setItem("cartItem", JSON.stringify([]));
   };
 
 useEffect(() => {
@@ -65,9 +61,12 @@ useEffect(() => {
     dispatch(addOrder(idOrder))
   },[idOrder])
 
-useEffect(() => {
-    JSON.parse(localStorage.getItem('cartItemsQuantity'))
-}, [cartQuantity])
+  useEffect(() => {
+    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+      return () =>{
+        window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+      }
+  }, [cartQuantity])
 
     return (
         <div> 
