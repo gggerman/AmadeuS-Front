@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { getAllCategories } from '../../redux/actions/getAllCategories';
 import { useSelector } from 'react-redux';
 import { validar } from '../../utils';
+import NavSecondary from '../../components/navsecondary/NavSecondary'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -90,6 +91,8 @@ export const AddCategory = ( { history} ) => {
     }
 
     return (
+      <>
+        <NavSecondary />
         <Box 
             display='flex'
             flexDirection='column'
@@ -198,6 +201,7 @@ export const AddCategory = ( { history} ) => {
                     </Fade>
                 </Modal>
             </div>
-        </Box>      
+        </Box>   
+        </>   
       );
 }

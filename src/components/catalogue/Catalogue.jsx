@@ -7,6 +7,7 @@ import {
   MenuItem,
   CircularProgress,
 } from "@material-ui/core";
+
 import { Pagination } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 import ProductCard from "../productcard/ProductCard";
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     "& > * + *": {
       marginTop: theme.spacing(1),
     },
+  
   },
 }));
 
@@ -77,7 +79,7 @@ export default function Catalogue() {
 
   // Control del paginado
   const [page, setPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(9);
+  const [productsPerPage, setProductsPerPage] = useState(12);
   const indexLastProduct = page * productsPerPage;
   const indexFirstProduct = indexLastProduct - productsPerPage;
   const currentProducts = data.slice(indexFirstProduct, indexLastProduct);
@@ -137,13 +139,13 @@ export default function Catalogue() {
           >
             <FormControl className={classes.formControl}>
               <InputLabel className={classes.label}>
-                Filter by Category
+                Filtrar por Categoria
               </InputLabel>
               <Select
                 value={select.filter}
                 onChange={(e) => handleFilterCategory(e)}
               >
-                <MenuItem value="All">All</MenuItem>
+                <MenuItem value="All">Todos</MenuItem>
                 {categories?.map((category, index) => (
                   <MenuItem key={index} value={category.name}>
                     {category.name}
@@ -153,7 +155,7 @@ export default function Catalogue() {
             </FormControl>
 
             <FormControl className={classes.formControl}>
-              <InputLabel className={classes.label}>Sort by Name</InputLabel>
+              <InputLabel className={classes.label}>Ordenar por Nombre</InputLabel>
               <Select value={select.name} onChange={(e) => handleSortName(e)}>
                 <MenuItem value="A - Z">A - Z</MenuItem>
                 <MenuItem value="Z - A">Z - A</MenuItem>
@@ -161,7 +163,7 @@ export default function Catalogue() {
             </FormControl>
 
             <FormControl className={classes.formControl}>
-              <InputLabel className={classes.label}>Sort by Price</InputLabel>
+              <InputLabel className={classes.label}>Ordenar por Precio</InputLabel>
               <Select value={select.price} onChange={(e) => handleSortPrice(e)}>
                 <MenuItem value="Lower to Higher">Lower to Higher</MenuItem>
                 <MenuItem value="Higher to Lower">Higher to Lower</MenuItem>

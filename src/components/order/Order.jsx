@@ -8,6 +8,8 @@ import axios from 'axios';
 import { numberWithCommas } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import addOrder from '../../redux/actions/addOrder';
+import { useAuth0 } from '@auth0/auth0-react';
+import NavSecondary from '../navsecondary/NavSecondary';
 
 const { REACT_APP_SERVER } = process.env;
 
@@ -96,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   export default function Order() {
     const classes = useStyles()
     const dispatch = useDispatch()
-    
+    const { user } = useAuth0();
 
     const { id } = useParams()
     
@@ -106,7 +108,6 @@ const useStyles = makeStyles((theme) => ({
     const [idOrder, setIdOrder] = useState()
     console.log(detail)
     
-    const { REACT_APP_SERVER } = process.env;
     
     const getProductById = async () => {
       try{
@@ -131,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
 
     const handleCheckout = () => {
       
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name, user: user })
       .then((response) => setIdOrder(response.data)) 
       .catch((err) => console.log(err))
       
@@ -147,11 +148,7 @@ const useStyles = makeStyles((theme) => ({
     return (
       <div>
         <CssBaseline>
-        <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%', position: 'absolute'}}>
-          <Link to ="/" style = {{margin: 'auto'}}>
-          <img src ={logo} className={classes.icon}/>
-          </Link>
-        </AppBar>
+        <NavSecondary style={{marginBottom: '5vh'}} />
 
          <Container className={classes.container}>
 
