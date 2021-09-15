@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { Typography, Container, CardMedia, makeStyles } from '@material-ui/core';
+import { Typography, Container, CardMedia, makeStyles, Grid, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { numberWithCommas } from '../../utils';
+import NavSecondary from './../navsecondary/NavSecondary';
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -13,20 +15,25 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid black'
     },
     media: {
-      width: '50vh',
-      margin: "0vh",
-      backgroundSize: 'contain',
-    
+        width: "10%",
+        margin: "0vh",
+        backgroundSize: "contain",
+      },
+    tableCell:{
+        padding:'1vw',
+        height: '10%',
+        width: '10vh'
     },
     img: {
-      width: '20%',
+      width: '25%',
       backgroundSize: 'contain',
-      
+      backgroundColor: 'grey'
     }
   }));
 
 export default function Sales(){
     const classes = useStyles()
+    const [invoice, setInvoice] = useState(1)
 
     const [orders, setOrders] = useState()
     console.log(orders)
@@ -46,54 +53,62 @@ export default function Sales(){
 
     }, [])
 
-
+    
     return (
-        <Container>
-            {   orders &&
-                orders.map((order, i) => {
-                    if(order.status === 'approved'){
-                        return (
-                            <>  
-                            {
-                                
-                                    <Container className ={classes.root}>
+        <>
+        <NavSecondary />
+        <Grid container style ={{marginTop: '15vh'}}>
+            <Table style = {{ marginLeft: '45vh'}}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell className={classes.tableCell} > Factura </TableCell>
+                        <TableCell className={classes.tableCell} > Productos </TableCell>
+                        <TableCell className={classes.tableCell} > Ingreso </TableCell>
+                        <TableCell className={classes.tableCell} > Estado </TableCell>
+                        <TableCell className={classes.tableCell} > Cliente </TableCell>
+                        <TableCell className={classes.tableCell} > Ubicacion </TableCell>
 
-                                        <CardMedia className = {classes.media} > 
-                                        {order.products.map((product) => <img src = {product.image} className={classes.img}  />)}
+                    </TableRow>
 
-                                        </CardMedia>
-                                        <Typography variant="body2" component="h3">
-                                            {order.products.map((product) => product.name)}
-                                        </Typography>
+                </TableHead>
 
-                                        <Typography>
-                                            Total Venta : $ 
-                                            {   numberWithCommas(
-                                                order.products.reduce((acc, item) => {
-                                                    return (
-                                                        acc += item.price
+
+                <TableBody>
+                   {orders?.map((order) => (
+                       <TableRow key={order._id}>
+
+                            <TableCell className={classes.tableCell} > 0001 </TableCell>
+                            <TableCell className={classes.tableCell} > 
+                                {order.products.map((product) => <img src = {product.image} className={classes.img}  /> )} 
+                            </TableCell>
+                            <TableCell> $
+                                { numberWithCommas(order.products.reduce((acc, item) => {
+                                         return (
+                                            acc += item.price
                                                     
-                                                    )
-                                                }, 0) )
+                                                )
+                                                }, 0))} 
+                            </TableCell>
+                            <TableCell> {order.status.toUpperCase()} </TableCell>
+                            <TableCell>{ order.buyer && order.buyer.mail} </TableCell>
+                            <TableCell> {order.shipping}Buenos Aires </TableCell>
+                            <MoreVertIcon/>
+                           
 
-                                            }
+                       </TableRow>
 
-                                        </Typography>
-                                        <Typography>
-                                            Forma de Entrega: {order.shipping}
-                                        </Typography>
+                   ))
+                   
+                   
+                   }
 
-                                    </Container>
-                            
-                                }
-                               
 
-                            </>
-                        )
-                    }
-                })
-            }
+                </TableBody>
+            </Table>
+
             
-        </Container>
+            
+        </Grid>
+        </>
     )
 }
