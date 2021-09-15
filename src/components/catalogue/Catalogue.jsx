@@ -77,7 +77,7 @@ export default function Catalogue() {
 
   // Control del paginado
   const [page, setPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(9);
+  const [productsPerPage, setProductsPerPage] = useState(12);
   const indexLastProduct = page * productsPerPage;
   const indexFirstProduct = indexLastProduct - productsPerPage;
   const currentProducts = data.slice(indexFirstProduct, indexLastProduct);

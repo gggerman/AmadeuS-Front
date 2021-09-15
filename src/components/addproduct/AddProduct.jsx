@@ -141,20 +141,12 @@ function AddProduct() {
 
   useEffect(() => {
     dispatch(getAllCategories());
-    // if (id) {
-    //   dispatch(getDetails(id));
-    // }
+    if (id) {
+      getProductById(id);
+    }
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (data._id) {
-  //     setInput(data);
-  //   }
-  // }, [data]);
 
-  useEffect(() => {
-    getProductById(id) 
-  }, [id])
 
   const handleInputChange = (e) => {
     setInput({
@@ -345,30 +337,57 @@ function AddProduct() {
                 {errors.stock}
               </FormHelperText>
             )}
-            <FormControl variant="outlined" className={classes.field}>
-              <InputLabel>Categorías</InputLabel>
-              <Select
-                multiple
-                label="Categorías"
-                value={input.categories}
-                name="categories"
-                onChange={handleSelectChange}
-                input={<OutlinedInput label="Categorias" />}
-                renderValue={(selected) =>
-                  categories
-                    .filter((c) => selected.indexOf(c._id) > -1)
-                    .map((c) => c.name)
-                    .join(", ")
-                }
-              >
-                {categories.map((category) => (
-                  <MenuItem key={category.name} value={category._id}>
-                    <Checkbox checked={val.indexOf(category._id) > -1} />
-                    <ListItemText primary={category.name} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            {input._id ? (
+              <FormControl variant="outlined" className={classes.field}>
+                <InputLabel>Categorías</InputLabel>
+                <Select
+                  multiple
+                  label="Categorías"
+                  value={input.categories}
+                  name="categories"
+                  onChange={handleSelectChange}
+                  input={<OutlinedInput label="Categorias" />}
+                  renderValue={(selected) =>
+                    categories
+                      .filter((c) => selected.indexOf(c._id) > -1)
+                      .map((c) => c.name)
+                      .join(", ")
+                  }
+                >
+                  {categories.map((category) => (
+                    <MenuItem key={category.name} value={category._id}>
+                      <Checkbox checked={val.indexOf(category._id) > -1} />
+                      <ListItemText primary={category.name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ) : (
+              <FormControl variant="outlined" className={classes.field}>
+                <InputLabel>Categorías</InputLabel>
+                <Select
+                  multiple
+                  label="Categorías"
+                  value={input.categories}
+                  name="categories"
+                  onChange={handleSelectChange}
+                  input={<OutlinedInput label="Categorias" />}
+                  renderValue={(selected) =>
+                    categories
+                      .filter((c) => selected.indexOf(c.name) > -1)
+                      .map((c) => c.name)
+                      .join(", ")
+                  }
+                >
+                  {categories.map((category) => (
+                    <MenuItem key={category.name} value={category.name}>
+                      <Checkbox checked={val.indexOf(category.name) > -1} />
+                      <ListItemText primary={category.name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
             {errors.categories && (
               <FormHelperText error id="component-error">
                 {errors.categories}
