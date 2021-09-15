@@ -20,6 +20,7 @@ import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
+import Test from '../sales/Test';
 
 const AppRouter = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -61,11 +62,12 @@ const AppRouter = () => {
             <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
             <Route path='/cart' component={ ShoppingCart } />        
             <Route path="/order/:id" component={withAuthenticationRequired(Order)} />
-            <Route path ="/ordercart/:id" component = {OrderCart} />
+            <Route path ="/ordercart/:id" component = {withAuthenticationRequired(OrderCart)} />
             <Route path="/orderdetail" component = {OrderDetail} />
             <Route path="/usermanagement" component={adminAuth(UserManagement)} />
             <Route path="/adduser" component={AddUser} />
             <Route path ="/sales" component={Sales} />
+            <Route path ="/test" component={Test} />
             </UserContext.Provider>
             <Redirect to="/" />
           </Switch>

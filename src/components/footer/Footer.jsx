@@ -21,10 +21,10 @@ export default function Footer(){
         <CssBaseline>
         <BottomNavigation className ={classes.footer}>
             
-            <Typography> About </Typography>
-            <Typography> Team </Typography>
-            <Typography> Contact </Typography>
-            <Typography> FAQ </Typography>
+            <Typography> Sobre Nosotros </Typography>
+            <Typography> Development Team </Typography>
+            <Typography> Contacto </Typography>
+            <Typography> Ayuda </Typography>
 
         </BottomNavigation>
         </CssBaseline>

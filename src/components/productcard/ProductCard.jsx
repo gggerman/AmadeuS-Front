@@ -10,6 +10,7 @@ import {
   Typography,
   Divider,
 } from "@material-ui/core";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import { Link } from "react-router-dom";
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light,
     },
     width: "16vh",
-    fontSize: "1.6vh",
+    fontSize: "1.8vh",
   },
   link: {
     color: theme.palette.primary.dark,
@@ -130,8 +131,9 @@ export default function ProductCard(product) {
             variant="contained" 
             className={classes.button}
             onClick={ agregar }
+            endIcon = {<ShoppingCartIcon />}
             >
-           Add to Cart
+           Agregar
         </Button>
       </CardActions>
     </Card>

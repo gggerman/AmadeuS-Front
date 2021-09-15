@@ -21,6 +21,7 @@ import {
   Modal,
   Fade,
   Backdrop,
+  CssBaseline
 } from "@material-ui/core";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,14 +29,18 @@ import { Link } from "react-router-dom";
 import { getDetails } from "../../redux/actions/getDetails";
 import { useParams } from "react-router";
 import { numberWithCommas } from "../../utils";
+import NavSecondary from './../navsecondary/NavSecondary';
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
-    width: "70vh",
-    display: "absolute",
-    justifyContent: "center",
+    width: "60vh",
+    height: '80%',
+    margin: '2%',
+    padding: '3vh',
+    border: `3px solid ${theme.palette.primary.dark}`,
+    borderRadius: '2vh'   
+    
   },
   btnBack: {
     backgroundColor: "#16222A",
@@ -43,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
     },
+    width: '29.5vh',
+    
   },
   btnPublicar: {
     backgroundColor: theme.palette.primary.main,
@@ -50,14 +57,22 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
     },
-    marginTop: "3vh",
+    marginTop: "10vh",
   },
   link: {
     textDecoration: "none",
     color: theme.palette.primary.contrastText,
   },
   field: {
-    marginTop: "2vh",
+    marginTop: "1vh",
+    marginBottom: "1vh",   
+    height: '8vh',
+   
+
+  },
+  text: {
+    fontSize: 12,
+    color: theme.palette.primary.dark
   },
   media: {
     width: "100%",
@@ -83,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
     },
-    width: "20vh",
+    width: "18vh",
     fontSize: "2vh",
     marginRight: "4vh",
     marginLeft: "4vh",
@@ -146,8 +161,6 @@ function AddProduct() {
     }
   }, [dispatch]);
 
-
-
   const handleInputChange = (e) => {
     setInput({
       ...input,
@@ -178,27 +191,8 @@ function AddProduct() {
     }
   };
 
-  // const handleUpload = (e) => {
-  //   let img = e.target.files[0];
-  //   setInput({
-  //     ...input,
-  //     [e.target.name]: URL.createObjectURL(img),
-  //   });
-  // }
+ 
 
-  // const handleUploadClick = event => {
-  //   console.log();
-  //   var file = event.target.files[0];
-  //   const reader = new FileReader();
-  //   var url = reader.readAsDataURL(file);
-
-  //   reader.onloadend = function(e) {
-  //     setSelectedFile([reader.result])
-  //   }.bind(this);
-  //   console.log(url); // Would see a path?
-
-  //   setSelectedFile(event.target.files[0])
-  // };
 
   function validate() {
     let errors = {};
@@ -252,21 +246,22 @@ function AddProduct() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <div style={{ display: "flex" }}>
+    <>
+    
+    <NavSecondary />
+    
+        <Grid container style = {{marginTop: '10vh', marginLeft: '2%', overflowX: 'hidden'}}>
+      
+        <Grid item xs={6}>
+
+        <Typography variant ="h5" color="primary">Completa los campos para crear producto</Typography>
         <form onSubmit={handleSubmit}>
           <FormControl className={classes.formControl} onSubmit={handleSubmit}>
-            {/* <input
-              accept="image/*"
-              name='image'
-              className={classes.input}
-              id="contained-button-file"
-              multiple
-              type="file"
-              onChange={handleUpload}
-            /> */}
+           
             <TextField
               className={classes.field}
+              inputProps={{className: classes.text}} 
+              InputLabelProps={{className: classes.text}}
               required
               name="name"
               value={input.name}
@@ -282,6 +277,8 @@ function AddProduct() {
             <TextField
               className={classes.field}
               required
+              inputProps={{className: classes.text}} 
+              InputLabelProps={{className: classes.text}}
               name="image"
               value={input.image}
               label="Imagen URL"
@@ -295,6 +292,8 @@ function AddProduct() {
             )}
             <TextField
               className={classes.field}
+              inputProps={{className: classes.text}} 
+              InputLabelProps={{className: classes.text}}
               required
               name="price"
               value={input.price}
@@ -310,6 +309,8 @@ function AddProduct() {
             )}
             <TextField
               className={classes.field}
+              inputProps={{className: classes.text}} 
+              InputLabelProps={{className: classes.text}}
               required
               name="brand"
               value={input.brand}
@@ -324,6 +325,8 @@ function AddProduct() {
             )}
             <TextField
               className={classes.field}
+              inputProps={{className: classes.text}} 
+              InputLabelProps={{className: classes.text}}
               required
               name="stock"
               value={input.stock}
@@ -393,13 +396,15 @@ function AddProduct() {
                 {errors.categories}
               </FormHelperText>
             )}
-            <div>
+            
               <TextField
                 id="standard-multiline-static"
                 name="description"
                 label="Descripción"
                 value={input.description}
                 className={classes.field}
+                inputProps={{className: classes.text}} 
+                InputLabelProps={{className: classes.text}}
                 multiline
                 variant="outlined"
                 rows={4}
@@ -411,16 +416,18 @@ function AddProduct() {
                   {errors.description}
                 </FormHelperText>
               )}
-            </div>
-            <Button type="submit" className={classes.btnPublicar}>
-              Publicar
-            </Button>
+            
+            
 
-            <div
+            
+              <Button type="submit" className={classes.btnPublicar}>
+              Publicar
+              </Button>
+              <div
               style={{
                 display: "flex",
-                justifyContent: "space-evenly",
-                marginTop: "5vh",
+                justifyContent: "space-between",
+                marginTop: "1vh",
               }}
             >
               <Link to="/" className={classes.link}>
@@ -434,15 +441,15 @@ function AddProduct() {
                 </Button>
               </Link>
             </div>
+            
+
           </FormControl>
         </form>
-      </div>
-      <div>
-        <Grid
-          className={classes.formControl}
-          container
-          style={{ marginTop: "4vh" }}
-        >
+        </Grid>  
+
+      
+        
+        <Grid item xs={6} style = {{marginRight: '0%'}}> 
           <Grid item xs={6}>
             <CardMedia className={classes.media} image={input.image} />
           </Grid>
@@ -500,7 +507,7 @@ function AddProduct() {
             </Typography>
           </Grid>
         </Grid>
-      </div>
+      
       <div>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -521,28 +528,9 @@ function AddProduct() {
           </Fade>
         </Modal>
       </div>
-      {/* <div>      
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={openError}
-                    onClose={handleCloseError}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                    timeout: 500,
-                    }}
-                >
-                    <Fade in={openError}>
-                        <div className={classes.paper}>
-                            <h2 id="transition-modal-title">La categoria ya existe!!</h2>
-                            <p id="transition-modal-description">Click para cerrar</p>            
-                        </div>
-                    </Fade>
-                </Modal>
-            </div> */}
-    </div>
+      
+      </Grid>
+    </>
   );
 }
 

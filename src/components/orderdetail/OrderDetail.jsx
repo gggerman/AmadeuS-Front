@@ -5,6 +5,7 @@ import logo from './logo.jpg';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import { numberWithCommas } from '../../utils';
+import NavSecondary from '../navsecondary/NavSecondary';
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -40,19 +41,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderDetail() {
   const classes = useStyles();
-  const orderId = useSelector((state) => state.app.order); //me traigo el orderId generado en Order, por ahora me tira undefined
+  const orderId = useSelector((state) => state.app.order); //me traigo el orderId generado en Order
   const [infoOrder, setInfoOrder] = useState({});
-  const { REACT_APP_SERVER } = process.env;
+ 
 
   console.log(infoOrder);
-
+  console.log(orderId)
   const query = new URLSearchParams(useLocation().search);
 
-  const collection_id = query.get("collection_id");
+ 
   const status = query.get("status");
-  const merchant_order_id = query.get("merchant_order_id");
-
-  console.log(status); //status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
+//status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
 
   
 
@@ -80,11 +79,7 @@ useEffect(() => {
     return (
         <div>
          <CssBaseline>
-        <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%', position: 'absolute'}}>
-          <Link to ="/" style = {{margin: 'auto'}}>
-          <img src ={logo} className={classes.icon}/>
-          </Link>
-        </AppBar>
+         <NavSecondary />
 
         <Container className={classes.container}>
           {status === "approved" ? (

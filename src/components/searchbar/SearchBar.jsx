@@ -108,7 +108,7 @@ function SearchBar() {
             <SearchIcon />
           </div>
           <InputBase
-            placeholder="Search…"
+            placeholder="Busca tu instrumento…"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
