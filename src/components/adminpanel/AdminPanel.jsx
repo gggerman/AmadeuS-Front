@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useRouteMatch } from "react-router-dom";
+import NavSecondary from "../navsecondary/NavSecondary";
 
 // idea: cards de cada funcionalidad
 //-stock. edicion de lo que ya esta subido
@@ -59,6 +60,7 @@ export default function AdminPanel() {
 
   return (
     <div className={classes.body}>
+      <NavSecondary />
       <Grid
         container
         direction="row"

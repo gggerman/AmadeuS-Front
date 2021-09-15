@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Typography, Divider, CircularProgress } from "@material-ui/core";
 import { CardMedia, Box, Grid, Button, Container } from "@material-ui/core";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { makeStyles } from "@material-ui/styles";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -120,8 +121,9 @@ export default function ProductDetail() {
                   variant="contained"
                   className={classes.button}
                   onClick={handleAdd}
+                  endIcon = {<ShoppingCartIcon />}
                 >
-                  Add to Cart
+                  Agregar
                 </Button>
                 <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
                   <Button variant="contained" className={classes.button}>

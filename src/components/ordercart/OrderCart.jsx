@@ -8,7 +8,8 @@ import axios from 'axios';
 import { numberWithCommas } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import addOrder from '../../redux/actions/addOrder';
-
+import { useAuth0 } from '@auth0/auth0-react';
+import NavSecondary from '../navsecondary/NavSecondary';
 const { REACT_APP_SERVER } = process.env;
 
 
@@ -88,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   //en principio estaria controlado por el id que llega por params, si venimos desde cart a order no le pasariamos id
   //detail por lo tanto tiraria undefined, no habria id
   export default function Order() {
-    const { REACT_APP_SERVER } = process.env;
+    const { user } = useAuth0();
     const classes = useStyles()
     const dispatch = useDispatch()
     const cartProducts = useSelector(state => state.cart.cart)
@@ -113,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
 
     const handleCheckout = () => {
      
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name) })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name), user: user })
       .then((response) => setIdOrder(response.data)) 
   
       .catch((err) => console.log(err))
@@ -130,11 +131,7 @@ const useStyles = makeStyles((theme) => ({
     return (
       <div>
         <CssBaseline>
-        <AppBar style = {{backgroundColor: 'rgb(0, 23, 20)', height: '10%', position: 'absolute'}}>
-          <Link to ="/" style = {{margin: 'auto'}}>
-          <img src ={logo} className={classes.icon}/>
-          </Link>
-        </AppBar>
+         <NavSecondary />
 
          <Container className={classes.container}>
 
@@ -196,7 +193,7 @@ const useStyles = makeStyles((theme) => ({
                   <Typography component="h1" variant ='h5' > 
                   $ {numberWithCommas(cartProducts.reduce((acc, item) => {
                             return (
-                             acc += item.price
+                             acc += item.price * item.quantity
                             )
                         }, 0
                         ))
