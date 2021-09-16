@@ -10,6 +10,7 @@ import {
   Typography,
   Divider,
 } from "@material-ui/core";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import { Link } from "react-router-dom";
@@ -17,7 +18,6 @@ import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
 import { useDispatch } from "react-redux";
 import { UserContext } from "../shoppingcart/UserContext";
-import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light,
     },
     width: "16vh",
-    fontSize: "1.6vh",
+    fontSize: "1.8vh",
   },
   link: {
     color: theme.palette.primary.dark,
@@ -77,18 +77,20 @@ export default function ProductCard(product) {
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity, cartItems} = shoppingCart
   const dispatch = useDispatch()
-
   
   const agregar = (e) => {
-    setShoppingCart( cant => ({
-      ...cant,
+    setShoppingCart( value => ({
+      ...value,
       cartQuantity: cartQuantity + 1,
     }))
     dispatch( addToCart (id))   
   }
   
   useEffect(() => {
-    localStorage.setItem('cartItemsQuantity', JSON.stringify(cartQuantity)) 
+    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+      return () =>{
+        window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+      }
   }, [cartQuantity])
 
 
@@ -130,8 +132,9 @@ export default function ProductCard(product) {
             variant="contained" 
             className={classes.button}
             onClick={ agregar }
+            endIcon = {<ShoppingCartIcon />}
             >
-           Add to Cart
+           Agregar
         </Button>
       </CardActions>
     </Card>

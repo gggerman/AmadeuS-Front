@@ -14,6 +14,7 @@ export const ADD_TO_CART = 'ADD_TO_CART'
 export const DELETE_ONE_ITEM = 'DELETE_ONE_ITEM'
 export const CLEAN_CART = 'CLEAN_CART'
 export const BUY_CART = 'BUY_CART'
+export const DECREMENT_QUANTITY_ITEM = 'DECREMENT_QUANTITY_ITEM'
 
 //barra de busqueda
 export const SET_SEARCHBAR = 'SET_SEARCHBAR'

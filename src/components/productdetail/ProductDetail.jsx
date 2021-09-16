@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Typography, Divider, CircularProgress } from "@material-ui/core";
 import { CardMedia, Box, Grid, Button, Container } from "@material-ui/core";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { makeStyles } from "@material-ui/styles";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -12,11 +13,12 @@ import addToCart from "../../redux/actions/addToCart";
 import getDetails from "../../redux/actions/getDetails";
 import Review from '../review/Review';
 
+
 const useStyles = makeStyles((theme) => ({
   media: {
     width: "100%",
     paddingTop: "70%", // 16:9
-    margin: "0vh",
+    marginTop: "5vh",
     backgroundSize: "contain",
     "&:hover": {
       backgroundSize: "larger",
@@ -51,11 +53,11 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
   const { data, success, loading } = useSelector(({ app }) => app.detail);
   const { shoppingCart, setShoppingCart } = useContext(UserContext);
-  const { cartQuantity } = shoppingCart;
-
+  const { cartQuantity } = shoppingCart; 
+  
   const handleAdd = (e) => {
-    setShoppingCart((cant) => ({
-      ...cant,
+    setShoppingCart((value) => ({
+      ...value,
       cartQuantity: cartQuantity + 1,
     }));
     dispatch(addToCart(id));
@@ -74,7 +76,7 @@ export default function ProductDetail() {
           </div>
         )}
         {!loading && success && (
-          <Grid container style={{ marginTop: "-4vh" }}>
+          <Grid container style={{ marginTop: "-3vh" }}>
             <Grid item xs={6}>
               <CardMedia className={classes.media} image={data.image} />
             </Grid>
@@ -121,8 +123,9 @@ export default function ProductDetail() {
                   variant="contained"
                   className={classes.button}
                   onClick={handleAdd}
+                  endIcon = {<ShoppingCartIcon />}
                 >
-                  Add to Cart
+                  Agregar
                 </Button>
                 <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
                   <Button variant="contained" className={classes.button}>

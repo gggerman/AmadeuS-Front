@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import getAllProducts from "../../redux/actions/getAllProducts";
 import { numberWithCommas } from "../../utils";
 import axios from "axios";
+import NavSecondary from '../navsecondary/NavSecondary';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,6 +82,8 @@ function Stock() {
   };
 
   return (
+    <>
+    <NavSecondary />
     <div style={{ display: "contents" }}>
       {loading && (
         <div style={{ display: "contents" }}>
@@ -181,6 +184,7 @@ function Stock() {
         </>
       )}
     </div>
+    </>
   );
 }
 

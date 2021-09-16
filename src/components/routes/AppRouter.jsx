@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import ProductDetail from "../productdetail/ProductDetail";
 import Home from "../home/Home";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "../../theme";
@@ -21,6 +20,7 @@ import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
+import Test from '../sales/Test';
 
 const AppRouter = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -29,7 +29,7 @@ const AppRouter = () => {
 
   const adminAuth = function (component) {
     if (user) {
-      return user.email && user.email === "crismaxbar@gmail.com" || 'heisjuanpablo@gmail.com' || "leandrobuzeta@gmail.com" || "juanmhdz99@gmail.com"
+      return user.email && user.email === "crismaxbar@gmail.com" || user.email === 'heisjuanpablo@gmail.com' || user.email === "leandrobuzeta@gmail.com" || user.email === "juanmhdz99@gmail.com" || user.email === "martinmilone2011@gmail.com"
         ? component
         : Home;
     } else if (isAuthenticated === false) {
@@ -37,8 +37,9 @@ const AppRouter = () => {
     }
   };
 
+
   const initialState = {
-    cartQuantity: 0,
+    cartQuantity: JSON.parse(window.localStorage.getItem('cant')),
     cartItems: [],
   };
 
@@ -62,11 +63,12 @@ const AppRouter = () => {
             <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
             <Route path='/cart' component={ ShoppingCart } />        
             <Route path="/order/:id" component={withAuthenticationRequired(Order)} />
-            <Route path ="/ordercart/:id" component = {OrderCart} />
+            <Route path ="/ordercart/:id" component = {withAuthenticationRequired(OrderCart)} />
             <Route path="/orderdetail" component = {OrderDetail} />
             <Route path="/usermanagement" component={adminAuth(UserManagement)} />
             <Route path="/adduser" component={AddUser} />
-            <Route path ="/sales" component={Sales} />
+            <Route path ="/sales" component={adminAuth(Sales)} />
+            <Route path ="/test" component={Test} />
             </UserContext.Provider>
             <Redirect to="/" />
           </Switch>

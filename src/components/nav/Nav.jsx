@@ -104,8 +104,8 @@ export default function Nav() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const { isAuthenticated, user } = useAuth0();
 
-  console.log("nav", isAuthenticated);
-  console.log("nav-user", user);
+  // console.log("nav", isAuthenticated);
+  // console.log("nav-user", user);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -123,9 +123,8 @@ export default function Nav() {
     handleMobileMenuClose();
   };
 
-  const { shoppingCart, setShoppingCart } = useContext(UserContext);
+  const { shoppingCart } = useContext(UserContext);
   const { cartQuantity } = shoppingCart;
-
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
