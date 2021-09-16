@@ -84,8 +84,8 @@ export default function UserManagement(){
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell className={classes.tableCell} style={{ backgroundColor: '#000000', color: '#ffffff' }}>Apellido/s</TableCell>
-                            <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Nombre/s</TableCell>
+                            <TableCell className={classes.tableCell} style={{ backgroundColor: '#000000', color: '#ffffff' }}>ID</TableCell>
+                            <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Usuario</TableCell>
                             <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>E-mail</TableCell>
                             <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Privilegios</TableCell>
                             <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Eliminar</TableCell>
@@ -94,7 +94,7 @@ export default function UserManagement(){
                     <TableBody>
                         {users?.map(user => (
                             <TableRow key={user._id}>
-                                <TableCell className={classes.tableCell} component="th" scope="row">{user.surname}</TableCell>
+                                <TableCell className={classes.tableCell} align="left">{user._id}</TableCell>
                                 <TableCell className={classes.tableCell} align="left">{user.name}</TableCell>
                                 <TableCell className={classes.tableCell} align="left">{user.mail}</TableCell>
                                 <TableCell className={classes.tableCell} align="center">

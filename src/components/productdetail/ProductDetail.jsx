@@ -10,6 +10,7 @@ import { UserContext } from "../shoppingcart/UserContext";
 import { useDispatch, useSelector } from "react-redux";
 import addToCart from "../../redux/actions/addToCart";
 import getDetails from "../../redux/actions/getDetails";
+import Review from '../review/Review';
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -155,6 +156,7 @@ export default function ProductDetail() {
                 {data.brand}
               </Typography>
             </Grid>
+            <Review />
           </Grid>
         )}
       </div>
