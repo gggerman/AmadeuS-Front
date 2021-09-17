@@ -83,8 +83,8 @@ export default function ProductCard(product) {
 
   
   const agregar = (e) => {
-    setShoppingCart( cant => ({
-      ...cant,
+    setShoppingCart( value => ({
+      ...value,
       cartQuantity: cartQuantity + 1,
     }))
     dispatch( addToCart (id))   
@@ -95,7 +95,10 @@ export default function ProductCard(product) {
   // }
   
   useEffect(() => {
-    localStorage.setItem('cartItemsQuantity', JSON.stringify(cartQuantity)) 
+    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+      return () =>{
+        window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+      }
   }, [cartQuantity])
 
 

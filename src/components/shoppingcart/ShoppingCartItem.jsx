@@ -14,6 +14,7 @@ import { decrementQuantityCart } from '../../redux/actions/decrementQuantityCart
 
 
 
+
 const useStyles = makeStyles((theme) => ({
   root: {      
     display: 'flex',
@@ -43,34 +44,31 @@ const ShoppingCartItem = ({_id, name, description, price, stock, brand, image, c
   
   const classes = useStyles();
   const [counter, setCounter] = useState( quantity > stock ? stock : quantity)
-  const [totalValue, setTotalValue] = useState(price) //arreglar
+  const [totalValue, setTotalValue] = useState(price)
   const dispatch = useDispatch()
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity, totalPurchase} = shoppingCart
-  const [sumTotalValues, setSumTotalValues] = useState()
+
 
 
   const increment = (e) => {
-    //   console.log(e)
       setCounter( counter + 1 )
-      setShoppingCart( cant => ({
-          ...cant,
-          cartQuantity: cartQuantity  + 1
+      setShoppingCart( value => ({
+          ...value,
+          cartQuantity: cartQuantity + 1
       }))
       dispatch( addToCart(_id))
-      // setTotalValue(() => price * counter)
   }
 
   const decrement = (e) => {
       setCounter( counter - 1 )
       dispatch( decrementQuantityCart(_id) )
       if( cartQuantity > 0){
-        setShoppingCart( cant => ({
-            ...cant,
-            cartQuantity: cartQuantity  - 1
+        setShoppingCart( value => ({
+            ...value,
+            cartQuantity: cartQuantity - 1
         }))
         }
-      // setTotalValue((price) =>  price * counter)
   }
 
   const handleDelete = (e) => {      
