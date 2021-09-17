@@ -71,7 +71,6 @@ const useStyles = makeStyles((theme) => ({
 
   },
   text: {
-    fontSize: 12,
     color: theme.palette.primary.dark
   },
   media: {
