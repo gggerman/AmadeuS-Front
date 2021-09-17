@@ -159,7 +159,7 @@ export default function ProductDetail() {
                 {data.brand}
               </Typography>
             </Grid>
-            <Review />
+            <Review product={data}/>
           </Grid>
         )}
       </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import NavSecondary from '../navsecondary/NavSecondary';
 import { getAllUsers } from '../../redux/actions/users';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
@@ -39,7 +40,7 @@ export default function UserManagement(){
     const history = useHistory();
 
     const [open, setOpen] = useState(false);
-    const [openModal, setOpenModal] = useState(false);
+    // const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         dispatch(getAllUsers());
@@ -54,7 +55,7 @@ export default function UserManagement(){
     async function handleDelete(id){
         await axios.delete(`${REACT_APP_SERVER}/users/${id}`);
         dispatch(getAllUsers());
-        setOpenModal(false);
+        // setOpenModal(false);
         setOpen(true);
     }
 
@@ -66,59 +67,61 @@ export default function UserManagement(){
         setOpen(false);
     };
 
-    function handleOpenModal(){
-        setOpenModal(true);
-    }
+    // function handleOpenModal(){
+    //     setOpenModal(true);
+    // }
 
-    function handleCloseModal(){
-        setOpenModal(false);
-    }
+    // function handleCloseModal(){
+    //     setOpenModal(false);
+    // }
 
 
     return (
-        <Grid container component="main">
-            <Container component={Paper} style={{ maxWidth: '80vw', minWidth: '50vw' }}>
-                <Grid container justifyContent="center">
-                    <Button onClick={() => (history.push('/'))}>Home</Button>
-                </Grid>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell className={classes.tableCell} style={{ backgroundColor: '#000000', color: '#ffffff' }}>ID</TableCell>
-                            <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Usuario</TableCell>
-                            <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>E-mail</TableCell>
-                            <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Privilegios</TableCell>
-                            <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Eliminar</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users?.map(user => (
-                            <TableRow key={user._id}>
-                                <TableCell className={classes.tableCell} align="left">{user._id}</TableCell>
-                                <TableCell className={classes.tableCell} align="left">{user.name}</TableCell>
-                                <TableCell className={classes.tableCell} align="left">{user.mail}</TableCell>
-                                <TableCell className={classes.tableCell} align="center">
-                                    {user.isAdmin ?
-                                        <Button variant="contained" color="secondary" onClick={() => handlePrivileges(user)}>
-                                            Quitar privilegios
+        <>
+            {/* <NavSecondary /> */}
+            <Grid container component="main">
+                <Container component={Paper} style={{ maxWidth: '80vw', minWidth: '50vw' }}>
+                    <Grid container justifyContent="center">
+                        <Button onClick={() => (history.push('/'))}>Home</Button>
+                    </Grid>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className={classes.tableCell} style={{ backgroundColor: '#000000', color: '#ffffff' }}>ID</TableCell>
+                                <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Usuario</TableCell>
+                                <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>E-mail</TableCell>
+                                <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Privilegios</TableCell>
+                                <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Eliminar</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {users?.map(user => (
+                                <TableRow key={user._id}>
+                                    <TableCell className={classes.tableCell} align="left">{user._id}</TableCell>
+                                    <TableCell className={classes.tableCell} align="left">{user.name}</TableCell>
+                                    <TableCell className={classes.tableCell} align="left">{user.mail}</TableCell>
+                                    <TableCell className={classes.tableCell} align="center">
+                                        {user.isAdmin ?
+                                            <Button variant="contained" color="secondary" onClick={() => handlePrivileges(user)}>
+                                                Quitar privilegios
+                                            </Button>
+                                            :
+                                            <Button variant="contained" color="primary" onClick={() => handlePrivileges(user)}>
+                                                Dar privilegios
+                                            </Button>
+                                        }
+                                    </TableCell>
+                                    <TableCell className={classes.tableCell} align="center">
+                                        <Button variant="contained" className={classes.button} onClick={() => handleDelete(user._id)}>
+                                            Eliminar
                                         </Button>
-                                        :
-                                        <Button variant="contained" color="primary" onClick={() => handlePrivileges(user)}>
-                                            Dar privilegios
-                                        </Button>
-                                    }
-                                </TableCell>
-                                <TableCell className={classes.tableCell} align="center">
-                                    <Button variant="contained" className={classes.button} onClick={() => handleOpenModal()}>
-                                        Eliminar
-                                    </Button>
-                                    <Modal
+                                        {/* <Modal
                                         open={openModal}
                                         onClose={handleCloseModal}
                                         aria-labelledby="title"
                                         aria-describedby="description"
                                         className={classes.modal}
-                                    >
+                                        >
                                         <div className={classes.paper}>
                                             <h2 id="title" style={{display:'flex', justifyContent:'center'}}>¡ATENCIÓN!</h2>
                                             <p id="description">¿Seguro que deseas eliminar este usuario?</p>
@@ -127,18 +130,19 @@ export default function UserManagement(){
                                                 <Button variant="contained" className={classes.button} style={{marginLeft:'1vh'}} onClick={handleCloseModal}>Cancelar</Button>
                                             </Grid>
                                         </div>
-                                    </Modal>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-                            <Alert onClose={handleClose} severity="success" variant="filled">
-                                Usuario eliminado exitosamente!
-                            </Alert>
-                        </Snackbar>
-                    </TableBody>
-                </Table>
-            </Container>
-        </Grid>
+                                    </Modal> */}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+                                <Alert onClose={handleClose} severity="success" variant="filled">
+                                    Usuario eliminado exitosamente!
+                                </Alert>
+                            </Snackbar>
+                        </TableBody>
+                    </Table>
+                </Container>
+            </Grid>
+        </>
     )
 }

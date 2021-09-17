@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Typography, TextField, Button, Avatar } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import { useAuth0 } from "@auth0/auth0-react"; 
-import getDetails from "../../redux/actions/getDetails";
+import getAllReviews from "../../redux/actions/getAllReviews";
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -17,109 +18,101 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Review() {
+export default function Review({product}) {
 
     const classes = useStyles();
     const { user } = useAuth0();
     const dispatch = useDispatch();
-    const { data, success, loading } = useSelector(({ app }) => app.detail);
+    const reviews = useSelector(({ app }) => app.reviewsLoaded);
     const [opinion, setOpinion] = useState("");
     const [punctuation, setPunctuation] = useState(0);
-    const [id, setId] = useState(1);
-    const [idEdit, setIdEdit] = useState(0);
     const [edit, setEdit] = useState(false);
-    // const [reviews, setReviews] = useState([]);
+    const [review, setReview] = useState({});
 
     let suma = 0;
+    let cant = 0;
 
-    // useEffect(() => {
-    //     dispatch(getDetails(data._id));
-    // }, [data]);
+    useEffect(() => {
+        dispatch(getAllReviews());
+    }, [dispatch]);
 
     const handleInputChange = (e) => {
         setOpinion(e.target.value);
     };
 
-    async function handleSubmit(){
-
-        // e.preventDefault();
+    async function handleSubmit(e){
+        e.preventDefault();
         let date = new Date();
         date = date.toLocaleString();
-        // setReviews([
-        //     {
-        //         id,
-        //         date,
-        //         punctuation,
-        //         opinion,
-        //         user,
-        //         modified: "",
-        //     },
-        //     ...reviews
-        // ]);
         let review = {
             punctuation,
             opinion,
             date,
-            modified: ""
+            modified: "",
+            user:{
+                name: user.name,
+                mail: user.email,
+                picture: user.picture,
+            },
         };
-        let response = await axios.post(`http://localhost:3001/products/${data._id}/qualification/61433cfc16d026f00519d5c`, review);
-        setId(id + 1);
+        await axios.post(`${REACT_APP_SERVER}/reviews/${product._id}`, review);
         setOpinion('');
         setPunctuation(0);
-        // console.log(reviews);
+        dispatch(getAllReviews());
     };
 
-    const handleDelete = (id) => {
-        // setReviews(
-        //     reviews.filter(review => review.id != id)
-        // )
+    async function handleDelete(id){
+        await axios.delete(`${REACT_APP_SERVER}/reviews/${id}`);
+        dispatch(getAllReviews());
     }
 
-    const handleEdit = (id) => {
-        // let edit = reviews.find(review => review.id === id)
-        // setIdEdit(id);
-        // setEdit(true);
-        // setPunctuation(edit.puntuacion);
-        // setOpinion(edit.opinion);
+    function handleEdit(review){
+        setReview(review);
+        setPunctuation(review.punctuation);
+        setOpinion(review.opinion);
+        setEdit(true);
     }
 
-    const handleModification = () => {
-        // let date = new Date();
-        // date = DateRangeOutlined.toLocaleString();
-        // setReviews(
-        //     reviews.map(review => {
-        //         return review.id !== idEdit ? review : {
-        //             ... review,
-        //             opinion: opinion,
-        //             punctuation: punctuation,
-        //             modified: date,
-        //         }
-        //     })
-        // )
-        // setEdit(false);
-        // setIdEdit(0);
-        // setOpinion('');
-        // setPunctuation(0);
+    async function handleModification(){
+        let date = new Date();
+        date = date.toLocaleString();
+        let reviewEdit = {
+            ... review,
+            punctuation: punctuation,
+            opinion: opinion,
+            modified: date
+        };
+        setOpinion('');
+        setPunctuation(0);
+        setEdit(false);
+        await axios.put(`${REACT_APP_SERVER}/reviews/${review._id}`, reviewEdit);
+        dispatch(getAllReviews());
     }
 
     return (
         <>
-            {data?.qualification?.forEach(review => suma += review.punctuation)}
+            {reviews?.forEach(review => {
+                if(review.product._id === product._id){
+                    suma += review.punctuation;
+                    cant++;
+                }
+            })}
             <Grid container component="main" direction="column" alignItems="center">
                 <Box component="fieldset" mb={3} borderColor="primary" style={{width: '33vw'}}>
                     <Typography variant='h6' align="center">Calificación General</Typography>
                     <Grid container justifyContent="center" style={{marginTop:'2vh', marginBottom:'2vh'}}>
-                        {suma / data.qualification.length >= 0 &&
-                            <Typography variant='h6' style={{ marginRight: '1vw' }}>{(suma / data.qualification.length).toFixed(1)}</Typography>
+                        {suma / cant >= 0 &&
+                            <Typography variant='h6' style={{ marginRight: '1vw' }}>{(suma / cant).toFixed(1)}</Typography>
                         }
-                        <Rating value={suma / data.qualification.length} precision={0.1} size="large" readOnly />
+                        <Rating value={suma / cant} precision={0.1} size="large" readOnly />
                     </Grid>
-                    {suma / data.qualification.length >= 0 &&
-                        <Typography align="center">Promedio de {data.qualification.length} opiniones</Typography>
+                    {suma / cant >= 0 &&
+                        <Typography align="center">Promedio de {cant} opiniones</Typography>
                     }
                 </Box>
-                {/* {user && */}
+                {user &&
                     <Box component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
+                        {console.log(user)}
                         <Typography component="legend">Dejanos tu valoración del producto</Typography>
                         <Grid container justifyContent="space-around" style={{marginTop:'1vh'}}>
                             <Typography component="legend">Puntuación</Typography>
@@ -143,7 +136,7 @@ export default function Review() {
                             onChange={handleInputChange}
                         />
                         {!edit ?
-                            <Button variant="contained" color="primary" disabled={!opinion || !punctuation} onClick={() => handleSubmit()} className={classes.button}>
+                            <Button variant="contained" color="primary" disabled={!opinion || !punctuation} onClick={handleSubmit} className={classes.button}>
                                 Enviar
                             </Button>
                             :
@@ -152,32 +145,34 @@ export default function Review() {
                             </Button>
                         }
                     </Box>
-                {/* } */}
-                {data?.qualification?.map((review, index) => {
-                    return <Box key={index} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
-                        <Typography component="legend">{review.date}</Typography>
-                        <Grid container justifyContent="space-between">
-                            <Avatar alt={review.idUser.name} src={review.idUser.picture} />
-                            <Typography component="legend" style={{ marginTop: '1.5vh' }}>{review.idUser.name}</Typography>
-                            <Rating value={review.punctuation} readOnly style={{ marginTop: '1.5vh' }} />
-                        </Grid>
-                        <Typography component="legend" style={{ marginTop: '3vh' }}>{review.opinion}</Typography>
-                        <Grid container direction="row" justifyContent="flex-end">
-                            {review.modified &&
-                                <Typography component="legend" style={{ marginTop: '3.5vh'}}>Editado {review.modified}</Typography>
-                            }
-                            {/* {user.name === review.user.name && */}
-                                <>
-                                    <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh', marginRight:'2vh', marginLeft:'5vh'}} onClick={() => handleDelete(review._id)}>
-                                        Eliminar
-                                    </Button>
-                                    <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh'}} onClick={() => handleEdit(review._id)}>
-                                        Editar
-                                    </Button>
-                                </>
-                            {/* } */}
-                        </Grid>
-                    </Box>
+                }
+                {reviews?.map((review, index) => { 
+                    return review.product._id === product._id ?
+                        <Box key={index} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
+                            <Typography component="legend">{review.date}</Typography>
+                            <Grid container justifyContent="space-between">
+                                <Avatar alt={review.user?.name} src={review.user?.picture} />
+                                <Typography component="legend" style={{ marginTop: '1.5vh' }}>{review.user?.name}</Typography>
+                                <Rating value={review.punctuation} readOnly style={{ marginTop: '1.5vh' }} />
+                            </Grid>
+                            <Typography component="legend" style={{ marginTop: '3vh' }}>{review.opinion}</Typography>
+                            <Grid container direction="row" justifyContent="flex-end">
+                                {review.modified &&
+                                    <Typography component="legend" style={{ marginTop: '3.5vh' }}>Editado {review.modified}</Typography>
+                                }
+                                {user.name === review.user?.name &&
+                                    <>
+                                        <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh', marginRight: '2vh', marginLeft: '5vh' }} onClick={() => handleDelete(review._id)}>
+                                            Eliminar
+                                        </Button>
+                                        <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh' }} onClick={() => handleEdit(review)}>
+                                            Editar
+                                        </Button>
+                                    </>
+                                }
+                            </Grid>
+                        </Box>
+                    : <></>             
                 })}
             </Grid>
         </>
