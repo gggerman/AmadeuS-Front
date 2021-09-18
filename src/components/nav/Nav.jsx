@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     width: "2vw",
-    borderRadius: '15px'
+    borderRadius: "15px",
   },
 }));
 
@@ -213,9 +213,8 @@ export default function Nav() {
     <div>
       <AppBar
         style={{
-          position: "sticky",
+          position: "relative",
           backgroundColor: "rgb(0, 23, 20)",
-          height: "100%",
         }}
       >
         <Toolbar className={classes.navDisplay}>
