@@ -1,5 +1,6 @@
 import { GET_ALL_PRODUCTS, GET_DETAILS, SORT_BY_NAME, SORT_BY_PRICE, FILTER_BY_CATEGORY, ADD_CATEGORY, SET_SEARCHBAR } from '../actions/index'
 import { GET_ALL_CATEGORIES } from '../actions/index'
+import { GET_ALL_REVIEWS } from '../actions/index'
 import { ADD_USER, GET_ALL_USERS } from '../actions/index'
 import { ADD_ORDER_ID } from '../actions/index';
 
@@ -25,7 +26,8 @@ const initialState = {
         loading: false
     },
     usersLoaded: [],
-    order: ''
+    order: '',
+    reviewsLoaded:[],
 }
 
 const appReducer = (state = initialState, action) => {
@@ -149,6 +151,12 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 usersLoaded: action.payload,
+            }
+
+        case GET_ALL_REVIEWS:
+            return {
+                ...state,
+                reviewsLoaded: action.payload,
             }
 
         default:

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -9,10 +9,14 @@ import {
   IconButton,
   Typography,
   Divider,
+  Modal,
+  Container,
+  Backdrop
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
+import { EmailShareButton, FacebookShareButton, WhatsappShareButton} from 'react-share';
 import { Link } from "react-router-dom";
 import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
@@ -23,6 +27,7 @@ import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    height: 425,
     width: 270, // Para que las cards tengan el mismo ancho sin importar el tamaño de la imagen
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
 
@@ -68,8 +73,20 @@ const useStyles = makeStyles((theme) => ({
     "&:focus": {
       color: theme.palette.primary.light
     }
-
-  }
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    height:'80vh',
+    width:'100vh'
+  },
 }));
 
 export default function ProductCard(product) {
@@ -78,6 +95,7 @@ export default function ProductCard(product) {
   const classes = useStyles();
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity, cartItems} = shoppingCart
+  const [shareOpen, setShareOpen] = useState(false)
   const dispatch = useDispatch()
   const REACT_APP_SERVER = process.env
 
@@ -101,6 +119,10 @@ export default function ProductCard(product) {
       }
   }, [cartQuantity])
 
+  const handleShare = () => {
+    setShareOpen(!shareOpen)
+  }
+  const handleClose = () => setShareOpen(false)
 
   return (
     <Card className={classes.root}>     
@@ -112,7 +134,7 @@ export default function ProductCard(product) {
             $ {numberWithCommas(price)}
           </Typography>
           <Typography variant="body2" component="h3">
-            {name}
+            {name.substring(0,30) + '...'}
           </Typography>
           {
             (stock === 0 ? (
@@ -133,9 +155,29 @@ export default function ProductCard(product) {
         <IconButton aria-label="add to favorites" /*onClick={addToFavorite}*/>
           <FavoriteIcon className={classes.icon} />
         </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon className={classes.icon} />
+
+        <IconButton aria-label="share" onClick={handleShare}>
+          <ShareIcon className={classes.icon} /> 
         </IconButton>
+        <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={shareOpen}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500,
+                    }}
+                >
+                    <Container className={classes.paper}>
+                              
+                   </Container>
+                </Modal>
+
+
+
         <Button 
             variant="contained" 
             className={classes.button}

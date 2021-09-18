@@ -96,7 +96,7 @@ export default function Test() {
             )
         }, 0),
         "Status": order.status,
-        "Cliente": order.buyer.mail,
+        // "Cliente": order.buyer.mail,
         "Ubicacion": order.shipping
 
     }))

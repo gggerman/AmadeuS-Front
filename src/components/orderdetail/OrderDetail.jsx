@@ -46,7 +46,7 @@ export default function OrderDetail() {
  
 
   console.log(infoOrder);
-  console.log(orderId)
+  
   const query = new URLSearchParams(useLocation().search);
 
  

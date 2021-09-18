@@ -11,6 +11,7 @@ import { UserContext } from "../shoppingcart/UserContext";
 import { useDispatch, useSelector } from "react-redux";
 import addToCart from "../../redux/actions/addToCart";
 import getDetails from "../../redux/actions/getDetails";
+import Review from '../review/Review';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
   container: {
     width: "80vh",
     margin: "5vh",
+  },
+  price:{
+    width: "80vh",
+    margin: "5vh",
+    
+
   },
   mp: {
     maxWidth: "8vh",
@@ -44,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "4vh",
     marginLeft: "4vh",
   },
+  disp: {
+    color: theme.palette.primary.dark
+  }  
 }));
 
 export default function ProductDetail() {
@@ -91,7 +101,7 @@ export default function ProductDetail() {
               <Typography
                 variant="h3"
                 component="h2"
-                className={classes.container}
+                className={classes.price}
               >
                 ${numberWithCommas(data.price)}
                 <Divider variant="fullwidth" />
@@ -132,32 +142,37 @@ export default function ProductDetail() {
                   </Button>
                 </Link>
               </Grid>
-              {data.stock === 0 ? (
-                <Typography
-                  variant="body2"
-                  color="error"
-                  component="h3"
-                  className={classes.container}
-                >
-                  Sin stock
-                </Typography>
-              ) : (
-                <Typography
-                  variant="body2"
-                  component="h3"
-                  className={classes.container}
-                >
-                  Stock: {data.stock}
-                </Typography>
-              )}
-              <Typography
+                <Box className = {classes.box}>
+                {data.stock === 0 ? (
+                  <Typography
+                    variant="body2"
+                    color="error"
+                    component="h3"
+                    className={classes.container}
+                  >
+                    Sin stock
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="body1"
+                    component="h2"
+                    style={{display: 'flex', justifyContent: 'center', color: 'green'}}
+                  >
+                   Hay unidades disponibles!
+                  </Typography>
+                )}
+                </Box>
+              {/* <Typography
                 variant="body2"
                 component="h3"
                 className={classes.container}
               >
                 {data.brand}
-              </Typography>
+              </Typography> */}
+
+
             </Grid>
+            <Review product={data}/>
           </Grid>
         )}
       </div>
