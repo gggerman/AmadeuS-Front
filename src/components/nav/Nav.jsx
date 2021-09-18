@@ -210,67 +210,66 @@ export default function Nav() {
   );
 
   return (
-    <div>
-      <AppBar
-        style={{
-          position: "relative",
-          backgroundColor: "rgb(0, 23, 20)",
-        }}
-      >
-        <Toolbar className={classes.navDisplay}>
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            <img src={logo} className={classes.icon} />
-          </Link>
-          <SearchBar />
+    <AppBar
+      style={{
+        position: "relative",
+        backgroundColor: "rgb(0, 23, 20)",
+        width: "100%",
+      }}
+    >
+      <Toolbar className={classes.navDisplay}>
+        <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+          <img src={logo} className={classes.icon} />
+        </Link>
+        <SearchBar />
 
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton
-              aria-label="show 4 new mails"
-              color="inherit"
-              component={Link}
-              to="/cart"
-            >
-              <Badge badgeContent={cartQuantity} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+        <div className={classes.grow} />
+        <div className={classes.sectionDesktop}>
+          <IconButton
+            aria-label="show 4 new mails"
+            color="inherit"
+            component={Link}
+            to="/cart"
+          >
+            <Badge badgeContent={cartQuantity} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
 
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={null} color="secondary">
-                <FavoriteIcon />
-              </Badge>
-            </IconButton>
+          <IconButton aria-label="show 17 new notifications" color="inherit">
+            <Badge badgeContent={null} color="secondary">
+              <FavoriteIcon />
+            </Badge>
+          </IconButton>
 
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              {isAuthenticated ? (
-                <img src={user.picture} className={classes.avatar} />
-              ) : (
-                <AccountCircle />
-              )}
-            </IconButton>
-          </div>
-        </Toolbar>
-        {/* <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2vw'}}>
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-controls={menuId}
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
+            color="inherit"
+          >
+            {isAuthenticated ? (
+              <img src={user.picture} className={classes.avatar} />
+            ) : (
+              <AccountCircle />
+            )}
+          </IconButton>
+        </div>
+      </Toolbar>
+      {/* <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2vw'}}>
           <Link to='/adduser' style={{ textDecoration: "none", color:"#ffffff" }}>
             <Typography variant="p" noWrap>
               Registrate
             </Typography>
           </Link>
         </div> */}
-      </AppBar>
       {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
       {/* <div className={classes.offset}></div> NO BORRAR */}
       {/* <div className={classes.offset}></div> NO BORRAR */}
       {renderMobileMenu}
       {renderMenu}
-    </div>
+    </AppBar>
   );
 }
