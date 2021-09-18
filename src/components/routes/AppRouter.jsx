@@ -21,6 +21,8 @@ import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
 import Test from '../sales/Test';
+import Account from "../account/Account";
+import Profile from "../account/Profile";
 
 const AppRouter = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -69,6 +71,8 @@ const AppRouter = () => {
             <Route path="/adduser" component={AddUser} />
             <Route path ="/sales" component={adminAuth(Sales)} />
             <Route path ="/test" component={Test} />
+            <Route path ="/account" component={Account} />
+            <Route path ="/profile" component={Profile} />
             </UserContext.Provider>
             <Redirect to="/" />
           </Switch>
