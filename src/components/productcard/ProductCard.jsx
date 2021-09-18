@@ -22,6 +22,8 @@ import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
 import { useDispatch } from "react-redux";
 import { UserContext } from "../shoppingcart/UserContext";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,6 +97,8 @@ export default function ProductCard(product) {
   const {cartQuantity, cartItems} = shoppingCart
   const [shareOpen, setShareOpen] = useState(false)
   const dispatch = useDispatch()
+  const REACT_APP_SERVER = process.env
+
   
   const agregar = (e) => {
     setShoppingCart( value => ({
@@ -103,6 +107,10 @@ export default function ProductCard(product) {
     }))
     dispatch( addToCart (id))   
   }
+
+  // const addToFavorite = (e) => {
+  //   axios.put(`${REACT_APP_SERVER}/users/${user._id}`, favorites: product);
+  // }
   
   useEffect(() => {
     window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
@@ -144,7 +152,7 @@ export default function ProductCard(product) {
         <Divider variant="middle" light />
       </Link>
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites" /*onClick={addToFavorite}*/>
           <FavoriteIcon className={classes.icon} />
         </IconButton>
 
