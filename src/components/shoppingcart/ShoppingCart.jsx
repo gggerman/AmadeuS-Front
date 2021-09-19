@@ -19,28 +19,27 @@ import logo from "./logo.jpg";
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
-      alignItems: "center",
-    },
-    icon: {
-      width: "8vh",
-      backgroundSize: "contain",
-      margin: "auto",
-      offset: theme.mixins.toolbar,
-    },
-  }));
+  root: {
+    display: "flex",
+    alignItems: "center",
+  },
+  icon: {
+    width: "8vh",
+    backgroundSize: "contain",
+    margin: "auto",
+    offset: theme.mixins.toolbar,
+  },
+}));
 
 const ShoppingCart = () => {
+  const classes = useStyles();
+  const shoppingCartProducts = useSelector((state) => state.cart.cart);
+  const { shoppingCart, setShoppingCart } = useContext(UserContext);
+  const { cartQuantity, cartItems } = shoppingCart;
+  const dispatch = useDispatch();
+  const [idOrder, setIdOrder] = useState();
 
-const classes = useStyles()
-const shoppingCartProducts = useSelector(state => state.cart.cart)
-const {shoppingCart, setShoppingCart} = useContext( UserContext )
-const {cartQuantity, cartItems} = shoppingCart
-const dispatch = useDispatch()
-const [idOrder, setIdOrder] = useState()
-
-const handleDeleteAll = () => { 
+  const handleDeleteAll = () => {
     dispatch(cleanCart());
     setShoppingCart((value) => ({
       ...value,
@@ -48,95 +47,91 @@ const handleDeleteAll = () => {
     }));
   };
 
-// useEffect(() => {
-//     axios
-//       .post(`${REACT_APP_SERVER}/orders`, {
-//         products: shoppingCartProducts.map((item) => item.name),
-//       })
-//       .then((response) => setIdOrder(response.data)) //guardamos el id de la orden en redux
-//       .catch((err) => console.log(err));
-//   }, []);
+  // useEffect(() => {
+  //     axios
+  //       .post(`${REACT_APP_SERVER}/orders`, {
+  //         products: shoppingCartProducts.map((item) => item.name),
+  //       })
+  //       .then((response) => setIdOrder(response.data)) //guardamos el id de la orden en redux
+  //       .catch((err) => console.log(err));
+  //   }, []);
 
-//   useEffect(() => {            
-//     dispatch(addOrder(idOrder))
-//   },[idOrder])
+  //   useEffect(() => {
+  //     dispatch(addOrder(idOrder))
+  //   },[idOrder])
 
   useEffect(() => {
-    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
-      return () =>{
-        window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
-      }
-  }, [cartQuantity])
+    window.localStorage.setItem("cant", JSON.stringify(cartQuantity));
+    return () => {
+      window.localStorage.setItem("cant", JSON.stringify(cartQuantity));
+    };
+  }, [cartQuantity]);
 
-    return (
-        <div> 
-            <CssBaseline />
-                <AppBar
-                    style={{
-                    backgroundColor: "rgb(0, 23, 20)",
-                    height: "10%",
-                    position: "sticky",
-                    }}
-                >
-                    <Link to="/" style={{ margin: "auto" }}>
-                    <img src={logo} className={classes.icon} />
-                    </Link>
-                </AppBar>
-                <Container
-                    maxWidth="xl"
-                    style={{
-                    backgroundColor: "#EEEBEB",
-                    height: "150vh",
-                    border: "1px solid #E7E4E4",
-                    }}
-                >
-                <div className={classes.root}>
-                    <Box flexGrow={1} marginLeft={5}>
-                        <Typography variant="h2">carrito</Typography>
-                    </Box>
-                    <Box>
-                        <Button
-                        variant="contained"
-                        color="primary"
-                        endIcon={<DeleteForeverRoundedIcon />}
-                        onClick={handleDeleteAll}
-                        >
-                        vaciar Carrito
-                        </Button>
-                    </Box>
-                </div>
-                    {shoppingCartProducts?.map((elem) => (
-                    <ShoppingCartItem key={elem._id} {...elem} />
-                    ))}          
-                      
-                    <Divider />
-                    <Box>
-                        <Typography variant='h4'>
-                        Total de la compra: 
-                        {
-                        shoppingCartProducts.reduce((acc, item) => {
-                            return (
-                             acc += item.price * item.quantity
-                            )
-                        }, 0
-                        )}
-                        </Typography>
-                        
-                    </Box>
+  return (
+    <div>
+      <CssBaseline />
+      <AppBar
+        style={{
+          backgroundColor: "rgb(0, 23, 20)",
+          height: "10%",
+          position: "sticky",
+        }}
+      >
+        <Link to="/" style={{ margin: "auto" }}>
+          <img src={logo} className={classes.icon} />
+        </Link>
+      </AppBar>
+      <Container
+        maxWidth="xl"
+        style={{
+          backgroundColor: "#EEEBEB",
+          height: "150vh",
+          border: "1px solid #E7E4E4",
+        }}
+      >
+        <div className={classes.root}>
+          <Box flexGrow={1} marginLeft={5}>
+            <Typography variant="h2">carrito</Typography>
+          </Box>
+          <Box>
+            <Button
+              variant="contained"
+              color="primary"
+              endIcon={<DeleteForeverRoundedIcon />}
+              onClick={handleDeleteAll}
+            >
+              vaciar Carrito
+            </Button>
+          </Box>
+        </div>
+        {shoppingCartProducts?.map((elem) => (
+          <ShoppingCartItem key={elem._id} {...elem} />
+        ))}
 
-                    <Divider />
+        <Divider />
+        <Box>
+          <Typography variant="h4">
+            Total de la compra:{" "}
+            {shoppingCartProducts.reduce((acc, item) => {
+              return (acc += item.price * item.quantity);
+            }, 0)}
+          </Typography>
+        </Box>
 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        disabled={shoppingCartProducts.length === 0}
-                        component={Link} to={`/ordercart`}
-                    >
-                        Comprar
-                    </Button>
-                    
-                </Container>           
-         </div>
+        <Divider />
+
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={shoppingCartProducts.length === 0}
+          component={Link}
+          to={`/ordercart`}
+          style={{ marginTop: "2vh" }}
+        >
+          Comprar
+        </Button>
+      </Container>
+    </div>
   );
 };
 
