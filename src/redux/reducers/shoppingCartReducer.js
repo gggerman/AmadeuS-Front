@@ -1,4 +1,4 @@
-import { ADD_TO_CART, CLEAN_CART, DELETE_ONE_ITEM, DECREMENT_QUANTITY_ITEM } from "../actions"
+import { ADD_TO_CART, CLEAN_CART, DELETE_ONE_ITEM, DECREMENT_QUANTITY_ITEM, ITEMS_DB_TO_CART } from "../actions"
 
 const initialState = {
     cart:[]
@@ -42,6 +42,29 @@ const shoppingCartReducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 cart: []
+            }
+
+        case ITEMS_DB_TO_CART:
+            console.log('reducer', action.payload)
+            if(action.payload.length) {
+                const itemsFromDb = action.payload.map( (elem) => {
+                    return{
+                        quantity: elem.quantity,
+                        brand: elem._id.brand,
+                        categories: elem._id.categories,
+                        description: elem._id.description,
+                        image: elem._id.image,
+                        name: elem._id.name,
+                        price: elem._id.price,
+                        quelification: elem._id.qualification,
+                        stock: elem._id.stock,
+                        _id: elem._id._id
+                    }
+                })
+                return {
+                    ...state,
+                    cart: itemsFromDb
+                }
             }
         
         default:

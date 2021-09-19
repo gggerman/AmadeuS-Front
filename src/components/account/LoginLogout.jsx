@@ -3,8 +3,6 @@ import { Button, MenuItem } from "@material-ui/core";
 
 export default function LoginLogout() {
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
-  // console.log('isAuthenticated', isAuthenticated)
-  console.log('user', user)
 
   return (
     <div>

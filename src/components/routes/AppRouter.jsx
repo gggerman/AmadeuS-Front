@@ -21,12 +21,15 @@ import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
 import Test from '../sales/Test';
+import { useDispatch, useSelector } from "react-redux";
+import { linkUserCart } from "../../redux/actions/linkUserCart";
+
+
 
 const AppRouter = () => {
+  
   const { user, isAuthenticated } = useAuth0();
-
-  console.log("admin", user);
-
+ 
   const adminAuth = function (component) {
     if (user) {
       return user.email && user.email === "crismaxbar@gmail.com" || user.email === 'heisjuanpablo@gmail.com' || user.email === "leandrobuzeta@gmail.com" || user.email === "juanmhdz99@gmail.com" || user.email === "martinmilone2011@gmail.com"
@@ -41,6 +44,8 @@ const AppRouter = () => {
   const initialState = {
     cartQuantity: JSON.parse(window.localStorage.getItem('cant')),
     cartItems: [],
+    userItems: 0,
+    cantItemsDbToCart: 0
   };
 
   const [shoppingCart, setShoppingCart] = useState(initialState);

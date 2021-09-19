@@ -16,6 +16,7 @@ import { numberWithCommas } from "../../utils";
 import axios from "axios";
 import addOrder from "./../../redux/actions/addOrder";
 import logo from "./logo.jpg";
+import { linkUserCart } from "../../redux/actions/linkUserCart";
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +37,7 @@ const ShoppingCart = () => {
 const classes = useStyles()
 const shoppingCartProducts = useSelector(state => state.cart.cart)
 const {shoppingCart, setShoppingCart} = useContext( UserContext )
-const {cartQuantity, cartItems} = shoppingCart
+const {cartQuantity, cartItems, userItems, cantItemsDbToCart} = shoppingCart
 const dispatch = useDispatch()
 const [idOrder, setIdOrder] = useState()
 
@@ -45,8 +46,19 @@ const handleDeleteAll = () => {
     setShoppingCart((value) => ({
       ...value,
       cartQuantity: 0,
+      cantItemsDbToCart: 0
     }));
+    window.localStorage.setItem('cartItems', JSON.stringify(shoppingCartProducts) )
+    if(userItems){
+      console.log('existe')
+      let obj = { 
+        user: userItems,
+        cart: []
+      }
+      dispatch(linkUserCart( obj ))
+    }
   };
+  console.log('****', userItems)
 
 useEffect(() => {
     axios
@@ -63,8 +75,10 @@ useEffect(() => {
 
   useEffect(() => {
     window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+    window.localStorage.setItem('cartItems', JSON.stringify(shoppingCartProducts) )
       return () =>{
         window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+        window.localStorage.setItem('cartItems', JSON.stringify(shoppingCartProducts) )
       }
   }, [cartQuantity])
 

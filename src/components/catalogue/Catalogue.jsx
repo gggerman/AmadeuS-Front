@@ -19,6 +19,11 @@ import getAllProducts, {
 } from "../../redux/actions/getAllProducts";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
 import { UserContext } from '../shoppingcart/UserContext';
+import { useAuth0 } from "@auth0/auth0-react";
+import { linkUserCart } from "../../redux/actions/linkUserCart";
+import { getCart } from "../../utils";
+import {getAllUsers} from '../../redux/actions/users'
+import { itemsDbToCart } from "../../redux/actions/itemsDbToCart";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,19 +48,62 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Catalogue() {
-    // const products = useSelector(({ app }) => app.productsLoaded);
-    // const categories = useSelector(({ app }) => app.categoriesLoaded);
-    // const dispatch = useDispatch();
     const {shoppingCart, setShoppingCart} = useContext( UserContext )
-    const {cartQuantity} = shoppingCart
-
-    
-  const { data, loading, success } = useSelector(
-    ({ app }) => app.productsLoaded
+    const {cartQuantity, userItems, cantItemsDbToCart} = shoppingCart    
+    const { data, loading, success } = useSelector(
+      ({ app }) => app.productsLoaded
   );
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const search = useSelector(({ app }) => app.searchBar);
+  const cartState = useSelector(({ cart }) => cart);
+  const users = useSelector(state => state.app.usersLoaded)
+  // console.log('cart',cartState)
   const dispatch = useDispatch();
+  const { user, isAuthenticated } = useAuth0();  
+
+  
+
+// console.log(user,'***************')
+
+// console.log(users,'users')  
+
+useEffect(() => {
+  dispatch(getAllUsers());
+  if(isAuthenticated){
+      const getUser = users.find( elem => ( elem.mail === user.email))        
+      getCart(getUser._id).then( res => dispatch( itemsDbToCart( res.data )))
+      // console.log('getUser', getUser)
+      setShoppingCart( prev => ({
+        ...prev,
+        userItems: user,        
+    }))
+    } 
+     }, [isAuthenticated])
+    //  console.log('userItems', userItems)
+
+  useEffect(() => {
+    const alStorage = JSON.stringify(cartState)
+    if( !isAuthenticated){
+      window.localStorage.setItem('cartItems', alStorage )
+    } else {
+      
+        const { cart } = JSON.parse(alStorage)
+        const userCart = {
+              user,
+              cart
+            }
+          // console.log('userCart', userCart)
+        window.localStorage.removeItem('cartItems')
+        if(userCart)
+            dispatch( linkUserCart( userCart ) )        
+    }
+}, [cartQuantity, cartState, isAuthenticated])
+
+// console.log('cantidad', cantItemsDbToCart)
+  
+
+
+
 
   useEffect(() => {
     if (!search || search.length === 0) {
@@ -64,7 +112,10 @@ export default function Catalogue() {
     dispatch(getAllCategories());
     setShoppingCart( prev => ({
       ...prev,
-      cartQuantity: JSON.parse(localStorage.getItem('cant'))
+      cartQuantity: cartState.cart.reduce( (acc, elem) => {
+        return ( acc = acc + elem.quantity)
+      }, 0),
+      // cartQuantity: JSON.parse(localStorage.getItem('cant')),      
   }))
   }, [dispatch]);
 
