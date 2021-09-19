@@ -103,60 +103,23 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductCard(product) {
   const { id, name, price, image, stock } = product;
   //recibe de Products las props
-  // const { user, isAuthenticated } = useAuth0();
-  // const cartState = useSelector(({ cart }) => cart);
+  const cartState = useSelector(({ cart }) => cart);
   const classes = useStyles();
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity, cartItems} = shoppingCart
   const [shareOpen, setShareOpen] = useState(false)
   const dispatch = useDispatch()
   const REACT_APP_SERVER = process.env
-
   
   const agregar = (e) => {
     setShoppingCart( value => ({
       ...value,
       cartQuantity: cartQuantity + 1,
     }))
-    dispatch( addToCart (id))   
-    
-  }
+    dispatch( addToCart (id))       
+  } 
 
-  // const alStorage = JSON.stringify(cartState)
-
-  // if( !isAuthenticated){
-  //   useEffect(() => {
-  //     window.localStorage.setItem('cartItems', alStorage )
-  //   }, [cartState])
-  // } else {
-    
-  //   const { cart } = JSON.parse(alStorage)
-  //   const userCart = {
-  //         user,
-  //         cart
-  //       }
-  //     dispatch( linkUserCart( userCart ) )
-  // }
-// //******************************************************************** */
-//   useEffect(() => {
-//     console.log(isAuthenticated)
-//     if( !isAuthenticated){
-//       window.localStorage.setItem('cartItems', alStorage )
-//     } else {
-    
-//     const { cart } = JSON.parse(alStorage)
-//     const userCart = {
-//           user,
-//           cart
-//         }
-//       dispatch( linkUserCart( userCart ) )
-//     }
-// }, [cartState])
-//********************************************************************************* */
-
-  // const addToFavorite = (e) => {
-  //   axios.put(`${REACT_APP_SERVER}/users/${user._id}`, favorites: product);
-  // }
+  const alStorage = JSON.stringify(cartState)
   
   useEffect(() => {
     window.localStorage.setItem('cant', JSON.stringify(cartQuantity) ) 

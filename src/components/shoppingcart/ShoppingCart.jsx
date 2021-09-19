@@ -36,6 +36,7 @@ const ShoppingCart = () => {
 
 const classes = useStyles()
 const shoppingCartProducts = useSelector(state => state.cart.cart)
+const user = useSelector((state) => state.app.user);
 const {shoppingCart, setShoppingCart} = useContext( UserContext )
 const {cartQuantity, cartItems, userItems, cantItemsDbToCart} = shoppingCart
 const dispatch = useDispatch()
@@ -49,29 +50,28 @@ const handleDeleteAll = () => {
       cantItemsDbToCart: 0
     }));
     window.localStorage.setItem('cartItems', JSON.stringify(shoppingCartProducts) )
-    if(userItems){
+    if(user){
       console.log('existe')
       let obj = { 
-        user: userItems,
+        user,
         cart: []
       }
+      user.cart = []
       dispatch(linkUserCart( obj ))
     }
   };
-  console.log('****', userItems)
-
-// useEffect(() => {
-//     axios
-//       .post(`${REACT_APP_SERVER}/orders`, {
-//         products: shoppingCartProducts.map((item) => item.name),
-//       })
-//       .then((response) => setIdOrder(response.data)) //guardamos el id de la orden en redux
-//       .catch((err) => console.log(err));
-//   }, []);
-
-//   useEffect(() => {            
-//     dispatch(addOrder(idOrder))
-//   },[idOrder])
+  
+  useEffect(() => {
+    if(user){
+      console.log('existe')
+      let obj = { 
+        user,
+        cart: shoppingCartProducts
+      }
+      dispatch(linkUserCart( obj ))
+      user.cart = shoppingCart
+    }    
+  }, [shoppingCart])
 
   useEffect(() => {
     window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )

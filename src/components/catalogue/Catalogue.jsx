@@ -55,68 +55,44 @@ export default function Catalogue() {
   );
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const search = useSelector(({ app }) => app.searchBar);
+  const user = useSelector((state) => state.app.user);
   const cartState = useSelector(({ cart }) => cart);
-  const users = useSelector(state => state.app.usersLoaded)
-  // console.log('cart',cartState)
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useAuth0();  
-
-  
-
-// console.log(user,'***************')
-
-// console.log(users,'users')  
-
-useEffect(() => {
-  dispatch(getAllUsers());
-  if(isAuthenticated){
-      const getUser = users.find( elem => ( elem.mail === user.email))        
-      getCart(getUser._id).then( res => dispatch( itemsDbToCart( res.data )))
-      // console.log('getUser', getUser)
-      setShoppingCart( prev => ({
-        ...prev,
-        userItems: user,        
-    }))
-    } 
-     }, [isAuthenticated])
-    //  console.log('userItems', userItems)
 
   useEffect(() => {
-    const alStorage = JSON.stringify(cartState)
-    if( !isAuthenticated){
-      window.localStorage.setItem('cartItems', alStorage )
-    } else {
-      
-        const { cart } = JSON.parse(alStorage)
-        const userCart = {
-              user,
-              cart
-            }
-          // console.log('userCart', userCart)
-        window.localStorage.removeItem('cartItems')
-        if(userCart)
-            dispatch( linkUserCart( userCart ) )        
+    if(user) {
+      dispatch( itemsDbToCart( user.cart ))
     }
-}, [cartQuantity, cartState, isAuthenticated])
+  }, [user])
 
-// console.log('cantidad', cantItemsDbToCart)
-  
-
-
-
+  useEffect(() => {
+        const alStorage = JSON.stringify(cartState)
+        if( !user ){
+          window.localStorage.setItem('cartItems', alStorage )
+        } else {      
+          console.log('cambiostate')
+            const { cart } = JSON.parse(alStorage)
+            const userCart = {
+                  user,
+                  cart
+                }
+            window.localStorage.removeItem('cartItems')
+            if(userCart)
+                dispatch( linkUserCart( userCart ) )        
+        }
+        setShoppingCart( prev => ({
+          ...prev,
+          cartQuantity: cartState.cart.reduce( (acc, elem) => {
+            return ( acc = acc + elem.quantity)
+          }, 0),     
+      }))
+    }, [cartQuantity, cartState])
 
   useEffect(() => {
     if (!search || search.length === 0) {
       dispatch(getAllProducts());
     }
     dispatch(getAllCategories());
-    setShoppingCart( prev => ({
-      ...prev,
-      cartQuantity: cartState.cart.reduce( (acc, elem) => {
-        return ( acc = acc + elem.quantity)
-      }, 0),
-      // cartQuantity: JSON.parse(localStorage.getItem('cant')),      
-  }))
   }, [dispatch]);
 
   // Para renderizar cuando hay ordenamientos y filtrado
