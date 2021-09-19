@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { getAllUsers } from '../../redux/actions/users';
-import { getAllFavorites, addFavorite, deleteFavorite, removeAllFavorites } from "../../redux/actions/favorites";
+import { getAllFavorites, removeAllFavorites } from "../../redux/actions/favorites";
 import Nav from "../nav/Nav";
 import ProductCard from "../productcard/ProductCard";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -10,14 +10,6 @@ import { Grid } from '@material-ui/core';
 import { Pagination } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
-    // formControl: {
-    //     margin: theme.spacing(1),
-    //     marginTop: "-8vh",
-    //     minWidth: 130,
-    // },
-    // label: {
-    //     fontSize: "12px",
-    // },
     gridContainer: {
         margin: "auto",
         maxWidth: "200vh",
@@ -26,17 +18,15 @@ const useStyles = makeStyles((theme) => ({
         "& > * + *": {
             marginTop: theme.spacing(1),
         },
-
     },
 }));
 
 export default function Favorites() {
     const { user } = useAuth0();
     const dispatch = useDispatch();
-    // const users = useSelector(({ app }) => app.usersLoaded);
+    const users = useSelector(({ app }) => app.usersLoaded);
     const favorites = useSelector(({ app }) => app.favorites);
-    // const [favorites, setFavorites] = useState([]);
-    // let currentUser = {};
+    const [currentUser, setCurrentUser] = useState('');
 
     const classes = useStyles();
 
@@ -49,42 +39,19 @@ export default function Favorites() {
 
 
     useEffect(() => {
-        // if(user?.emal){
-            dispatch(removeAllFavorites());
-            dispatch(getAllFavorites('61473557ce1be32a5f867f1c'));
-        // }
+        if(user?.email){
+            dispatch(getAllUsers());
+            users?.forEach(u => {
+                if(u.mail === user?.email){
+                    setCurrentUser(u);
+                    dispatch(getAllFavorites(u?._id))
+                }
+            })
+        }
         return () => {
             dispatch(removeAllFavorites());
         }
-    }, [dispatch,'61473557ce1be32a5f867f1c']);
-
-
-    // function searchUser(){
-    //     // dispatch(getAllUsers());
-    //     users?.forEach(u => {
-    //         if(u.mail === user?.email){
-    //             currentUser = u;
-    //             setFavorites(currentUser.favorites);
-    //         }
-    //     })
-    // }
-
-    // useEffect(() => {
-    //     dispatch(getAllFavorites(currentUser?._id));
-    //     return () => {
-    //         dispatch(removeAllFavorites());
-    //     }
-    // }, [])
-
-    // useEffect(() => {
-    //     // dispatch(getAllUsers());
-    //     // users?.forEach(u => {
-    //     //     if(u.mail === user?.email){
-    //     //         currentUser = u;
-    //     //         setFavorites(currentUser.favorites);
-    //     //     }
-    //     // })
-    // },[]);
+    },[dispatch]);
 
     function handleChange(event, value) {
         setPage(value);
@@ -92,58 +59,61 @@ export default function Favorites() {
 
     return (
         <>
-            <Nav/>
-            {/* {searchUser()}
-            {currentUser?._id ?
-                <div>Estas en mis favoritos! usuario {currentUser.name}</div>
-                : <div>No estas logueado asi que no podes gestionar favoritos!</div>
-            }
-            {currentUser?._id &&  */}
+            <Nav />
             {user?.email ?
-            <>
-            {Array.isArray(favorites) && favorites?.length > 0 ? 
                 <>
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    className={classes.gridContainer}
-                >
-                {currentFavorites?.map(favorite => {
-                    return (
-                        <ProductCard
-                            key={favorite._id}
-                            id={favorite._id}
-                            name={favorite.name}
-                            image={favorite.image}
-                            price={favorite.price}
-                            stock={favorite.stock}
-                        />
-                    );
-                })}
-                </Grid>
-                            <Grid
-                                container
-                                direction="row"
-                                justifyContent="center"
-                                className={classes.root}
-                            >
-                                <Pagination
-                                    count={Math.ceil(favorites.length / favoritesPerPage)}
-                                    page={page}
-                                    onChange={handleChange}
-                                    variant="outlined"
-                                    shape="rounded"
-                                    color="primary"
-                                    style={{ marginBottom: "2vw ", marginTop: "1vw" }}
-                                />
-                            </Grid>
-            </>
-            : <div>No tienes favoritos!</div>
-            }
-            </>
-            : <div>No estas logueado</div>
+                    {/* {searchUser()} */}
+                    {currentUser?._id ?
+                        <>
+                            {Array.isArray(favorites) && favorites?.length > 0 ?
+                                <>
+                                    <Grid
+                                        container
+                                        direction="row"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        className={classes.gridContainer}
+                                    >
+                                        {currentFavorites?.map(favorite => {
+                                            return (
+                                                <ProductCard
+                                                    key={favorite._id}
+                                                    id={favorite._id}
+                                                    name={favorite.name}
+                                                    image={favorite.image}
+                                                    price={favorite.price}
+                                                    stock={favorite.stock}
+                                                />
+                                            );
+                                        })}
+                                    </Grid>
+                                    <Grid
+                                        container
+                                        direction="row"
+                                        justifyContent="center"
+                                        className={classes.root}
+                                    >
+                                        <Pagination
+                                            count={Math.ceil(favorites.length / favoritesPerPage)}
+                                            page={page}
+                                            onChange={handleChange}
+                                            variant="outlined"
+                                            shape="rounded"
+                                            color="primary"
+                                            style={{ marginBottom: "2vw ", marginTop: "1vw" }}
+                                        />
+                                    </Grid>
+                                </>
+                                :
+                                <div>No tienes Favoritos!</div>
+                            }
+                        </>
+                        :
+                        <div>Estas logueado pero no estas incluido en la Base de Datos!</div>
+                    }
+                </>
+                :
+                <div>No estas logueado!</div>
             }
         </>
     )

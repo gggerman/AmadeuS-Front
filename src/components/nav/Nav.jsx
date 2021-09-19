@@ -21,7 +21,6 @@ import SearchBar from "../searchbar/SearchBar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
-import { getAllFavorites, removeAllFavorites } from '../../redux/actions/favorites';
 import LoginLogout from "../account/LoginLogout";
 import logo from "./logo.jpg";
 
@@ -237,7 +236,7 @@ export default function Nav() {
         <div className={classes.sectionDesktop}>
              {user && 
                 <Typography component="p" variant="body2" className={classes.welcome}>
-                   Bienvenido {user.given_name} Bartolome Mitre 177..
+                   Bienvenido {user.name}
                 </Typography>
               }
           <IconButton
