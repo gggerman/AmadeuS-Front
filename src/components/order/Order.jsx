@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
     containerIzq: {
       display: 'flex',
       flexDirection: 'column',
-     
       alignItems: 'center',
       width: "60%",
       height: '75vh',
@@ -55,16 +54,13 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       flexDirection:'row',
       justifyContent: 'space-between',
-      width: '100%',
-      
-    
+      width: '100%',  
       margin: '0.5vh',
       boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
       "&:hover": {
         boxShadow: "0 10px 40px 0px rgba(0,117,49,0.3)",
         borderLeft: `3px solid ${theme.palette.primary.light}`,
       },
-  
       padding: '3vh',
       borderRadius: '3%',
       backgroundColor: 'white'
@@ -236,7 +232,7 @@ const useStyles = makeStyles((theme) => ({
       dispatch(addOrder(idOrder))
     },[idOrder])
 
-
+    console.log(shippingAddress)
     const handleCheckout = () => {
       
       axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name, user: user, shipping: shippingAddress })
@@ -262,6 +258,7 @@ const useStyles = makeStyles((theme) => ({
       setSelectedValue(event.target.value);
       if(event.target.value === 'tienda') setShipping(0)
       if(event.target.value === 'domicilio') setShipping(350)
+      setOpen(false)
     };
 
     const handleInputChange = (e) => {
@@ -276,8 +273,8 @@ const useStyles = makeStyles((theme) => ({
       setShippingAddress(input)
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
       setInput(initialInput)
-      
     }
+
     return (
       <div>
         <CssBaseline>
@@ -321,7 +318,7 @@ const useStyles = makeStyles((theme) => ({
             </Box>
 
             
-           <Container className={classes.root}> 
+           <Container className={classes.root}>   
            
               
                 <Typography component ="h1" variant = "body1">
@@ -336,10 +333,13 @@ const useStyles = makeStyles((theme) => ({
                 <InputLabel style ={{marginTop:'1.7vh'}}>Elige tu zona</InputLabel>
                  <ArrowRightAltIcon style={{marginTop:'1vh', marginLeft: '-3vh',color:'blue'}}/>
                 <TextField type="number"  defaultValue="1" inputProps={ {min :"1", max :"3"}} size= 'small'   onChange={handleShipping} style={{marginLeft: '-2vh'}} />
-        
-              <Button variant = "contained" className={classes.address} endIcon={<AddLocationIcon />} onClick ={handleAddress}>
-                Agregar
-              </Button>
+               {
+                 selectedValue === 'domicilio'&& 
+                    <Button variant = "contained" className={classes.address} endIcon={<AddLocationIcon />} onClick ={handleAddress}>
+                      Agregar
+                    </Button>
+               }     
+              
               
 
            </Container>
@@ -358,14 +358,18 @@ const useStyles = makeStyles((theme) => ({
                    </Typography>
                  </Box>
                  <Box>
-                 <Button variant = "contained" className={classes.address} endIcon={<LocationOnIcon />} onClick={handleToggle}>
-                   {!open && selectedValue === 'tienda' ? "Ver" : "Ocultar"  }
-                 </Button>                 
+                   {
+                     selectedValue === 'tienda' && 
+                      <Button variant = "contained" className={classes.address} endIcon={<LocationOnIcon />} onClick={handleToggle}>
+                        {!open && selectedValue === 'tienda'? "Ver" : "Ocultar"  }
+                      </Button>
+                   }
+                                
                  </Box>
                  
            </Container>
            {
-             open && selectedValue === 'tienda' ?  <Container className={classes.map}>
+             selectedValue === 'tienda' && open ?  <Container className={classes.map}>
 
                       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d535.8165387237323!2d-58.385068209148855!3d-34.60563648100992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccac5a682a5db%3A0xf4c875597214559d!2sDowntown%20Music!5e0!3m2!1ses-419!2sar!4v1631805346279!5m2!1ses-419!2sar" style={{width: '100%', border:'0', height: '30vh'}} allowFullScreen="" loading ='lazy' ></iframe>
              
@@ -421,6 +425,7 @@ const useStyles = makeStyles((theme) => ({
              <Typography variant="h6" color ="primary" style={{marginTop: '-3vh'}}>
                {detail.name}
              </Typography>
+
              <Table style={{marginTop:'-3vh'}}>
                <TableHead>
                  <TableRow>
@@ -457,6 +462,7 @@ const useStyles = makeStyles((theme) => ({
                           $ {numberWithCommas(detail.price * quantity + shipping)}
                           </Typography> }
                         </Typography>
+                        
                       </TableCell>
                    </TableRow>
                  </TableBody>

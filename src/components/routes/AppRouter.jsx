@@ -63,7 +63,7 @@ const AppRouter = () => {
             <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
             <Route path='/cart' component={ ShoppingCart } />        
             <Route path="/order/:id" component={withAuthenticationRequired(Order)} />
-            <Route path ="/ordercart/:id" component = {withAuthenticationRequired(OrderCart)} />
+            <Route path ="/ordercart" component = {withAuthenticationRequired(OrderCart)} />
             <Route path="/orderdetail" component = {OrderDetail} />
             <Route path="/usermanagement" component={adminAuth(UserManagement)} />
             <Route path="/adduser" component={AddUser} />
