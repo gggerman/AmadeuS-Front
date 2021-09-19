@@ -20,7 +20,9 @@ import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
-import Test from "../sales/Test";
+import Test from '../sales/Test';
+// import Account from "../account/Account";
+// import Profile from "../account/Profile";
 import { useHistory } from "react-router";
 import UserProfile from "../userprofile/UserProfile";
 
@@ -28,7 +30,7 @@ const AppRouter = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const history = useHistory();
 
-  console.log("admin", user);
+  // console.log("admin", user);
 
   const adminAuth = function (component) {
     if (user) {
@@ -76,6 +78,8 @@ const AppRouter = () => {
             <Route path="/adduser" component={AddUser} />
             <Route path ="/sales" component={adminAuth(Sales)} />
             <Route path ="/test" component={Test} />
+            {/* <Route path ="/account" component={Account} />
+            <Route path ="/profile" component={Profile} /> */}
             <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />
 
 

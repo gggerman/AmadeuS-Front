@@ -74,7 +74,6 @@ export default function ProductDetail() {
 
   useEffect(() => {
     dispatch(getDetails(id));
-    console.log(data);
   }, [dispatch, id]);
 
   return (

@@ -17,7 +17,7 @@ export default function Auth0ProviderWithHistory({ children }){
             clientId={REACT_APP_AUTH0_CLIENT_ID}
             redirectUri={window.location.origin}
             audience={REACT_APP_AUTH0_AUDIENCE}
-            scope="read:current_user update:current_user_metadata"
+            // scope="read:current_user update:current_user_metadata"
             onRedirectCallback={onRedirectCallback}
         >
             {children}
