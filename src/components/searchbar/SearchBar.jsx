@@ -6,9 +6,8 @@ import { alpha, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { getByName } from "../../redux/actions/getByName";
 import { Link } from "react-router-dom";
-import { Card, Typography } from "@material-ui/core";
+import { Card, CardMedia, Divider, Grid, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import "./SearchBar.css";
 import { numberWithCommas } from "../../utils";
 import { useHistory } from "react-router";
 import { setSearchBar } from "../../redux/actions/searchBar";
@@ -53,12 +52,55 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
     },
   },
+  errorResult: {
+    maxHeight: "75px",
+    minHeight: "75px",
+    display: "flex",
+    width: "100%",
+    padding: "5px 10px",
+    alignItems: "center",
+  },
+  searchLink: {
+    textDecoration: "none",
+    display: "flex",
+    padding: "10px 10px",
+    maxHeight: "75px",
+    minHeight: "75px",
+    color: "black",
+    height: "100%",
+    alignItems: "center",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+    },
+    transition: theme.transitions.create(),
+  },
+  searchResults: {
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    position: "absolute",
+    right: "0",
+    width: "100%",
+    maxHeight: "300px",
+    overflowX: "hidden",
+    overflowY: "auto",
+    zIndex: "20",
+    backgroundColor: "white",
+    borderRadius: "3px",
+  },
+  searchBox: {
+    position: "relative",
+  },
+  searchImage: {
+    height: "50px",
+    width: "70px",
+    backgroundRepeat: "no-repeat",
+    bacgroundSize: "cover",
+    backgroundPosition: "center",
+    marginRight: "10px",
+    flexShrink: "0",
+  },
 }));
 
 function SearchBar() {
-
-
-  const [val, setVal] = useState([]);
   const classes = useStyles();
   const search = useSelector(({ app }) => app.searchBar);
   const [name, setName] = useState(search);
@@ -101,7 +143,7 @@ function SearchBar() {
   }, [name]);
 
   return (
-    <div className="searchbox">
+    <div className={classes.searchBox}>
       <form onSubmit={(e) => handleSubmit(e)}>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
@@ -120,62 +162,25 @@ function SearchBar() {
             onBlur={() => setTimeout(() => setFocused(false), 200)}
             onChange={handleChange}
           />
-          {/* {name.length > 0 && focused && (
-            <Box className={classes.searchBoxResults}>
-            <div className="searchbox__results">
+          {name.length > 0 && focused && (
+            <Grid className={classes.searchResults}>
               {searchResults.length > 0 ? (
                 searchResults.map((r) => (
-                  <Card>
+                  <Card key={r.id}>
                     <Link
+                      className={classes.searchLink}
                       to={`/detail/${r._id}`}
-                      style={{ textDecoration: "none", display: "flex" }}
                       onClick={() => setName("")}
                     >
-                        <div
-                          className="searchbox__result-image"
-                          style={{
-                            backgroundImage: `url(${
-                              r.image ||
-                              "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAACuCAMAAAClZfCTAAAAIVBMVEX19fXd3d3z8/Pq6urb29vi4uLx8fHt7e3n5+fk5OTf39/UY198AAACNElEQVR4nO3a4Y6rIBCGYRUE9P4veO0KijB022xSTOd9zj/Xk9AvMgjOMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgDualrGy+t6juhNXB7Sxofe4bmQVIxqt6z2w25jkhMbR9B7ZbcjzbMNMS3wroqX3yG7DtCJae4+sm+lqEFb8FNFU3qtCaAXyilVDSN7+J6Jx7j3+D2gWnkYkFzrK05OI1sV457wJ2avk9T9b1RHZOduTTcdd19qjOqK13GwEIro+QsJ7tPudbi5f8p3iWiSfe8zS0/bh4fYgRdQ6GRJOAJRGdG7oJx+CyaoSEe2Ot0GfZtZRmer3TJ0RpUVryfJIU6/avqmMKJ14XAqPjRlVR0kqI4qlp3xe4uVyVdMYUfzNVdVJ14koleZ6fd+nWnmurTGiPQlXH5HEha7ITmNETrz6sN9fFCOFEdl9yZeOIve/FGVcY0T7VSLK8BT9Sa5Fwqe0GAa1KO1h6xUtvnWzoqUkqs1Y7HmYiuw0RhR/c7UZW57e/tWqN6C4YTVWjKJ861YZUTouCpeM4gkJO/38McpWNXu0hFRbN50Rnb/arKPd/i3ulZu/l7Aby9uInMu+nAm9WUojanWjSQ1+WiOSMxL7+9RGJPXEyDfqjajqjnXSp1jlEW2z7fzG6OdWo5buiB4NRsGYsDQ61YnoNRoiEg7y36GiFbvZiE5Cp7KZ+g29hw4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIbhB3oYDvixwDtCAAAAAElFTkSuQmCC"
-                            })`,
-                          }}
-                        ></div>
-                      <CardContent>
-                        <Typography component="h1" className={classes.price}>
-                          $ {numberWithCommas(r.price)}
-                        </Typography>
-                        <Typography variant="body2" component="h3">
-                          {r.name}
-                        </Typography>
-                      </CardContent>
-                    </Link>
-                    <Divider variant="middle" light />
-                  </Card>
-                ))
-              ) : (
-                <Card>
-                  <Typography component="h1">
-                    Ningún resultado coincide con la búsqueda
-                  </Typography>
-                </Card>
-              )}
-            </div> */}
-          {/* )} */}
-          {name.length > 0 && focused && (
-            <div className="searchbox__results">
-              {searchResults.length > 0 ? (
-                searchResults.map((r) => (
-                  <div key={r.id} className="searchbox__result">
-                    <Link to={`/detail/${r._id}`} onClick={() => setName("")}>
-                      <div
-                        className="searchbox__result-image"
+                      <CardMedia
+                        className={classes.searchImage}
                         style={{
                           backgroundImage: `url(${
                             r.image ||
                             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASIAAACuCAMAAAClZfCTAAAAIVBMVEX19fXd3d3z8/Pq6urb29vi4uLx8fHt7e3n5+fk5OTf39/UY198AAACNElEQVR4nO3a4Y6rIBCGYRUE9P4veO0KijB022xSTOd9zj/Xk9AvMgjOMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgDualrGy+t6juhNXB7Sxofe4bmQVIxqt6z2w25jkhMbR9B7ZbcjzbMNMS3wroqX3yG7DtCJae4+sm+lqEFb8FNFU3qtCaAXyilVDSN7+J6Jx7j3+D2gWnkYkFzrK05OI1sV457wJ2avk9T9b1RHZOduTTcdd19qjOqK13GwEIro+QsJ7tPudbi5f8p3iWiSfe8zS0/bh4fYgRdQ6GRJOAJRGdG7oJx+CyaoSEe2Ot0GfZtZRmer3TJ0RpUVryfJIU6/avqmMKJ14XAqPjRlVR0kqI4qlp3xe4uVyVdMYUfzNVdVJ14koleZ6fd+nWnmurTGiPQlXH5HEha7ITmNETrz6sN9fFCOFEdl9yZeOIve/FGVcY0T7VSLK8BT9Sa5Fwqe0GAa1KO1h6xUtvnWzoqUkqs1Y7HmYiuw0RhR/c7UZW57e/tWqN6C4YTVWjKJ861YZUTouCpeM4gkJO/38McpWNXu0hFRbN50Rnb/arKPd/i3ulZu/l7Aby9uInMu+nAm9WUojanWjSQ1+WiOSMxL7+9RGJPXEyDfqjajqjnXSp1jlEW2z7fzG6OdWo5buiB4NRsGYsDQ61YnoNRoiEg7y36GiFbvZiE5Cp7KZ+g29hw4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIbhB3oYDvixwDtCAAAAAElFTkSuQmCC"
                           })`,
                         }}
-                      ></div>
+                      ></CardMedia>
                       <div>
                         <Typography variant="body2" component="h3">
                           ${numberWithCommas(r.price)}
@@ -185,16 +190,17 @@ function SearchBar() {
                         </Typography>
                       </div>
                     </Link>
-                  </div>
+                    <Divider variant="middle" />
+                  </Card>
                 ))
               ) : (
-                <Card>
+                <Card className={classes.errorResult}>
                   <Typography component="h1">
                     Ningún resultado coincide con la búsqueda
                   </Typography>
                 </Card>
               )}
-            </div>
+            </Grid>
           )}
         </div>
       </form>

@@ -44,7 +44,8 @@ export default function UserManagement(){
 
     useEffect(() => {
         dispatch(getAllUsers());
-    },[users])
+    },[])
+    
 
     async function handlePrivileges(user){
         user.isAdmin = !user.isAdmin;
