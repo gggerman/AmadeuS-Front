@@ -173,7 +173,7 @@ const useStyles = makeStyles((theme) => ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const { user } = useAuth0();
-    console.log('user', user)
+    // console.log('user', user)
     const { id } = useParams()
     
     const [detail, setDetail] = useState({})

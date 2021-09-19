@@ -27,7 +27,7 @@ import Profile from "../account/Profile";
 const AppRouter = () => {
   const { user, isAuthenticated } = useAuth0();
 
-  console.log("admin", user);
+  // console.log("admin", user);
 
   const adminAuth = function (component) {
     if (user) {
