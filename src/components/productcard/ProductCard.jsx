@@ -103,28 +103,26 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductCard(product) {
   const { id, name, price, image, stock } = product;
   //recibe de Products las props
+  const cartState = useSelector(({ cart }) => cart);
   const classes = useStyles();
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity, cartItems} = shoppingCart
   const [shareOpen, setShareOpen] = useState(false)
   const dispatch = useDispatch()
   const REACT_APP_SERVER = process.env
-
   
   const agregar = (e) => {
     setShoppingCart( value => ({
       ...value,
       cartQuantity: cartQuantity + 1,
     }))
-    dispatch( addToCart (id))   
-  }
+    dispatch( addToCart (id))       
+  } 
 
-  // const addToFavorite = (e) => {
-  //   axios.put(`${REACT_APP_SERVER}/users/${user._id}`, favorites: product);
-  // }
+  const alStorage = JSON.stringify(cartState)
   
   useEffect(() => {
-    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) ) 
       return () =>{
         window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
       }

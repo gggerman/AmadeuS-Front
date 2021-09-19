@@ -1,3 +1,5 @@
+import axios from "axios";
+const { REACT_APP_SERVER } = process.env;
 
 // FUNCIONES REUTILIZABLES
 
@@ -14,4 +16,10 @@ export function validar( name, arr ) {
     return true
   }
   return false
+}
+
+export async function getCart( id ) {
+  const itemsDbToCart = await axios.get(`${REACT_APP_SERVER}/users/${id}/cart`)
+  return itemsDbToCart ? itemsDbToCart : null
+
 }

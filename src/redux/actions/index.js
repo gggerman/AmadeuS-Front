@@ -12,7 +12,10 @@ export const GET_ALL_REVIEWS = "GET_ALL_REVIEWS";
 export const SAVE_USER = "SAVE_USER";
 export const CLEAN_USER = "CLEAN_USER";
 
+
 //shoppingCartReducer
+export const LINK_USER_CART = 'LINK_USER_CART'
+export const ITEMS_DB_TO_CART = 'ITEMS_DB_TO_CART'
 export const ADD_TO_CART = "ADD_TO_CART";
 export const DELETE_ONE_ITEM = "DELETE_ONE_ITEM";
 export const CLEAN_CART = "CLEAN_CART";
