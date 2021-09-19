@@ -160,7 +160,7 @@ export default function Review({product}) {
                                 {review.modified &&
                                     <Typography component="legend" style={{ marginTop: '3.5vh' }}>Editado {review.modified}</Typography>
                                 }
-                                {user.name === review.user?.name &&
+                                {user?.name === review.user?.name &&
                                     <>
                                         <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh', marginRight: '2vh', marginLeft: '5vh' }} onClick={() => handleDelete(review._id)}>
                                             Eliminar
