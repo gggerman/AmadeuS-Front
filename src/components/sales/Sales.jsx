@@ -71,15 +71,39 @@ export default function Sales(){
                     </TableRow>
 
                 </TableHead>
-
-
                 <TableBody>
-                   {orders?.map((order) => (
+                    {   orders &&
+                        orders.map((order) => (
+                            <TableRow>
+                                <TableCell className={classes.tableCell} > 0001 </TableCell>
+                                <TableCell className={classes.tableCell} > 
+                                {order.products && order.products.map((product) => <img src = {product.image} className={classes.img}  /> )} 
+                                </TableCell>
+                                <TableCell> $
+                                { numberWithCommas(order.products.reduce((acc, item) => {
+                                         return (
+                                            acc += item.price
+                                                    
+                                                )
+                                                }, 0))} 
+                                </TableCell>
+                                 <TableCell> {order.status === 'approved' && order.status.toUpperCase()} </TableCell>
+                                 <TableCell>{ order.buyer && order.buyer.mail} </TableCell>
+                                 {/* <TableCell> {order.shipping && order.shipping}Buenos Aires </TableCell> */}
+                            </TableRow>
+                        ))
+
+                    }
+                </TableBody>
+
+                {/* <TableBody>
+                   { orders &&
+                    orders.map((order) => (
                        <TableRow key={order._id}>
 
                             <TableCell className={classes.tableCell} > 0001 </TableCell>
                             <TableCell className={classes.tableCell} > 
-                                {order.products.map((product) => <img src = {product.image} className={classes.img}  /> )} 
+                                {order.products && order.products.map((product) => <img src = {product.image} className={classes.img}  /> )} 
                             </TableCell>
                             <TableCell> $
                                 { numberWithCommas(order.products.reduce((acc, item) => {
@@ -89,7 +113,7 @@ export default function Sales(){
                                                 )
                                                 }, 0))} 
                             </TableCell>
-                            <TableCell> {order.status.toUpperCase()} </TableCell>
+                            <TableCell> {order.status && order.status.toUpperCase()} </TableCell>
                             <TableCell>{ order.buyer && order.buyer.mail} </TableCell>
                             <TableCell> {order.shipping}Buenos Aires </TableCell>
                             <MoreVertIcon/>
@@ -103,7 +127,7 @@ export default function Sales(){
                    }
 
 
-                </TableBody>
+                </TableBody> */}
             </Table>
 
             
