@@ -9,6 +9,11 @@ export const GET_DETAILS = 'GET_DETAILS'
 export const GET_ALL_CATEGORIES = 'GET_ALL_CATEGORIES'
 export const ADD_ORDER_ID = "ADD_ORDER_ID"
 export const GET_ALL_REVIEWS = "GET_ALL_REVIEWS"
+export const GET_ALL_FAVORITES = "GET_ALL_FAVORITES"
+export const ADD_FAVORITE = "ADD_FAVORITE"
+export const DELETE_FAVORITE = "DELETE_FAVORITE"
+export const REMOVE_ALL_FAVORITES = "REMOVE_ALL_FAVORITES"
+
 
 //shoppingCartReducer
 export const ADD_TO_CART = 'ADD_TO_CART'

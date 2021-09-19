@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -10,6 +11,7 @@ import {
   MenuItem,
   Menu,
   Button,
+  CssBaseline,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -19,6 +21,7 @@ import SearchBar from "../searchbar/SearchBar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
+import { getAllFavorites, removeAllFavorites } from '../../redux/actions/favorites';
 import LoginLogout from "../account/LoginLogout";
 import logo from './logo.jpg'
 
@@ -102,6 +105,7 @@ export default function Nav() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const favorites = useSelector(({app}) => app.favorites);
   const { isAuthenticated, user } = useAuth0();
 
   // console.log("nav", isAuthenticated);
@@ -187,6 +191,7 @@ export default function Nav() {
 
   return (
     <div>
+      <CssBaseline>
       <AppBar
         style={{
           position: "sticky",
@@ -213,8 +218,13 @@ export default function Nav() {
               </Badge>
             </IconButton>
 
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
+            <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
+              component={Link}
+              to="/favorites"
+            >
+              <Badge badgeContent={favorites?.length > 0 ? favorites.length : null} color="secondary">
                 <FavoriteIcon />
               </Badge>
             </IconButton>
@@ -239,6 +249,7 @@ export default function Nav() {
           </Link>
         </div> */}
       </AppBar>
+      </CssBaseline>
       {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
       {/* <div className={classes.offset}></div> NO BORRAR */}
       {/* <div className={classes.offset}></div> NO BORRAR */}

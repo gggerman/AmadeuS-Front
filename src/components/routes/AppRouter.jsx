@@ -21,6 +21,7 @@ import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
 import Test from '../sales/Test';
+import Favorites from '../favorites/Favorites';
 
 const AppRouter = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -69,6 +70,7 @@ const AppRouter = () => {
             <Route path="/adduser" component={AddUser} />
             <Route path ="/sales" component={adminAuth(Sales)} />
             <Route path ="/test" component={Test} />
+            <Route path ="/favorites" component={Favorites} />
             </UserContext.Provider>
             <Redirect to="/" />
           </Switch>

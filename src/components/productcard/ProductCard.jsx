@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -16,8 +16,12 @@ import ShareIcon from "@material-ui/icons/Share";
 import { Link } from "react-router-dom";
 import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserContext } from "../shoppingcart/UserContext";
+import axios from 'axios';
+import { getAllUsers } from '../../redux/actions/users';
+import { getAllFavorites, addFavorite, deleteFavorite, removeAllFavorites } from "../../redux/actions/favorites";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +52,12 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.light,
     },
   },
+  iconDelete: {
+    color: theme.palette.primary.light,
+    "&:hover": {
+    color: "grey",
+    },
+  },
   text: {
     textDecoration: "none",
   },
@@ -65,9 +75,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     "&:focus": {
       color: theme.palette.primary.light
-    }
-
-  }
+    },
+  },
 }));
 
 export default function ProductCard(product) {
@@ -77,6 +86,9 @@ export default function ProductCard(product) {
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity, cartItems} = shoppingCart
   const dispatch = useDispatch()
+  // const users = useSelector(({ app }) => app.usersLoaded);
+  const favorites = useSelector(({ app }) => app.favorites);
+  const { user } = useAuth0();
   
   const agregar = (e) => {
     setShoppingCart( value => ({
@@ -92,6 +104,33 @@ export default function ProductCard(product) {
         window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
       }
   }, [cartQuantity])
+
+  useEffect(() => {
+    // if(user?.emal){
+      dispatch(getAllFavorites('61473557ce1be32a5f867f1c'));
+      return () =>{
+        dispatch(getAllFavorites('61473557ce1be32a5f867f1c'));
+      }
+  // }
+  },[dispatch])
+
+  function favoritesButton() {
+    if (user?.email) {
+      let post = true;
+      favorites?.forEach(favorite => {
+        if (favorite._id === id){
+          post = false;
+          dispatch(deleteFavorite('61473557ce1be32a5f867f1c', id));
+          dispatch(getAllFavorites('61473557ce1be32a5f867f1c'));
+        }
+      })
+      if (post) {
+        dispatch(addFavorite('61473557ce1be32a5f867f1c', id));
+        dispatch(getAllFavorites('61473557ce1be32a5f867f1c'));
+      }
+      // dispatch(getAllFavorites('61473557ce1be32a5f867f1c'));
+    }
+  }
 
 
   return (
@@ -122,9 +161,11 @@ export default function ProductCard(product) {
         <Divider variant="middle" light />
       </Link>
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon className={classes.icon} />
-        </IconButton>
+          <IconButton aria-label="add to favorites"
+            onClick={favoritesButton}
+          >
+            <FavoriteIcon className={classes.icon} />
+          </IconButton>
         <IconButton aria-label="share">
           <ShareIcon className={classes.icon} />
         </IconButton>
