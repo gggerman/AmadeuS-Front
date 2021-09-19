@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
 import { getAllFavorites, removeAllFavorites } from '../../redux/actions/favorites';
 import LoginLogout from "../account/LoginLogout";
-import logo from './logo.jpg'
+import logo from "./logo.jpg";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -93,12 +93,22 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   icon: {
-    marginTop: '2vh',
-    width: '8vh',
-    backgroundSize: 'contain',
-    margin: 'auto',
-    borderRadius: '6px'
+    marginTop: "2vh",
+    width: "8vh",
+    backgroundSize: "contain",
+    margin: "auto",
+    borderRadius: "6px",
   },
+  avatar: {
+    width: "2vw",
+    borderRadius: "15px",
+  },
+  welcome: {
+    color: theme.palette.primary.light,
+    fontSize: '80%',
+    alignSelf: 'center',
+    display:'flex'
+  }
 }));
 
 export default function Nav() {
@@ -106,7 +116,7 @@ export default function Nav() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const favorites = useSelector(({app}) => app.favorites);
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated, user, isLoading } = useAuth0();
 
   // console.log("nav", isAuthenticated);
   // console.log("nav-user", user);
@@ -130,6 +140,20 @@ export default function Nav() {
   const { shoppingCart } = useContext(UserContext);
   const { cartQuantity } = shoppingCart;
   const menuId = "primary-search-account-menu";
+
+  const adminAuth = function () {
+    if (!isLoading) {
+      if (user) {
+        return (user.email && user.email === "crismaxbar@gmail.com") ||
+          user.email === "heisjuanpablo@gmail.com" ||
+          user.email === "leandrobuzeta@gmail.com" ||
+          user.email === "juanmhdz99@gmail.com"
+          ? true
+          : false;
+      }
+    }
+  };
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -141,10 +165,16 @@ export default function Nav() {
       onClose={handleMenuClose}
     >
       <LoginLogout />
-
-      <Link to="/adminpanel" className={classes.link}>
-        <MenuItem>Perfil</MenuItem>
-      </Link>
+      {adminAuth() && (
+        <Link to="/adminpanel" className={classes.link}>
+          <MenuItem>Administrar</MenuItem>
+        </Link>
+      )}
+      {isAuthenticated && (
+        <Link to="/userprofile" className={classes.link}>
+          <MenuItem>Perfil</MenuItem>
+        </Link>
+      )}
     </Menu>
   );
 
@@ -190,35 +220,38 @@ export default function Nav() {
   );
 
   return (
-    <div>
-      <CssBaseline>
-      <AppBar
-        style={{
-          position: "sticky",
-          backgroundColor: "rgb(0, 23, 20)",
-          height: "100%",
-        }}
-      >
-        <Toolbar className={classes.navDisplay}>
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            <img src ={logo} className={classes.icon}/>
-          </Link>
-          <SearchBar />
-          
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton
-              aria-label="show 4 new mails"
-              color="inherit"
-              component={Link}
-              to="/cart"
-            >
-              <Badge badgeContent={cartQuantity} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+    <AppBar
+      style={{
+        position: "relative",
+        backgroundColor: "rgb(0, 23, 20)",
+        width: "100%",
+      }}
+    >
+      <Toolbar className={classes.navDisplay}>
+        <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+          <img src={logo} className={classes.icon} />
+        </Link>
+        <SearchBar />
 
-            <IconButton
+        <div className={classes.grow} />
+        <div className={classes.sectionDesktop}>
+             {user && 
+                <Typography component="p" variant="body2" className={classes.welcome}>
+                   Bienvenido {user.given_name} Bartolome Mitre 177..
+                </Typography>
+              }
+          <IconButton
+            aria-label="show 4 new mails"
+            color="inherit"
+            component={Link}
+            to="/cart"
+          >
+            <Badge badgeContent={cartQuantity} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
+
+          <IconButton
               aria-label="show 17 new notifications"
               color="inherit"
               component={Link}
@@ -227,34 +260,36 @@ export default function Nav() {
               <Badge badgeContent={favorites?.length > 0 ? favorites.length : null} color="secondary">
                 <FavoriteIcon />
               </Badge>
-            </IconButton>
+          </IconButton>
 
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-controls={menuId}
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
+            color="inherit"
+          >
+            {isAuthenticated ? (
+              <img src={user.picture} className={classes.avatar} />
+            ) : (
               <AccountCircle />
-            </IconButton>
-          </div>
-        </Toolbar>
-        {/* <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2vw'}}>
+            )}
+          </IconButton>
+        </div>
+      </Toolbar>
+      {/* <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2vw'}}>
           <Link to='/adduser' style={{ textDecoration: "none", color:"#ffffff" }}>
             <Typography variant="p" noWrap>
               Registrate
             </Typography>
           </Link>
         </div> */}
-      </AppBar>
-      </CssBaseline>
       {/* Sin esto el nav tapa los ordenamientos y filtrado y no se ven */}
       {/* <div className={classes.offset}></div> NO BORRAR */}
       {/* <div className={classes.offset}></div> NO BORRAR */}
       {renderMobileMenu}
       {renderMenu}
-    </div>
+    </AppBar>
   );
 }

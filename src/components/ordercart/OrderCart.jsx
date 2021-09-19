@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {useParams} from 'react-router-dom';
-import {AppBar, Card, Box, Container, CardMedia, Typography, Divider, Button, CssBaseline} from '@material-ui/core';
-import logo from './logo.jpg'
-import { makeStyles } from '@material-ui/core';
 import {Link} from 'react-router-dom';
+import {Modal, Fade, Box, Backdrop, Container, CardMedia, Typography, Divider, Button, CssBaseline, Checkbox, Radio,Table, TableHead, TableRow, TableCell, TableBody, InputLabel, TextField, FormControl,makeStyles} from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit'
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import AddLocationIcon from '@material-ui/icons/AddLocation';
+import PublicIcon from '@material-ui/icons/Public';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import LocalShippingIcon from '@material-ui/icons//LocalShipping';
+import zonas from './zonas.png';
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,15 +18,7 @@ const { REACT_APP_SERVER } = process.env;
 
 
 const useStyles = makeStyles((theme) => ({
-    media: {
-      width: '50%',
-      paddingTop: "20%", // 16:9
-      margin: "0vh",
-      backgroundSize: 'contain',
-      "&:hover": {
-        backgroundSize: "larger"
-      },
-    },
+    
     container: {
         height: '100%',
         width: '100%',
@@ -33,15 +29,55 @@ const useStyles = makeStyles((theme) => ({
     containerIzq: {
       display: 'flex',
       flexDirection: 'column',
-      justifyContent:'space-around',
       alignItems: 'center',
       width: "60%",
-      height: '70vh',
+      height: '75vh',
       backgroundColor:'RGB(245, 245, 244)',
       margin: '2%',
+      paddingTop: '2%',
+      paddingBottom: '2%',
       borderRadius: '5px',
-      
-      
+    
+    },
+    root: {      
+      display: 'flex',
+      flexDirection:'row',
+      justifyContent: 'space-between',
+      width: '100%',  
+      margin: '0.5vh',
+      boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+      "&:hover": {
+        boxShadow: "0 10px 40px 0px rgba(0,117,49,0.3)",
+        borderLeft: `3px solid ${theme.palette.primary.light}`,
+      },
+      padding: '3vh',
+      borderRadius: '3%',
+      backgroundColor: 'white'
+
+    },
+    rootProduct: {      
+      display: 'flex',
+      flexDirection:'row',
+      width: '100%', 
+      height:'12vh',  
+      marginTop: '1vh',  
+      padding:'3vh', 
+      boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+      borderRadius: '3%',
+      backgroundColor: 'white'
+
+    },
+    map: {
+      display: 'flex',
+      flexDirection:'row',
+      justifyContent: 'space-between',
+      width: '100%',
+      flexGrow: 1,
+      margin: '0.5vh',
+      boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+      padding: '3vh',
+      borderRadius: '3%',
+      backgroundColor: 'white'
     },
     containerDer: {
       display: 'flex',
@@ -56,15 +92,24 @@ const useStyles = makeStyles((theme) => ({
         
     },
     button: {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.light,
       color: theme.palette.primary.contrastText,
       "&:hover": {
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.primary.light
       },
       height: '6vh',
-      width: '15vh',
+      width: '20vh',
       fontSize: '70%'
-    
+    },
+    address:{
+      backgroundColor: theme.palette.primary.light,
+      color: theme.palette.primary.contrastText,
+      height: '6vh',
+      width: '20vh',
+      fontSize: '80%',
+      "&:hover": {
+        backgroundColor: 'rgb(0, 139, 183)'
+      },
     },
     icon: {
       width: '8vh',
@@ -72,22 +117,68 @@ const useStyles = makeStyles((theme) => ({
       margin: 'auto'
     },
     img: {
-        width: '40%',
+        width: '20%',
         backgroundSize: 'contain',
         
     },
-    media: {
-        display: 'flex',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-        borderRadius: '50px',
-        width: '60%'
-       
+    img2: {
+      width: '15%',
+      backgroundSize: 'contain',
+      
+  },
+    truck:{
+      height: '30%',
+      "&:hover":{
+        backgroundColor: theme.palette.primary.light
+      },
+    },
+    earth: {
+      marginTop:'-5vh', 
+      height: '30%',
+      "&:hover":{
+        backgroundColor: theme.palette.primary.light
+      },
+      marginLeft: '-0.5vh'
+      
+    },
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+      height:'80vh',
+      width:'100vh'
+    },
+    zones: {
+      width:'100%',
+      height: '100%',
+      backgroundSize: 'contain',
+    },
+    msg: {
+      fontStyle: 'italic'
+    },
+
+    text: {
+      fontSize: 12,
+      color: theme.palette.primary.dark
+    },
+    edit: {
+      backgroundColor: 'rgb(0, 139, 183)',
+      color: theme.palette.primary.contrastText,
+      height: '4vh',
+      width: '15vh',
+      fontSize: '70%',
+      "&:hover": {
+        backgroundColor: 'rgb(0, 139, 183)'
+      },
     }
   }));         
-  //como hacer para unificar la preview de la compra en este solo componente, ya sea que venga desde Cart o ProdDetail
-  //en principio estaria controlado por el id que llega por params, si venimos desde cart a order no le pasariamos id
-  //detail por lo tanto tiraria undefined, no habria id
+ 
   export default function Order() {
     const { user } = useAuth0();
     const classes = useStyles()
@@ -96,16 +187,28 @@ const useStyles = makeStyles((theme) => ({
     console.log(cartProducts)
     
 
-    const { id } = useParams() //el id usado es el id de la orden
-
+  
 
     const [quantity, setQuantity] = useState(1)
-
     const [idOrder, setIdOrder] = useState()
- 
-    
-    
-    
+    const [selectedValue, setSelectedValue] = useState('');
+    const [zones, setZones] = useState(false)
+    const handleZones = () => setZones(true)
+    const handleClose = () => setZones(false)
+    const [shipping, setShipping] = useState(0)
+    const [open, setOpen] = useState(false);
+    const [address, setAddress] = useState(false)
+
+    const initialInput = {
+      street: "",
+      state: "",
+      number: "",
+      floor: "",
+      between: "",
+      zip: ""
+    };
+    const [input, setInput] = useState(initialInput);
+    const [shippingAddress, setShippingAddress] = useState({})
 
     useEffect(() => {            
       dispatch(addOrder(idOrder))
@@ -124,6 +227,37 @@ const useStyles = makeStyles((theme) => ({
       .catch((err) => console.log(err))
     }
   
+    const handleShipping = (e) => {
+      if(e.target.value === '1' && selectedValue === 'domicilio') setShipping(350)
+      if(e.target.value === '2' && selectedValue === 'domicilio') setShipping(500)
+      if(e.target.value === '3' && selectedValue === 'domicilio') setShipping(750)
+    }
+    
+    
+    const handleAddress = () => {
+      setAddress(!address)
+    }
+
+    const handleChange = (event) => {
+      setSelectedValue(event.target.value);
+      if(event.target.value === 'tienda') setShipping(0)
+      if(event.target.value === 'domicilio') setShipping(350)
+      setOpen(false)
+    };
+    const handleToggle = () => setOpen(!open);
+
+    const handleInputChange = (e) => {
+      setInput({
+        ...input,
+        [e.target.name]: e.target.value,
+      });
+    }
+    const handleSave = (e) => {
+      e.preventDefault()
+      setShippingAddress(input)
+      //aca deberiamos guardar tambien los datos de envio en User en nuestra db
+      setInput(initialInput)
+    }
     const handleQuantity = (e) =>{
       setQuantity(e.target.value)
     }
@@ -131,82 +265,241 @@ const useStyles = makeStyles((theme) => ({
     return (
       <div>
         <CssBaseline>
-         <NavSecondary />
+         <NavSecondary style={{marginBottom: '5vh'}}  />
 
          <Container className={classes.container}>
 
           
           <Container className={classes.containerIzq}>
-            <Box>
-              <Typography component ="h1" variant= "h5" style = {{marginTop: '-2vh'}}> ¿Como queres recibir o retirar tu compra?</Typography>
+           <Box>
+
+            <Typography component ="h3" variant= "h5" style = {{marginTop: '-2vh', marginBottom: '5vh'}}>
+               ¿Como queres recibir o retirar tu compra?
+            </Typography>
+            <Box style={{display:'flex',   justifyContent: 'center'}}>
+                <InputLabel component = 'h3'style = {{marginTop: '-3vh', marginBottom: '3vh', display:'flex',   justifyContent: 'center'}}>
+                  Conoce las areas de Cobertura <ArrowRightAltIcon style={{marginTop:'-0.5vh', color: 'blue', marginLeft: '1vh'}} />
+                  
+                </InputLabel>
+                <Button className={classes.earth} onClick={handleZones}>
+                  <PublicIcon />
+                </Button>
+                 
+              </Box>
+              <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={zones}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500,
+                    }}
+                >
+                    <Container className={classes.paper}>
+                      <img src={zonas} className={classes.zones} />          
+                   </Container>
+                </Modal>
+
+           </Box>
+
+           <Container className={classes.root}>
+
+              <Typography component ="h1" variant = "body1">
+                  <Radio 
+                    checked={selectedValue === 'domicilio'}
+                    onChange={handleChange}
+                    value="domicilio"
+                    name="radio-buttons" />
+                    Recibe tu Compra en tu domicilio
+                </Typography>
+                
+                <InputLabel style ={{marginTop:'1.7vh'}}>Elige tu zona</InputLabel>
+                 <ArrowRightAltIcon style={{marginTop:'1vh', marginLeft: '-3vh',color:'blue'}}/>
+                <TextField type="number"  defaultValue="1" inputProps={ {min :"1", max :"3"}} size= 'small'   onChange={handleShipping} style={{marginLeft: '-2vh'}} />
+               {
+                 selectedValue === 'domicilio'&& 
+                    <Button variant = "contained" className={classes.address} endIcon={<AddLocationIcon />} onClick ={handleAddress}>
+                      Agregar
+                    </Button>
+               } 
+               
+
+           </Container> 
+           <Container className={classes.root}> 
+                 <Box>
+                   <Typography component="h1" variant = "body1">
+                    <Radio
+                      checked={selectedValue === 'tienda'}
+                      onChange={handleChange}
+                      value="tienda"
+                      name="radio-buttons" />
+
+                    Retirar Compra en la tienda
+
+                   </Typography>
+                 </Box>
+                 <Box>
+                   {
+                     selectedValue === 'tienda' && 
+                      <Button variant = "contained" className={classes.address} endIcon={<LocationOnIcon />} onClick={handleToggle}>
+                        {!open && selectedValue === 'tienda'? "Ver" : "Ocultar"  }
+                      </Button>
+                   }
+                                
+                 </Box>
+                 
+           </Container> 
+           {
+             selectedValue === 'tienda' && open ?  <Container className={classes.map}>
+
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d535.8165387237323!2d-58.385068209148855!3d-34.60563648100992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccac5a682a5db%3A0xf4c875597214559d!2sDowntown%20Music!5e0!3m2!1ses-419!2sar!4v1631805346279!5m2!1ses-419!2sar" style={{width: '100%', border:'0', height: '30vh'}} allowFullScreen="" loading ='lazy' ></iframe>
+             
+                   </Container> 
+                   : null
+           }
+            {     //------------FORMULARIO PARA AGREGAR DATOS DE ENVIO------------------------------//
+            selectedValue === 'domicilio' && address && !open ?
+            <Box style={{margin:'2vh'}}>
+            <form>  
+              <TextField type ="text" placeholder="Provincia" style={{margin:'1vh'}} 
+              name="state" value={input.state} onChange={handleInputChange}/>
+              <TextField type ="text" placeholder="Calle" style={{margin:'1vh'}}
+              name="street" value={input.street} onChange={handleInputChange}/>
+              <TextField type ="number" placeholder="Numero" style={{margin:'1vh'}}
+              name="number" value={input.number} onChange={handleInputChange}/>
+              <TextField type ="text" placeholder="Piso y Numero" style={{margin:'1vh'}} 
+              name="floor" value={input.floor} onChange={handleInputChange}/>
+              <TextField type ="text" placeholder="Entre calles" style={{margin:'1vh'}}
+              name="between" value={input.between} onChange={handleInputChange}/>
+              <TextField type ="number" placeholder="CP" style={{margin:'1vh'}} 
+              name="zip" value={input.zip} onChange={handleInputChange}/>
+              <Button variant = "contained" className={classes.address} endIcon={<AddLocationIcon />} onClick ={handleSave}>
+                  Guardar
+              </Button>
+            </form>
             </Box>
-
-              <Container style = {{backgroundColor: 'white', height: '80%'}}>
-                <Box>
-                 <Typography component ="h1" variant = "h6">Recibir Compra</Typography>
-                 <Typography component ="h4">Tu Domicilio</Typography>
-                 </Box>
-
-                <Box>
-                 <Typography component ="h1" variant = "h6">Recibir Compra</Typography>
-                 <Typography component ="h4">Correo</Typography>
-                </Box>  
-
-                <Box>
-                  <Typography component="h1" variant = "h6">Retirar Compra </Typography>
-                  <Typography component ="h4">Domicilio de la Tienda</Typography>
-                 </Box>
-
-              </Container>  
-              
+            : null
+            //------------FORMULARIO PARA AGREGAR DATOS DE ENVIO------------------------------//
+          }  
+          <Box style ={{display: 'flex', justifyContent: 'center'}}>
+          <InputLabel 
+            component = 'h3' 
+            style = {{  display:'flex',   justifyContent: 'center', marginTop:'10vh'}}>
+                  Algunda duda sobre tu envio? 
+                  <ArrowRightAltIcon style={{marginTop:'-0.5vh', color: 'blue', marginLeft: '1vh'}} />     
+            </InputLabel>
+            <Button className={classes.truck} style={{marginTop: '8.5vh', marginLeft: '0vh'}}>
+                <LocalShippingIcon />
+             </Button>
+          </Box>
           
           </Container>
 
 
           <Container className={classes.containerDer}>
+            <Typography component ="h4" variant= "p" style = {{marginTop: '-4vh', alignSelf:'flex-start', marginLeft: '4vh'}}>
+              Tus Productos:
+            </Typography>
+            <Container style={{marginTop:'-10vh'}}>
+           
+            { 
+              cartProducts.map((product) => {
+                return (
+               
+                <Container className={classes.rootProduct}>
+                  <Box >
+                    <Typography variant="p" color ="primary">
+                        {product.name.substring(0,30) + '...'}
+                    </Typography>
+                  </Box>
+                  
+                  <CardMedia style={{display:'flex', justifyContent:'flex-end'}} 
+                    image={product.image} 
+                    className = {classes.img2}>
+                
+                  </CardMedia>
+                  
+                  
+                
 
-          { 
-            cartProducts.map(({image}) => {
-              return (
-                <Container>
-                    <CardMedia className={classes.media}> <img src={image} className = {classes.img}/> 
-                    </CardMedia>
-                </Container>
-              )
-            }) }
-            {
-              cartProducts.map(({name}) => {
-                return ( 
-                  <>
-                <Typography component="h4" variant ='body2' >
-                {name}
-                </Typography>
-                  </>
+                </Container> 
                 )
-              })
-            }
+              }) 
+              }
+               <Button variant = "contained" style={{display:'flex',justifyContent:'flex-end',   marginLeft: '39vh'}}  className={classes.edit} endIcon={<EditIcon />} component={Link} to={`/cart`}>
+                     Editar   
+                </Button>
+               
+            </Container>
 
-                <Box style = {{display: 'flex', justifyContent: 'space-evenly'}}>
-                  <Typography component="h1" variant ='h5' >
-                  Total:
-                  </Typography>
-                  <Typography component="h1" variant ='h5' > 
-                  $ {numberWithCommas(cartProducts.reduce((acc, item) => {
+            <Table style={{marginTop:'-10vh'}}>
+               <TableHead>
+                 <TableRow>
+                   <TableCell>
+                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Productos
+                      </Typography>
+                     </TableCell>
+                   <TableCell>
+                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Envio
+                      </Typography>
+                     </TableCell>
+                   <TableCell>
+                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Total
+                      </Typography>
+                     </TableCell>
+                 </TableRow>
+                 </TableHead>
+                 <TableBody>
+                   <TableRow>
+                      <TableCell>
+                      <Typography variant = 'body1'>
+
+                            {
+                              cartProducts[0].price && <Typography variant ='body1' >
+                            $ {numberWithCommas(cartProducts.reduce((acc, item) => {
+                              return (
+                              acc += item.price * item.quantity 
+                              )
+                            }, 0
+                            ))
+                            }
+
+                            </Typography> }
+                            </Typography>
+                        </TableCell>
+                      <TableCell>
+                        <Typography variant = 'body1'>
+                            {selectedValue === 'domicilio' ?  `$ ${shipping}` : '$ 0'
+                            }
+                        </Typography>
+                        </TableCell>
+                      <TableCell>
+                        <Typography variant = 'body1'>
+
+                          {
+                            cartProducts[0].price && <Typography variant ='body1' >
+                          $ {numberWithCommas(cartProducts.reduce((acc, item) => {
                             return (
-                             acc += item.price * item.quantity
+                             acc += item.price * item.quantity + shipping
                             )
                         }, 0
                         ))
-                    }
-                  </Typography>
-               </Box>
-            
+                          }
 
+                          </Typography> }
+                        </Typography>
 
-             <Divider variant = "middle" style ={{width: '100%'}}/>                 
-               
+                      </TableCell>
+                   </TableRow>
+                 </TableBody>
+            </Table>
 
-             <Button variant="contained" className={classes.button} onClick ={handleCheckout}>
+          
+
+             <Button variant="contained" className={classes.button} onClick ={handleCheckout} style={{marginTop: '-5vh'}}>
                     Continuar
              </Button>
             
