@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADD_USER, GET_ALL_USERS, SAVE_USER } from "./index";
+import { ADD_USER, GET_ALL_USERS, SAVE_USER, CLEAN_USER } from "./index";
 const { REACT_APP_SERVER } = process.env;
 
 export function addUser(user) {
@@ -43,5 +43,11 @@ export function saveUser(user) {
     } catch (error) {
       console.log(error);
     }
+  };
+}
+
+export function cleanUser() {
+  return {
+    type: CLEAN_USER,
   };
 }

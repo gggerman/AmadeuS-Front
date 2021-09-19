@@ -10,6 +10,7 @@ export const GET_ALL_CATEGORIES = "GET_ALL_CATEGORIES";
 export const ADD_ORDER_ID = "ADD_ORDER_ID";
 export const GET_ALL_REVIEWS = "GET_ALL_REVIEWS";
 export const SAVE_USER = "SAVE_USER";
+export const CLEAN_USER = "CLEAN_USER";
 
 //shoppingCartReducer
 export const ADD_TO_CART = "ADD_TO_CART";

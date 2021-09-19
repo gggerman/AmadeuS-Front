@@ -11,7 +11,8 @@ import {
   ADD_USER,
   GET_ALL_USERS,
   ADD_ORDER_ID,
-  SAVE_USER
+  SAVE_USER,
+  CLEAN_USER
 } from "../actions/index";
 
 const initialState = {
@@ -38,7 +39,7 @@ const initialState = {
   usersLoaded: [],
   order: "",
   reviewsLoaded: [],
-  user: {},
+  user: null,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -173,6 +174,11 @@ const appReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case CLEAN_USER:
+      return {
+        ...state,
+        user: null,
       };
 
     default:

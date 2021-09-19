@@ -25,7 +25,7 @@ export default function Home() {
   // Cuando el usuario se loguea, se envía la información a DB
   useEffect(() => {
     // console.log('entre a useEffect, user', user)
-    // console.log('entre a useEffect, userDB', userDB)
+    // console.log('entre a useEffect, !userDB', !userDB)
     isAuthenticated && !userDB && dispatch(saveUser(user));
   }, [isAuthenticated]);
 

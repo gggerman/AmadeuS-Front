@@ -23,7 +23,6 @@ import Detail from "../detail/Detail";
 import Test from '../sales/Test';
 // import Account from "../account/Account";
 // import Profile from "../account/Profile";
-import Test from "../sales/Test";
 import { useHistory } from "react-router";
 import UserProfile from "../userprofile/UserProfile";
 
