@@ -9,22 +9,26 @@ import {
   IconButton,
   Typography,
   Divider,
+  Modal,
+  Container,
+  Backdrop,
+  Box
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
+import { EmailShareButton, FacebookShareButton, WhatsappShareButton, FacebookIcon, WhatsappIcon, EmailIcon} from 'react-share';
 import { Link } from "react-router-dom";
 import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
 import { useDispatch } from "react-redux";
 import { UserContext } from "../shoppingcart/UserContext";
 import { useSelector } from "react-redux";
-import { linkUserCart } from "../../redux/actions/linkUserCart";
-import { useAuth0 } from "@auth0/auth0-react";
-
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    height: 425,
     width: 270, // Para que las cards tengan el mismo ancho sin importar el tamaño de la imagen
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
 
@@ -51,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: theme.palette.primary.light,
     },
+    "&:focus":{
+      color: theme.palette.primary.light,
+    }
   },
   text: {
     textDecoration: "none",
@@ -70,7 +77,26 @@ const useStyles = makeStyles((theme) => ({
     "&:focus": {
       color: theme.palette.primary.light
     }
-
+  },
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    height:'20vh',
+    width:'60vh'
+  },
+  shareIcon: {
+    width:'5vh',
+    height: '5vh',
+    "&:hover": {
+      width: '5.2vh',
+      height: '5.2vh'
+    }
   }
 }));
 
@@ -81,9 +107,12 @@ export default function ProductCard(product) {
   // const cartState = useSelector(({ cart }) => cart);
   const classes = useStyles();
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
-  const {cartQuantity} = shoppingCart
+  const {cartQuantity, cartItems} = shoppingCart
+  const [shareOpen, setShareOpen] = useState(false)
   const dispatch = useDispatch()
+  const REACT_APP_SERVER = process.env
 
+  
   const agregar = (e) => {
     setShoppingCart( value => ({
       ...value,
@@ -125,6 +154,10 @@ export default function ProductCard(product) {
 // }, [cartState])
 //********************************************************************************* */
 
+  // const addToFavorite = (e) => {
+  //   axios.put(`${REACT_APP_SERVER}/users/${user._id}`, favorites: product);
+  // }
+  
   useEffect(() => {
     window.localStorage.setItem('cant', JSON.stringify(cartQuantity) ) 
       return () =>{
@@ -132,6 +165,10 @@ export default function ProductCard(product) {
       }
   }, [cartQuantity])
 
+  const handleShare = () => {
+    setShareOpen(!shareOpen)
+  }
+  const handleClose = () => setShareOpen(false)
 
   return (
     <Card className={classes.root}>     
@@ -143,7 +180,7 @@ export default function ProductCard(product) {
             $ {numberWithCommas(price)}
           </Typography>
           <Typography variant="body2" component="h3">
-            {name}
+            {name.substring(0,30) + '...'}
           </Typography>
           {
             (stock === 0 ? (
@@ -158,15 +195,63 @@ export default function ProductCard(product) {
             Entrega en 24hs
           </Typography>
         </CardContent>
+
+        
+
         <Divider variant="middle" light />
       </Link>
+      { shareOpen &&
+          <Box style={{display: 'flex', justifyContent: 'space-around', width: '18vh', marginTop:'-6vh', marginLeft:'25vh'}}>
+               <EmailShareButton >
+                 <EmailIcon className={classes.shareIcon} round={true} url ={`http://localhost:3000/detail/${id}`}/>
+                </EmailShareButton>
+
+                <FacebookShareButton >
+                   <FacebookIcon className={classes.shareIcon} round={true} url ={`http://localhost:3000/detail/${id}`} />
+                 </FacebookShareButton>
+                  <WhatsappShareButton >
+                     <WhatsappIcon className={classes.shareIcon} round={true}/>
+                 </WhatsappShareButton>
+          </Box>
+        }
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites" /*onClick={addToFavorite}*/>
           <FavoriteIcon className={classes.icon} />
         </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon className={classes.icon} />
+
+        <IconButton aria-label="share" onClick={handleShare}>
+          <ShareIcon className={classes.icon} /> 
         </IconButton>
+        
+        {/* <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={shareOpen}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500,
+                    }}
+                >
+                    <Container className={classes.paper}>
+                       <EmailShareButton>
+                          <EmailIcon />
+                       </EmailShareButton>
+
+                       <FacebookShareButton>
+                          <FacebookIcon />
+                      </FacebookShareButton>
+                       <WhatsappShareButton>
+                          <WhatsappIcon />
+                       </WhatsappShareButton>
+
+                   </Container>
+                </Modal> */}
+
+
+
         <Button 
             variant="contained" 
             className={classes.button}
@@ -175,7 +260,9 @@ export default function ProductCard(product) {
             >
            Agregar
         </Button>
+        
       </CardActions>
+      
     </Card>
   );
 }

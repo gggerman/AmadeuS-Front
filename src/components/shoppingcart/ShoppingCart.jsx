@@ -60,18 +60,18 @@ const handleDeleteAll = () => {
   };
   console.log('****', userItems)
 
-useEffect(() => {
-    axios
-      .post(`${REACT_APP_SERVER}/orders`, {
-        products: shoppingCartProducts.map((item) => item.name),
-      })
-      .then((response) => setIdOrder(response.data)) //guardamos el id de la orden en redux
-      .catch((err) => console.log(err));
-  }, []);
+// useEffect(() => {
+//     axios
+//       .post(`${REACT_APP_SERVER}/orders`, {
+//         products: shoppingCartProducts.map((item) => item.name),
+//       })
+//       .then((response) => setIdOrder(response.data)) //guardamos el id de la orden en redux
+//       .catch((err) => console.log(err));
+//   }, []);
 
-  useEffect(() => {            
-    dispatch(addOrder(idOrder))
-  },[idOrder])
+//   useEffect(() => {            
+//     dispatch(addOrder(idOrder))
+//   },[idOrder])
 
   useEffect(() => {
     window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
@@ -144,7 +144,7 @@ useEffect(() => {
                         variant="contained"
                         color="primary"
                         disabled={shoppingCartProducts.length === 0}
-                        component={Link} to={`/ordercart/${idOrder}`}
+                        component={Link} to={`/ordercart`}
                     >
                         Comprar
                     </Button>
