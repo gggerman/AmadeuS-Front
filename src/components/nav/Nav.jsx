@@ -100,6 +100,12 @@ const useStyles = makeStyles((theme) => ({
     width: "2vw",
     borderRadius: "15px",
   },
+  welcome: {
+    color: theme.palette.primary.light,
+    fontSize: '80%',
+    alignSelf: 'center',
+    display:'flex'
+  }
 }));
 
 export default function Nav() {
@@ -225,6 +231,11 @@ export default function Nav() {
 
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
+             {user && 
+                <Typography component="p" variant="body2" className={classes.welcome}>
+                   Bienvenido {user.given_name} Bartolome Mitre 177..
+                </Typography>
+              }
           <IconButton
             aria-label="show 4 new mails"
             color="inherit"

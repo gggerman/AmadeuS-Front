@@ -11,12 +11,13 @@ import {
   Divider,
   Modal,
   Container,
-  Backdrop
+  Backdrop,
+  Box
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
-import { EmailShareButton, FacebookShareButton, WhatsappShareButton} from 'react-share';
+import { EmailShareButton, FacebookShareButton, WhatsappShareButton, FacebookIcon, WhatsappIcon, EmailIcon} from 'react-share';
 import { Link } from "react-router-dom";
 import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
@@ -54,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: theme.palette.primary.light,
     },
+    "&:focus":{
+      color: theme.palette.primary.light,
+    }
   },
   text: {
     textDecoration: "none",
@@ -83,10 +87,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    height:'80vh',
-    width:'100vh'
+    height:'20vh',
+    width:'60vh'
   },
+  shareIcon: {
+    width:'5vh',
+    height: '5vh',
+    "&:hover": {
+      width: '5.2vh',
+      height: '5.2vh'
+    }
+  }
 }));
 
 export default function ProductCard(product) {
@@ -149,8 +160,25 @@ export default function ProductCard(product) {
             Entrega en 24hs
           </Typography>
         </CardContent>
+
+        
+
         <Divider variant="middle" light />
       </Link>
+      { shareOpen &&
+          <Box style={{display: 'flex', justifyContent: 'space-around', width: '18vh', marginTop:'-6vh', marginLeft:'25vh'}}>
+               <EmailShareButton >
+                 <EmailIcon className={classes.shareIcon} round={true} url ={`http://localhost:3000/detail/${id}`}/>
+                </EmailShareButton>
+
+                <FacebookShareButton >
+                   <FacebookIcon className={classes.shareIcon} round={true} url ={`http://localhost:3000/detail/${id}`} />
+                 </FacebookShareButton>
+                  <WhatsappShareButton >
+                     <WhatsappIcon className={classes.shareIcon} round={true}/>
+                 </WhatsappShareButton>
+          </Box>
+        }
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
         <IconButton aria-label="add to favorites" /*onClick={addToFavorite}*/>
           <FavoriteIcon className={classes.icon} />
@@ -159,7 +187,8 @@ export default function ProductCard(product) {
         <IconButton aria-label="share" onClick={handleShare}>
           <ShareIcon className={classes.icon} /> 
         </IconButton>
-        <Modal
+        
+        {/* <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
                     className={classes.modal}
@@ -172,9 +201,19 @@ export default function ProductCard(product) {
                     }}
                 >
                     <Container className={classes.paper}>
-                              
+                       <EmailShareButton>
+                          <EmailIcon />
+                       </EmailShareButton>
+
+                       <FacebookShareButton>
+                          <FacebookIcon />
+                      </FacebookShareButton>
+                       <WhatsappShareButton>
+                          <WhatsappIcon />
+                       </WhatsappShareButton>
+
                    </Container>
-                </Modal>
+                </Modal> */}
 
 
 
@@ -186,7 +225,9 @@ export default function ProductCard(product) {
             >
            Agregar
         </Button>
+        
       </CardActions>
+      
     </Card>
   );
 }
