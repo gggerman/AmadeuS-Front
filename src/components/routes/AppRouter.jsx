@@ -21,6 +21,10 @@ import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
 import Test from '../sales/Test';
+import { useDispatch, useSelector } from "react-redux";
+import { linkUserCart } from "../../redux/actions/linkUserCart";
+
+
 // import Account from "../account/Account";
 // import Profile from "../account/Profile";
 import { useHistory } from "react-router";
@@ -32,6 +36,7 @@ const AppRouter = () => {
   const history = useHistory();
 
   // console.log("admin", user);
+
 
   const adminAuth = function (component) {
     if (user) {
@@ -50,6 +55,8 @@ const AppRouter = () => {
   const initialState = {
     cartQuantity: JSON.parse(window.localStorage.getItem("cant")),
     cartItems: [],
+    userItems: 0,
+    cantItemsDbToCart: 0
   };
 
   const [shoppingCart, setShoppingCart] = useState(initialState);

@@ -61,8 +61,9 @@ export default function ProductDetail() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { data, success, loading } = useSelector(({ app }) => app.detail);
+  const shoppingCartProducts = useSelector(state => state.cart.cart)
   const { shoppingCart, setShoppingCart } = useContext(UserContext);
-  const { cartQuantity } = shoppingCart; 
+  const { cartQuantity} = shoppingCart; 
   
   const handleAdd = (e) => {
     setShoppingCart((value) => ({
@@ -70,7 +71,11 @@ export default function ProductDetail() {
       cartQuantity: cartQuantity + 1,
     }));
     dispatch(addToCart(id));
+    // window.localStorage.setItem('cartItems', JSON.stringify(shoppingCartProducts) )
   };
+  
+
+
 
   useEffect(() => {
     dispatch(getDetails(id));
