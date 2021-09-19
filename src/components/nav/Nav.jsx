@@ -216,37 +216,36 @@ export default function Nav() {
   );
 
   return (
-    <div>
-      <AppBar
-        style={{
-          position: "sticky",
-          backgroundColor: "rgb(0, 23, 20)",
-          height: "100%",
-        }}
-      >
-        <Toolbar className={classes.navDisplay}>
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            <img src ={logo} className={classes.icon}/>
-          </Link>
-          <SearchBar />
-          
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-              {user && 
+    <AppBar
+      style={{
+        position: "relative",
+        backgroundColor: "rgb(0, 23, 20)",
+        width: "100%",
+      }}
+    >
+      <Toolbar className={classes.navDisplay}>
+        <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+          <img src={logo} className={classes.icon} />
+        </Link>
+        <SearchBar />
+
+        <div className={classes.grow} />
+        <div className={classes.sectionDesktop}>
+             {user && 
                 <Typography component="p" variant="body2" className={classes.welcome}>
                    Bienvenido {user.given_name} Bartolome Mitre 177..
-                </Typography> }
-
-            <IconButton
-              aria-label="show 4 new mails"
-              color="inherit"
-              component={Link}
-              to="/cart"
-            >
-              <Badge badgeContent={cartQuantity} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+                </Typography>
+              }
+          <IconButton
+            aria-label="show 4 new mails"
+            color="inherit"
+            component={Link}
+            to="/cart"
+          >
+            <Badge badgeContent={cartQuantity} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
 
           <IconButton aria-label="show 17 new notifications" color="inherit">
             <Badge badgeContent={null} color="secondary">
