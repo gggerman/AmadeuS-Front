@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -10,6 +11,7 @@ import {
   MenuItem,
   Menu,
   Button,
+  CssBaseline,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -112,6 +114,7 @@ export default function Nav() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const favorites = useSelector(({app}) => app.favorites);
   const { isAuthenticated, user, isLoading } = useAuth0();
 
   // console.log("nav", isAuthenticated);
@@ -233,7 +236,7 @@ export default function Nav() {
         <div className={classes.sectionDesktop}>
              {user && 
                 <Typography component="p" variant="body2" className={classes.welcome}>
-                   Bienvenido {user.given_name} Bartolome Mitre 177..
+                   Bienvenido {user.name}
                 </Typography>
               }
           <IconButton
@@ -247,10 +250,15 @@ export default function Nav() {
             </Badge>
           </IconButton>
 
-          <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={null} color="secondary">
-              <FavoriteIcon />
-            </Badge>
+          <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
+              component={Link}
+              to="/favorites"
+            >
+              <Badge badgeContent={user ? (favorites?.length > 0 ? favorites.length : null) : null} color="secondary">
+                <FavoriteIcon />
+              </Badge>
           </IconButton>
 
           <IconButton

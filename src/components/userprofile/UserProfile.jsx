@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import Nav from "../nav/Nav";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -65,7 +66,10 @@ function UserProfile() {
         </CardContent>
         <div style={{ display: "flex" }}>
           <List component="nav" aria-label="main mailbox folders">
-            <ListItem button>
+            <ListItem button
+              component={Link}
+              to="/favorites"
+            >
               <ListItemIcon>
                 <FavoriteIcon />
               </ListItemIcon>
