@@ -14,6 +14,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Container,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     height: "13vw",
     margin: "0vh",
     borderRadius: "6.5vw",
+    backgroundSize: 'contain'
   },
   icon: {
     color: "grey",
@@ -52,7 +54,7 @@ function UserProfile() {
   return (
     <Grid style={{ display: "flex", flexDirection:'column', alignItems: "center", height: "100%" }}>
       <Nav/>
-      <div className={classes.container}>
+      <Container className={classes.container}>
         <img className={classes.media} src={user.picture} />
         <CardContent>
           <Typography variant="h5" component="h1">
@@ -87,7 +89,7 @@ function UserProfile() {
             </ListItem>
           </List>
         </div>
-      </div>
+      </Container>
     </Grid>
   );
 }
