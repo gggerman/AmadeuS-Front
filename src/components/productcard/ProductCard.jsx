@@ -23,10 +23,8 @@ import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
 import { useDispatch, useSelector } from "react-redux";
 import { UserContext } from "../shoppingcart/UserContext";
-import { getAllUsers } from '../../redux/actions/users';
-import { getAllFavorites, addFavorite, deleteFavorite } from "../../redux/actions/favorites";
+import { getAllFavorites, addFavorite, deleteFavorite, removeAllFavorites } from "../../redux/actions/favorites";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,10 +115,8 @@ export default function ProductCard(product) {
   const {cartQuantity, cartItems} = shoppingCart
   const [shareOpen, setShareOpen] = useState(false)
   const dispatch = useDispatch()
-  const users = useSelector(({ app }) => app.usersLoaded);
   const favorites = useSelector(({ app }) => app.favorites);
-  const [currentUser, setCurrentUser] = useState('');
-  // const [favorites, setFavorites] = useState([]);
+  const currentUser = useSelector(({ app }) => app.user);
   
   const { user } = useAuth0();
   const REACT_APP_SERVER = process.env
@@ -142,55 +138,26 @@ export default function ProductCard(product) {
       }
   }, [cartQuantity])
 
-  useEffect(() => {
-    if (user?.email) {
-      dispatch(getAllUsers());
-      users?.forEach(u => {
-        if (u.mail === user?.email) {
-          setCurrentUser(u);
-          dispatch(getAllFavorites(u?._id));
-        }
-      })
-    }
-},[dispatch]);
-
-// useEffect(() => {
-//   if (currentUser?._id) {
-//     users?.forEach(u => {
-//       if (u.mail === user?.email) {
-//         setCurrentUser(u);
-//         dispatch(getAllFavorites(u?._id));
-//       }
-//     })
-//   }
-// },[dispatch]);
-
   function favoritesButton() {
-    // if (user?.email) {
-    //   dispatch(getAllUsers());
-    //   users?.forEach(u => {
-    //     if (u.mail === user?.email) {
-    //       setCurrentUser(u);
-    //       dispatch(getAllFavorites(u?._id));
-    //     }
-    //   })
-      if (currentUser?._id) {
+    if (user?.email) {
+        dispatch(getAllFavorites(currentUser._id))
         let post = true;
         favorites?.forEach(favorite => {
           if (favorite._id === id) {
-            dispatch(deleteFavorite(currentUser?._id, id));
-            // await axios.delete(`http://localhost:3001/users/${currentUser._id}/favorites/${id}`)
+            if(favorites.length === 1){
+              dispatch(deleteFavorite(currentUser._id, id));
+              dispatch(removeAllFavorites());
+            } else {
+              dispatch(deleteFavorite(currentUser._id, id));
+            }
             post = false;
           }
         })
         if (post) {
-          dispatch(addFavorite(currentUser?._id, id));
-          // await axios.post(`http://localhost:3001/users/${currentUser._id}/favorites/${id}`)
+          dispatch(addFavorite(currentUser._id, id));
         }
-        dispatch(getAllFavorites(currentUser._id));
-        // await axios.get(`http://localhost:3001/users/${currentUser._id}/favorites`)
+        dispatch(getAllFavorites(currentUser._id))
       }
-    // }
   }
 
 

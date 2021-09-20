@@ -256,7 +256,7 @@ export default function Nav() {
               component={Link}
               to="/favorites"
             >
-              <Badge badgeContent={favorites?.length > 0 ? favorites.length : null} color="secondary">
+              <Badge badgeContent={user ? (favorites?.length > 0 ? favorites.length : null) : null} color="secondary">
                 <FavoriteIcon />
               </Badge>
           </IconButton>

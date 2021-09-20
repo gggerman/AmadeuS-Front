@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GET_ALL_FAVORITES, ADD_FAVORITE, DELETE_FAVORITE, REMOVE_ALL_FAVORITES } from "./index"
+import { GET_ALL_FAVORITES, ADD_FAVORITE, DELETE_FAVORITE, REMOVE_ALL_FAVORITES, SORT_BY_NAME_FAVORITES, SORT_BY_PRICE_FAVORITES, FILTER_BY_CATEGORY_FAVORITES } from "./index"
 const { REACT_APP_SERVER } = process.env;
 
 export function getAllFavorites(idUser){
@@ -44,11 +44,31 @@ export function deleteFavorite(idUser, idProduct){
     }
 }
 
-export function removeAllFavorites(){
-    return ( dispatch ) => {
-            dispatch({
-                type: REMOVE_ALL_FAVORITES
-            })
+export function removeAllFavorites() {
+    return (dispatch) => {
+        dispatch({
+            type: REMOVE_ALL_FAVORITES
+        })
+    }
+}
 
+export function sortByNameFavorites(order){
+    return{
+        type: SORT_BY_NAME_FAVORITES,
+        payload: order
+    }
+}
+
+export function sortByPriceFavorites(order){
+    return{
+        type: SORT_BY_PRICE_FAVORITES,
+        payload: order
+    }
+}
+
+export function filterByCategoryFavorites(category){
+    return{
+        type: FILTER_BY_CATEGORY_FAVORITES,
+        payload: category
     }
 }
