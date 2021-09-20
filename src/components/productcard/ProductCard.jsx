@@ -103,28 +103,26 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductCard(product) {
   const { id, name, price, image, stock } = product;
   //recibe de Products las props
+  const cartState = useSelector(({ cart }) => cart);
   const classes = useStyles();
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity, cartItems} = shoppingCart
   const [shareOpen, setShareOpen] = useState(false)
   const dispatch = useDispatch()
   const REACT_APP_SERVER = process.env
-
   
   const agregar = (e) => {
     setShoppingCart( value => ({
       ...value,
       cartQuantity: cartQuantity + 1,
     }))
-    dispatch( addToCart (id))   
-  }
+    dispatch( addToCart (id))       
+  } 
 
-  // const addToFavorite = (e) => {
-  //   axios.put(`${REACT_APP_SERVER}/users/${user._id}`, favorites: product);
-  // }
+  const alStorage = JSON.stringify(cartState)
   
   useEffect(() => {
-    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) ) 
       return () =>{
         window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
       }
@@ -167,14 +165,14 @@ export default function ProductCard(product) {
       </Link>
       { shareOpen &&
           <Box style={{display: 'flex', justifyContent: 'space-around', width: '18vh', marginTop:'-6vh', marginLeft:'25vh'}}>
-               <EmailShareButton >
-                 <EmailIcon className={classes.shareIcon} round={true} url ={`http://localhost:3000/detail/${id}`}/>
+               <EmailShareButton  url ={`https://musical-e-commerce.vercel.app//detail/${id}`} text="Mira este hermoso instrumento!">
+                 <EmailIcon className={classes.shareIcon} round={true}/>
                 </EmailShareButton>
 
-                <FacebookShareButton >
-                   <FacebookIcon className={classes.shareIcon} round={true} url ={`http://localhost:3000/detail/${id}`} />
+                <FacebookShareButton url ={`https://musical-e-commerce.vercel.app//detail/${id}`} quote="Mira este hermoso instrumento!" hashtag="[instrument]">
+                   <FacebookIcon className={classes.shareIcon} round={true}  />
                  </FacebookShareButton>
-                  <WhatsappShareButton >
+                  <WhatsappShareButton  url ={`https://musical-e-commerce.vercel.app//detail/${id}`}  text="Mira este hermoso instrumento!">
                      <WhatsappIcon className={classes.shareIcon} round={true}/>
                  </WhatsappShareButton>
           </Box>
@@ -188,36 +186,7 @@ export default function ProductCard(product) {
           <ShareIcon className={classes.icon} /> 
         </IconButton>
         
-        {/* <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={shareOpen}
-                    onClose={handleClose}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                    timeout: 500,
-                    }}
-                >
-                    <Container className={classes.paper}>
-                       <EmailShareButton>
-                          <EmailIcon />
-                       </EmailShareButton>
-
-                       <FacebookShareButton>
-                          <FacebookIcon />
-                      </FacebookShareButton>
-                       <WhatsappShareButton>
-                          <WhatsappIcon />
-                       </WhatsappShareButton>
-
-                   </Container>
-                </Modal> */}
-
-
-
-        <Button 
+          <Button 
             variant="contained" 
             className={classes.button}
             onClick={ agregar }
