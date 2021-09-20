@@ -272,13 +272,16 @@ const useStyles = makeStyles((theme) => ({
       e.preventDefault()
       setShippingAddress(input)
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
+      //un axios.put/:id que agregue el obj con la direccion al array shipping 
+      //logica: getallusers, me traigo los users, los filtro con el mail de auth0
+
       setInput(initialInput)
     }
 
     return (
       <div>
         <CssBaseline>
-        <NavSecondary style={{marginBottom: '5vh'}} />
+        <NavSecondary style={{marginBottom: '5vh'}} shipping={shippingAddress} />
 
          <Container className={classes.container}>
           
@@ -398,6 +401,7 @@ const useStyles = makeStyles((theme) => ({
             </form>
             </Box>
             : null
+            // al tocar guardar deberiamos guardarlo en base de datos y luego reflejarlo 
             //------------FORMULARIO PARA AGREGAR DATOS DE ENVIO------------------------------//
           }              
           
