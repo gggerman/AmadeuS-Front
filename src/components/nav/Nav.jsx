@@ -21,6 +21,9 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
 import logo from "./logo.jpg";
+import { useSelector } from "react-redux";
+import { saveUser } from "../../redux/actions/users";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -102,10 +105,10 @@ const useStyles = makeStyles((theme) => ({
   },
   welcome: {
     color: theme.palette.primary.light,
-    fontSize: '80%',
-    alignSelf: 'center',
-    display:'flex'
-  }
+    fontSize: "80%",
+    alignSelf: "center",
+    display: "flex",
+  },
 }));
 
 export default function Nav() {
@@ -113,7 +116,9 @@ export default function Nav() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const { isAuthenticated, user, isLoading } = useAuth0();
-
+  const userDB = useSelector((state) => state.app.user);
+  console.log("usuario DB", userDB);
+  const dispatch = useDispatch();
   // console.log("nav", isAuthenticated);
   // console.log("nav-user", user);
 
@@ -136,6 +141,12 @@ export default function Nav() {
   const { shoppingCart } = useContext(UserContext);
   const { cartQuantity } = shoppingCart;
   const menuId = "primary-search-account-menu";
+
+  useEffect(() => {
+    if (user) {
+      dispatch(saveUser(user));
+    }
+  }, [dispatch]);
 
   const adminAuth = function () {
     if (!isLoading) {
@@ -166,7 +177,7 @@ export default function Nav() {
           <MenuItem>Administrar</MenuItem>
         </Link>
       )}
-      {isAuthenticated && (
+      {userDB && (
         <Link to="/userprofile" className={classes.link}>
           <MenuItem>Perfil</MenuItem>
         </Link>
@@ -231,11 +242,15 @@ export default function Nav() {
 
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
-             {user && 
-                <Typography component="p" variant="body2" className={classes.welcome}>
-                   Bienvenido {user.given_name} Bartolome Mitre 177..
-                </Typography>
-              }
+          {user && (
+            <Typography
+              component="p"
+              variant="body2"
+              className={classes.welcome}
+            >
+              Bienvenido {user.given_name} Bartolome Mitre 177..
+            </Typography>
+          )}
           <IconButton
             aria-label="show 4 new mails"
             color="inherit"
@@ -261,8 +276,8 @@ export default function Nav() {
             onClick={handleProfileMenuOpen}
             color="inherit"
           >
-            {isAuthenticated ? (
-              <img src={user.picture} className={classes.avatar} />
+            {userDB ? (
+              <img src={userDB.picture} className={classes.avatar} />
             ) : (
               <AccountCircle />
             )}

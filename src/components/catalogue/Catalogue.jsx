@@ -18,8 +18,8 @@ import getAllProducts, {
   filterByCategory,
 } from "../../redux/actions/getAllProducts";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
-import { UserContext } from '../shoppingcart/UserContext';
-
+import { UserContext } from "../shoppingcart/UserContext";
+import { getByName } from "../../redux/actions/getByName";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -38,35 +38,22 @@ const useStyles = makeStyles((theme) => ({
     "& > * + *": {
       marginTop: theme.spacing(1),
     },
-  
   },
 }));
 
 export default function Catalogue() {
-    // const products = useSelector(({ app }) => app.productsLoaded);
-    // const categories = useSelector(({ app }) => app.categoriesLoaded);
-    // const dispatch = useDispatch();
-    const {shoppingCart, setShoppingCart} = useContext( UserContext )
-    const {cartQuantity} = shoppingCart
+  // const products = useSelector(({ app }) => app.productsLoaded);
+  // const categories = useSelector(({ app }) => app.categoriesLoaded);
+  // const dispatch = useDispatch();
+  const { shoppingCart, setShoppingCart } = useContext(UserContext);
+  const { cartQuantity } = shoppingCart;
 
-    
   const { data, loading, success } = useSelector(
     ({ app }) => app.productsLoaded
   );
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const search = useSelector(({ app }) => app.searchBar);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!search || search.length === 0) {
-      dispatch(getAllProducts());
-    }
-    dispatch(getAllCategories());
-    setShoppingCart( prev => ({
-      ...prev,
-      cartQuantity: JSON.parse(localStorage.getItem('cant'))
-  }))
-  }, [dispatch]);
 
   // Para renderizar cuando hay ordenamientos y filtrado
   const [render, setRender] = useState("");
@@ -117,14 +104,27 @@ export default function Catalogue() {
   function handleChange(event, value) {
     setPage(value);
   }
-  
+
   useEffect(() => {
     dispatch(filterByCategory(select.filter));
   }, [select.filter]);
-  
+
+  useEffect(() => {
+    if (!search || search.length === 0) {
+      dispatch(getAllProducts());
+    } else {
+      dispatch(getByName(search));
+      setPage(1);
+    }
+    dispatch(getAllCategories());
+    setShoppingCart((prev) => ({
+      ...prev,
+      cartQuantity: JSON.parse(localStorage.getItem("cant")),
+    }));
+  }, [dispatch, search]);
 
   return (
-    <div style={{marginTop:'3vh'}}>
+    <div style={{ marginTop: "3vh" }}>
       {loading && (
         <div className="loading">
           <CircularProgress />
@@ -156,7 +156,9 @@ export default function Catalogue() {
             </FormControl>
 
             <FormControl className={classes.formControl}>
-              <InputLabel className={classes.label}>Ordenar por Nombre</InputLabel>
+              <InputLabel className={classes.label}>
+                Ordenar por Nombre
+              </InputLabel>
               <Select value={select.name} onChange={(e) => handleSortName(e)}>
                 <MenuItem value="A - Z">A - Z</MenuItem>
                 <MenuItem value="Z - A">Z - A</MenuItem>
@@ -164,7 +166,9 @@ export default function Catalogue() {
             </FormControl>
 
             <FormControl className={classes.formControl}>
-              <InputLabel className={classes.label}>Ordenar por Precio</InputLabel>
+              <InputLabel className={classes.label}>
+                Ordenar por Precio
+              </InputLabel>
               <Select value={select.price} onChange={(e) => handleSortPrice(e)}>
                 <MenuItem value="Lower to Higher">Lower to Higher</MenuItem>
                 <MenuItem value="Higher to Lower">Higher to Lower</MenuItem>

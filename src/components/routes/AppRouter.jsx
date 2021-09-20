@@ -25,6 +25,7 @@ import Test from '../sales/Test';
 // import Profile from "../account/Profile";
 import { useHistory } from "react-router";
 import UserProfile from "../userprofile/UserProfile";
+import ShoppingHistory from "../shoppinghistory/ShoppingHistory";
 
 const AppRouter = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -78,6 +79,7 @@ const AppRouter = () => {
             <Route path="/adduser" component={AddUser} />
             <Route path ="/sales" component={adminAuth(Sales)} />
             <Route path ="/test" component={Test} />
+            <Route path ="/shoppinghistory" component={ShoppingHistory} />
             {/* <Route path ="/account" component={Account} />
             <Route path ="/profile" component={Profile} /> */}
             <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />
