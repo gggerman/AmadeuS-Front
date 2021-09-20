@@ -31,19 +31,22 @@ export function getAllUsers() {
 }
 
 //Cuando inicia sesión el usuario, se envían los datos a la DB para guardarse y volver con la información actualizada
-export function saveUser(user) {
-  return async (dispatch) => {
-    try {
-      const userDB = await axios.post(`${REACT_APP_SERVER}/users`, { user });
-      console.log("actions userDB", userDB);
+export function saveUser(headers, user) {
+  try {
+    return async (dispatch) => {
+      const userDB = await axios.post(
+        `${REACT_APP_SERVER}/users`,
+        { user },
+        { headers }
+      );
       return dispatch({
         type: SAVE_USER,
         payload: userDB.data,
       });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export function cleanUser() {

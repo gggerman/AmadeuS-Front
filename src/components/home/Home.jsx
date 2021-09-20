@@ -7,6 +7,9 @@ import { saveUser } from "../../redux/actions/users";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from "react-redux";
 
+import axios from "axios";
+const { REACT_APP_SERVER } = process.env;
+
 const useStyles = makeStyles((theme) => ({
   home: {
     height: "100%",
@@ -20,13 +23,20 @@ export default function Home() {
   const classes = useStyles();
   const userDB = useSelector((state) => state.app.user);
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   // Cuando el usuario se loguea, se envía la información a DB
-  useEffect(() => {
-    // console.log('entre a useEffect, user', user)
-    // console.log('entre a useEffect, !userDB', !userDB)
-    isAuthenticated && !userDB && dispatch(saveUser(user));
+  useEffect(async () => {
+    if (isAuthenticated && !userDB) {
+      
+      const token = await getAccessTokenSilently();
+
+      const headers = {
+        authorization: `Bearer ${token}`,
+      };
+
+      dispatch(saveUser(headers, user))
+    }
   }, [isAuthenticated]);
 
   return (
