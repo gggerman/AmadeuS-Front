@@ -21,17 +21,23 @@ import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
 import Test from '../sales/Test';
+import { useDispatch, useSelector } from "react-redux";
+import { linkUserCart } from "../../redux/actions/linkUserCart";
+
+
 // import Account from "../account/Account";
 // import Profile from "../account/Profile";
 import { useHistory } from "react-router";
 import UserProfile from "../userprofile/UserProfile";
 import ShoppingHistory from "../shoppinghistory/ShoppingHistory";
+import Favorites from '../favorites/Favorites';
 
 const AppRouter = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const history = useHistory();
 
   // console.log("admin", user);
+
 
   const adminAuth = function (component) {
     if (user) {
@@ -50,6 +56,8 @@ const AppRouter = () => {
   const initialState = {
     cartQuantity: JSON.parse(window.localStorage.getItem("cant")),
     cartItems: [],
+    userItems: 0,
+    cantItemsDbToCart: 0
   };
 
   const [shoppingCart, setShoppingCart] = useState(initialState);
@@ -83,6 +91,7 @@ const AppRouter = () => {
             {/* <Route path ="/account" component={Account} />
             <Route path ="/profile" component={Profile} /> */}
             <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />
+            <Route path ="/favorites" component={Favorites} />
 
 
             </UserContext.Provider>

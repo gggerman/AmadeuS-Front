@@ -36,6 +36,7 @@ export default function UserManagement(){
     const classes = useStyles();
 
     const users = useSelector(({ app }) => app.usersLoaded);
+    console.log(users)
     const dispatch = useDispatch();
     const history = useHistory();
 

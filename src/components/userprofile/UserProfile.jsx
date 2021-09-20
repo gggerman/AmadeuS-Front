@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Nav from "../nav/Nav";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -13,6 +14,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Container,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -31,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     height: "13vw",
     margin: "0vh",
     borderRadius: "6.5vw",
+    backgroundSize: "contain",
   },
   icon: {
     color: "grey",
@@ -54,10 +57,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function UserProfile() {
-  const {user} = useAuth0()
+  const { user } = useAuth0();
   const userDB = useSelector((state) => state.app.user);
   const classes = useStyles();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (user) {
@@ -75,7 +78,7 @@ function UserProfile() {
       }}
     >
       <Nav />
-      <div className={classes.container}>
+      <Container className={classes.container}>
         <img className={classes.media} src={user.picture} />
         <CardContent>
           <Typography variant="h5" component="h1">
@@ -87,23 +90,24 @@ function UserProfile() {
         </CardContent>
         <div style={{ display: "flex" }}>
           <List component="nav" aria-label="main mailbox folders">
-            {/* <Link className={classes.link}> */}
-              <ListItem button>
-                <ListItemIcon>
-                  <FavoriteIcon />
-                </ListItemIcon>
-                <ListItemText primary="Favoritos" />
-              </ListItem>
-            {/* </Link> */}
-            <Link to="/shoppinghistory" className={classes.link}>
-              <ListItem button>
-                <ListItemIcon>
-                  <HistoryIcon />
-                </ListItemIcon>
-                <ListItemText primary="Historial de compras" />
-              </ListItem>
-            </Link>
+            <ListItem button component={Link} to="/favorites">
+              <ListItemIcon>
+                <FavoriteIcon />
+              </ListItemIcon>
+              <ListItemText primary="Favoritos" />
+            </ListItem>
             <ListItem button>
+              <ListItemIcon>
+                <HistoryIcon />
+              </ListItemIcon>
+              <ListItemText primary="Historial de compras" />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/shoppinghistory"
+              className={classes.link}
+            >
               <ListItemIcon>
                 <CreateIcon />
               </ListItemIcon>
@@ -111,7 +115,7 @@ function UserProfile() {
             </ListItem>
           </List>
         </div>
-      </div>
+      </Container>
     </Grid>
   );
 }

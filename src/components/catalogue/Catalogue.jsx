@@ -18,8 +18,14 @@ import getAllProducts, {
   filterByCategory,
 } from "../../redux/actions/getAllProducts";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
-import { UserContext } from "../shoppingcart/UserContext";
 import { getByName } from "../../redux/actions/getByName";
+import { UserContext } from '../shoppingcart/UserContext';
+import { useAuth0 } from "@auth0/auth0-react";
+import { linkUserCart } from "../../redux/actions/linkUserCart";
+import { getCart } from "../../utils";
+import {getAllUsers} from '../../redux/actions/users'
+import { itemsDbToCart } from "../../redux/actions/itemsDbToCart";
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -42,18 +48,52 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Catalogue() {
-  // const products = useSelector(({ app }) => app.productsLoaded);
-  // const categories = useSelector(({ app }) => app.categoriesLoaded);
-  // const dispatch = useDispatch();
-  const { shoppingCart, setShoppingCart } = useContext(UserContext);
-  const { cartQuantity } = shoppingCart;
-
-  const { data, loading, success } = useSelector(
-    ({ app }) => app.productsLoaded
+    const {shoppingCart, setShoppingCart} = useContext( UserContext )
+    const {cartQuantity, userItems, cantItemsDbToCart} = shoppingCart    
+    const { data, loading, success } = useSelector(
+      ({ app }) => app.productsLoaded
   );
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const search = useSelector(({ app }) => app.searchBar);
+  const user = useSelector((state) => state.app.user);
+  const cartState = useSelector(({ cart }) => cart);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(user) {
+      dispatch( itemsDbToCart( user.cart ))
+    }
+  }, [user])
+
+  useEffect(() => {
+        const alStorage = JSON.stringify(cartState)
+        if( !user ){
+          window.localStorage.setItem('cartItems', alStorage )
+        } else {      
+          console.log('cambiostate')
+            const { cart } = JSON.parse(alStorage)
+            const userCart = {
+                  user,
+                  cart
+                }
+            window.localStorage.removeItem('cartItems')
+            if(userCart)
+                dispatch( linkUserCart( userCart ) )        
+        }
+        setShoppingCart( prev => ({
+          ...prev,
+          cartQuantity: cartState.cart.reduce( (acc, elem) => {
+            return ( acc = acc + elem.quantity)
+          }, 0),     
+      }))
+    }, [cartQuantity, cartState])
+
+  useEffect(() => {
+    if (!search || search.length === 0) {
+      dispatch(getAllProducts());
+    }
+    dispatch(getAllCategories());
+  }, [dispatch]);
 
   // Para renderizar cuando hay ordenamientos y filtrado
   const [render, setRender] = useState("");

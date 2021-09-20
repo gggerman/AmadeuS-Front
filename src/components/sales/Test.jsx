@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid black'
     },
     media: {
-        width: "5%",
+        width: "13%",
         backgroundSize: "contain",
       },
 

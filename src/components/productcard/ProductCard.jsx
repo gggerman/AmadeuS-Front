@@ -21,10 +21,10 @@ import { EmailShareButton, FacebookShareButton, WhatsappShareButton, FacebookIco
 import { Link } from "react-router-dom";
 import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserContext } from "../shoppingcart/UserContext";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { getAllFavorites, addFavorite, deleteFavorite, removeAllFavorites } from "../../redux/actions/favorites";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +58,12 @@ const useStyles = makeStyles((theme) => ({
     "&:focus":{
       color: theme.palette.primary.light,
     }
+  },
+  iconDelete: {
+    color: theme.palette.primary.light,
+    "&:hover": {
+    color: "grey",
+    },
   },
   text: {
     textDecoration: "none",
@@ -103,38 +109,63 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductCard(product) {
   const { id, name, price, image, stock } = product;
   //recibe de Products las props
+  const cartState = useSelector(({ cart }) => cart);
   const classes = useStyles();
   const {shoppingCart, setShoppingCart} = useContext( UserContext )
   const {cartQuantity, cartItems} = shoppingCart
   const [shareOpen, setShareOpen] = useState(false)
   const dispatch = useDispatch()
+  const favorites = useSelector(({ app }) => app.favorites);
+  const currentUser = useSelector(({ app }) => app.user);
+  
+  const { user } = useAuth0();
   const REACT_APP_SERVER = process.env
-
   
   const agregar = (e) => {
     setShoppingCart( value => ({
       ...value,
       cartQuantity: cartQuantity + 1,
     }))
-    dispatch( addToCart (id))   
-  }
+    dispatch( addToCart (id))       
+  } 
 
-  // const addToFavorite = (e) => {
-  //   axios.put(`${REACT_APP_SERVER}/users/${user._id}`, favorites: product);
-  // }
+  const alStorage = JSON.stringify(cartState)
   
   useEffect(() => {
-    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
+    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) ) 
       return () =>{
         window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
       }
   }, [cartQuantity])
 
+  function favoritesButton() {
+    if (user?.email) {
+        dispatch(getAllFavorites(currentUser._id))
+        let post = true;
+        favorites?.forEach(favorite => {
+          if (favorite._id === id) {
+            if(favorites.length === 1){
+              dispatch(deleteFavorite(currentUser._id, id));
+              dispatch(removeAllFavorites());
+            } else {
+              dispatch(deleteFavorite(currentUser._id, id));
+            }
+            post = false;
+          }
+        })
+        if (post) {
+          dispatch(addFavorite(currentUser._id, id));
+        }
+        dispatch(getAllFavorites(currentUser._id))
+      }
+  }
+
+
   const handleShare = () => {
     setShareOpen(!shareOpen)
   }
   const handleClose = () => setShareOpen(false)
-
+  
   return (
     <Card className={classes.root}>     
 
@@ -167,57 +198,29 @@ export default function ProductCard(product) {
       </Link>
       { shareOpen &&
           <Box style={{display: 'flex', justifyContent: 'space-around', width: '18vh', marginTop:'-6vh', marginLeft:'25vh'}}>
-               <EmailShareButton >
-                 <EmailIcon className={classes.shareIcon} round={true} url ={`http://localhost:3000/detail/${id}`}/>
+               <EmailShareButton  url ={`https://musical-e-commerce.vercel.app//detail/${id}`} text="Mira este hermoso instrumento!">
+                 <EmailIcon className={classes.shareIcon} round={true}/>
                 </EmailShareButton>
 
-                <FacebookShareButton >
-                   <FacebookIcon className={classes.shareIcon} round={true} url ={`http://localhost:3000/detail/${id}`} />
+                <FacebookShareButton url ={`https://musical-e-commerce.vercel.app//detail/${id}`} quote="Mira este hermoso instrumento!" hashtag="[instrument]">
+                   <FacebookIcon className={classes.shareIcon} round={true}  />
                  </FacebookShareButton>
-                  <WhatsappShareButton >
+                  <WhatsappShareButton  url ={`https://musical-e-commerce.vercel.app//detail/${id}`}  text="Mira este hermoso instrumento!">
                      <WhatsappIcon className={classes.shareIcon} round={true}/>
                  </WhatsappShareButton>
           </Box>
         }
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
-        <IconButton aria-label="add to favorites" /*onClick={addToFavorite}*/>
-          <FavoriteIcon className={classes.icon} />
-        </IconButton>
-
+          <IconButton aria-label="add to favorites"
+            onClick={favoritesButton}
+          >
+            <FavoriteIcon className={classes.icon} />
+          </IconButton>
         <IconButton aria-label="share" onClick={handleShare}>
-          <ShareIcon className={classes.icon} /> 
+          <ShareIcon className={classes.icon} />
         </IconButton>
         
-        {/* <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={shareOpen}
-                    onClose={handleClose}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                    timeout: 500,
-                    }}
-                >
-                    <Container className={classes.paper}>
-                       <EmailShareButton>
-                          <EmailIcon />
-                       </EmailShareButton>
-
-                       <FacebookShareButton>
-                          <FacebookIcon />
-                      </FacebookShareButton>
-                       <WhatsappShareButton>
-                          <WhatsappIcon />
-                       </WhatsappShareButton>
-
-                   </Container>
-                </Modal> */}
-
-
-
-        <Button 
+          <Button 
             variant="contained" 
             className={classes.button}
             onClick={ agregar }
