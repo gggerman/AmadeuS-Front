@@ -29,6 +29,7 @@ import { linkUserCart } from "../../redux/actions/linkUserCart";
 // import Profile from "../account/Profile";
 import { useHistory } from "react-router";
 import UserProfile from "../userprofile/UserProfile";
+import Favorites from '../favorites/Favorites';
 
 const AppRouter = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -89,6 +90,7 @@ const AppRouter = () => {
             {/* <Route path ="/account" component={Account} />
             <Route path ="/profile" component={Profile} /> */}
             <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />
+            <Route path ="/favorites" component={Favorites} />
 
 
             </UserContext.Provider>
