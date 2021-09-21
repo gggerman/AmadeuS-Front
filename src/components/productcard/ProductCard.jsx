@@ -59,11 +59,14 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.light,
     }
   },
-  iconDelete: {
+  iconFavorite: {
     color: theme.palette.primary.light,
     "&:hover": {
     color: "grey",
     },
+    "&:focus":{
+      color: "grey",
+    }
   },
   text: {
     textDecoration: "none",
@@ -121,6 +124,8 @@ export default function ProductCard(product) {
   const { user } = useAuth0();
   const REACT_APP_SERVER = process.env
   
+  let flag = false;
+
   const agregar = (e) => {
     setShoppingCart( value => ({
       ...value,
@@ -211,10 +216,13 @@ export default function ProductCard(product) {
           </Box>
         }
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
+        {favorites?.forEach(favorite => {
+          if(favorite._id === id) flag = true;
+        })}
           <IconButton aria-label="add to favorites"
             onClick={favoritesButton}
           >
-            <FavoriteIcon className={classes.icon} />
+            <FavoriteIcon className={currentUser?._id? (flag? classes.iconFavorite : classes.icon) : classes.icon} />
           </IconButton>
         <IconButton aria-label="share" onClick={handleShare}>
           <ShareIcon className={classes.icon} />

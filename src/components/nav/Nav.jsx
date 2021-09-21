@@ -115,6 +115,7 @@ export default function Nav() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const favorites = useSelector(({app}) => app.favorites);
+  const currentUser = useSelector(({app}) => app.user);
   const { isAuthenticated, user, isLoading } = useAuth0();
 
   // console.log("nav", isAuthenticated);
@@ -256,7 +257,7 @@ export default function Nav() {
               component={Link}
               to="/favorites"
             >
-              <Badge badgeContent={user ? (favorites?.length > 0 ? favorites.length : null) : null} color="secondary">
+              <Badge badgeContent={currentUser?._id ? (favorites?.length > 0 ? favorites.length : null) : null} color="secondary">
                 <FavoriteIcon />
               </Badge>
           </IconButton>
