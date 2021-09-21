@@ -6,9 +6,8 @@ import Nav from "../nav/Nav";
 import { saveUser } from "../../redux/actions/users";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from "react-redux";
-
-import axios from "axios";
-const { REACT_APP_SERVER } = process.env;
+// import { headers } from "../../utils/getHeaders";
+// import getHeaders from "../../utils/headers"
 
 const useStyles = makeStyles((theme) => ({
   home: {
@@ -19,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+export let headers;
+
 export default function Home() {
   const classes = useStyles();
   const userDB = useSelector((state) => state.app.user);
@@ -28,14 +29,15 @@ export default function Home() {
   // Cuando el usuario se loguea, se envía la información a DB
   useEffect(async () => {
     if (isAuthenticated && !userDB) {
-      
       const token = await getAccessTokenSilently();
 
-      const headers = {
+      headers = {
         authorization: `Bearer ${token}`,
+        email: user.email,
       };
 
-      dispatch(saveUser(headers, user))
+      dispatch(saveUser(headers, user));
+      // dispatch({type: 'HEADERS', payload: headers})
     }
   }, [isAuthenticated]);
 
