@@ -149,14 +149,15 @@ export default function ProductCard(product) {
               dispatch(removeAllFavorites());
             } else {
               dispatch(deleteFavorite(currentUser._id, id));
+              dispatch(getAllFavorites(currentUser._id))
             }
             post = false;
           }
         })
         if (post) {
           dispatch(addFavorite(currentUser._id, id));
+          dispatch(getAllFavorites(currentUser._id))
         }
-        dispatch(getAllFavorites(currentUser._id))
       }
   }
 
@@ -184,12 +185,11 @@ export default function ProductCard(product) {
                 Sin stock
               </Typography>
             ) : (
-              <></>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Entrega en 24hs
+            </Typography>
             ))
           }
-          <Typography variant="body2" color="textSecondary" component="p">
-            Entrega en 24hs
-          </Typography>
         </CardContent>
 
         
