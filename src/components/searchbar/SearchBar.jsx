@@ -88,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchBox: {
     position: "relative",
+    marginLeft: '10vh'
   },
   searchImage: {
     height: "50px",
