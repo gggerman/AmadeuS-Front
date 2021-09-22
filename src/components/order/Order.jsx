@@ -179,8 +179,9 @@ const useStyles = makeStyles((theme) => ({
   
   export default function Order() {
     const classes = useStyles()
-    const dispatch = useDispatch()
     const { user } = useAuth0();
+
+    const dispatch = useDispatch()
     const userRedux = useSelector((state) => state.app.user);
    
 
@@ -225,8 +226,6 @@ const useStyles = makeStyles((theme) => ({
       cost: ""
     };
     const [input, setInput] = useState(initialInput);
-
-
     const [shippingAddress, setShippingAddress] = useState({})
     console.log('shippingAddress',shippingAddress)  
     //------ESTADO PARA AGREGAR DATOS DE ENVIO --------------//
@@ -267,6 +266,7 @@ const useStyles = makeStyles((theme) => ({
     },[idOrder])
 
     console.log(shippingAddress)
+
     const handleCheckout = () => {
       
       //en shipping pasarle o direccion nueva en caso de haber o la que ya tiene el usuario
@@ -308,9 +308,7 @@ const useStyles = makeStyles((theme) => ({
       axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input } )
       .then(() => setShippingAddress(input))
       .catch((err) => console.log(err) )
-
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
-
       setInput(initialInput)
     }
 
