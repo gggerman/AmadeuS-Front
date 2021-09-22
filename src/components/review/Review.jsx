@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Typography, TextField, Button, Avatar } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import { useAuth0 } from "@auth0/auth0-react"; 
-import getAllReviews from "../../redux/actions/getAllReviews";
+import { getAllReviews, removeAllReviews } from "../../redux/actions/getAllReviews";
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +51,7 @@ export default function Review({product}) {
             modified: "",
             user:{
                 name: user.name,
-                mail: user.email,
+                email: user.email,
                 picture: user.picture,
             },
         };
@@ -61,9 +61,14 @@ export default function Review({product}) {
         dispatch(getAllReviews());
     };
 
-    async function handleDelete(id){
-        await axios.delete(`${REACT_APP_SERVER}/reviews/${id}`);
-        dispatch(getAllReviews());
+    async function handleDelete(id, length){
+        if(length > 1){
+            await axios.delete(`${REACT_APP_SERVER}/reviews/${id}`);
+            dispatch(getAllReviews());
+        } else {
+            await axios.delete(`${REACT_APP_SERVER}/reviews/${id}`);
+            dispatch(removeAllReviews());
+        }
     }
 
     function handleEdit(review){
@@ -146,34 +151,39 @@ export default function Review({product}) {
                         }
                     </Box>
                 }
-                {reviews?.map((review, index) => { 
-                    return review.product._id === product._id ?
-                        <Box key={index} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
-                            <Typography component="legend">{review.date}</Typography>
-                            <Grid container justifyContent="space-between">
-                                <Avatar alt={review.user?.name} src={review.user?.picture} />
-                                <Typography component="legend" style={{ marginTop: '1.5vh' }}>{review.user?.name}</Typography>
-                                <Rating value={review.punctuation} readOnly style={{ marginTop: '1.5vh' }} />
-                            </Grid>
-                            <Typography component="legend" style={{ marginTop: '3vh' }}>{review.opinion}</Typography>
-                            <Grid container direction="row" justifyContent="flex-end">
-                                {review.modified &&
-                                    <Typography component="legend" style={{ marginTop: '3.5vh' }}>Editado {review.modified}</Typography>
-                                }
-                                {user?.name === review.user?.name &&
-                                    <>
-                                        <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh', marginRight: '2vh', marginLeft: '5vh' }} onClick={() => handleDelete(review._id)}>
-                                            Eliminar
-                                        </Button>
-                                        <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh' }} onClick={() => handleEdit(review)}>
-                                            Editar
-                                        </Button>
-                                    </>
-                                }
-                            </Grid>
-                        </Box>
-                    : <></>             
-                })}
+                {Array.isArray(reviews) && reviews.length > 0 ?
+                    (reviews?.map(review => {
+                        return review.product._id === product._id ?
+                            <Box key={review._id} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
+                                <Typography component="legend">{review.date}</Typography>
+                                <Grid container justifyContent="space-between">
+                                    <Avatar alt={review.user?.name} src={review.user?.picture} />
+                                    <Typography component="legend" style={{ marginTop: '1.5vh' }}>{review.user?.name}</Typography>
+                                    <Rating value={review.punctuation} readOnly style={{ marginTop: '1.5vh' }} />
+                                </Grid>
+                                <Typography component="legend" style={{ marginTop: '3vh' }}>{review.opinion}</Typography>
+                                <Grid container direction="row" justifyContent="flex-end">
+                                    {review.modified &&
+                                        <Typography component="legend" style={{ marginTop: '3.5vh' }}>Editado {review.modified}</Typography>
+                                    }
+                                    {user?.name === review.user?.name &&
+                                        <>
+                                            <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh', marginRight: '2vh', marginLeft: '5vh' }} onClick={() => handleDelete(review._id, reviews.length)}>
+                                                Eliminar
+                                            </Button>
+                                            <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh' }} onClick={() => handleEdit(review)}>
+                                                Editar
+                                            </Button>
+                                        </>
+                                    }
+                                </Grid>
+                            </Box>
+                            // : <div>Este producto aún no tiene calificaciones!</div>
+                            : <></>
+                    }))
+                    // : <div>Este producto aún no tiene calificaciones!</div>
+                    : <></>
+                }
             </Grid>
         </>
     )

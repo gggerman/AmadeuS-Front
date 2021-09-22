@@ -101,7 +101,7 @@ export default function UserManagement(){
                                 <TableRow key={user._id}>
                                     <TableCell className={classes.tableCell} align="left">{user._id}</TableCell>
                                     <TableCell className={classes.tableCell} align="left">{user.name}</TableCell>
-                                    <TableCell className={classes.tableCell} align="left">{user.mail}</TableCell>
+                                    <TableCell className={classes.tableCell} align="left">{user.email}</TableCell>
                                     <TableCell className={classes.tableCell} align="center">
                                         {user.isAdmin ?
                                             <Button variant="contained" color="secondary" onClick={() => handlePrivileges(user)}>

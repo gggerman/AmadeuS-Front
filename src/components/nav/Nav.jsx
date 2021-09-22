@@ -115,6 +115,7 @@ export default function Nav() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const favorites = useSelector(({app}) => app.favorites);
+  const currentUser = useSelector(({app}) => app.user);
   const { isAuthenticated, user, isLoading } = useAuth0();
 
   // console.log("nav", isAuthenticated);
@@ -236,7 +237,7 @@ export default function Nav() {
         <div className={classes.sectionDesktop}>
              {user && 
                 <Typography component="p" variant="body2" className={classes.welcome}>
-                   Bienvenido {user.name}
+                   Bienvenido {currentUser?.name}
                 </Typography>
               }
           <IconButton
