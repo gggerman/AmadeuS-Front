@@ -24,6 +24,7 @@ export default function Review({product}) {
     const { user } = useAuth0();
     const dispatch = useDispatch();
     const reviews = useSelector(({ app }) => app.reviewsLoaded);
+    const currentUser = useSelector(({ app }) => app.user);
     const [opinion, setOpinion] = useState("");
     const [punctuation, setPunctuation] = useState(0);
     const [edit, setEdit] = useState(false);
@@ -117,7 +118,6 @@ export default function Review({product}) {
                 </Box>
                 {user &&
                     <Box component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
-                        {console.log(user)}
                         <Typography component="legend">Dejanos tu valoración del producto</Typography>
                         <Grid container justifyContent="space-around" style={{marginTop:'1vh'}}>
                             <Typography component="legend">Puntuación</Typography>
@@ -166,7 +166,7 @@ export default function Review({product}) {
                                     {review.modified &&
                                         <Typography component="legend" style={{ marginTop: '3.5vh' }}>Editado {review.modified}</Typography>
                                     }
-                                    {user?.name === review.user?.name &&
+                                    {currentUser?._id === review.user?._id &&
                                         <>
                                             <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh', marginRight: '2vh', marginLeft: '5vh' }} onClick={() => handleDelete(review._id, reviews.length)}>
                                                 Eliminar
