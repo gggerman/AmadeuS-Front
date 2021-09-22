@@ -11,8 +11,10 @@ import {
   MenuItem,
   Menu,
   Button,
+  Container,
   CssBaseline,
 } from "@material-ui/core";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
@@ -25,6 +27,8 @@ import LoginLogout from "../account/LoginLogout";
 import logo from "./logo.jpg";
 import { getUserById, saveUser } from "../../redux/actions/users";
 import { useDispatch } from "react-redux";
+import axios from "axios";
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -103,26 +107,39 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: "2vw",
     borderRadius: "15px",
+    backgroundSize: "contain",
   },
   welcome: {
     color: theme.palette.primary.light,
+    fontSize: "70%",
+    marginTop: "2vh",
+  },
+  text: {
+    color: theme.palette.primary.light,
     fontSize: "80%",
-    alignSelf: "center",
-    display: "flex",
+    marginTop: "2vh",
+    marginLeft: "-5vh",
   },
 }));
 
 export default function Nav() {
   const classes = useStyles();
+  const userRedux = useSelector(({ app }) => app.user);
+
+  const [userDb, setUserDb] = useState();
+  console.log(userDb);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const favorites = useSelector(({ app }) => app.favorites);
+  // const currentUser = useSelector(({app}) => app.user);
+  const users = useSelector(({ app }) => app.usersLoaded);
   const { isAuthenticated, user, isLoading } = useAuth0();
   const userDB = useSelector((state) => state.app.user);
   console.log("usuario DB", userDB);
   const dispatch = useDispatch();
   // console.log("nav", isAuthenticated);
-  // console.log("nav-user", user);
+  console.log("auth0 user", user);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -151,17 +168,37 @@ export default function Nav() {
   }, [dispatch]);
 
   const adminAuth = function () {
+    let usersAdmin = [];
     if (!isLoading) {
       if (user) {
-        return (user.email && user.email === "crismaxbar@gmail.com") ||
-          user.email === "heisjuanpablo@gmail.com" ||
-          user.email === "leandrobuzeta@gmail.com" ||
-          user.email === "juanmhdz99@gmail.com"
-          ? true
-          : false;
+        users.forEach((u) => {
+          u.isAdmin === true && usersAdmin.push(u.email);
+        });
+        return user.email && usersAdmin.includes(user.email) ? true : false;
+        // return (user.email && user.email === "crismaxbar@gmail.com") ||
+        //   user.email === "heisjuanpablo@gmail.com" ||
+        //   user.email === "leandrobuzeta@gmail.com" ||
+        //   user.email === "juanmhdz99@gmail.com"
+        //   ? true
+        //   : false;
       }
     }
   };
+
+  const getUserById = async () => {
+    try {
+      const response = await axios.get(
+        `${REACT_APP_SERVER}/users/${userRedux._id}`
+      );
+      setUserDb(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserById(userRedux._id);
+  }, []);
 
   const renderMenu = (
     <Menu
@@ -243,15 +280,26 @@ export default function Nav() {
         <SearchBar />
 
         <div className={classes.grow} />
+        {userDb && user && (
+          <Container>
+            <Typography className={classes.text} component="p" variant="body2">
+              <LocationOnIcon />
+              {userDb.shipping[0] &&
+                `${userDb.shipping[0].street} ${userDb.shipping[0].number} `}
+            </Typography>
+          </Container>
+        )}
         <div className={classes.sectionDesktop}>
           {user && (
-            <Typography
-              component="p"
-              variant="body2"
-              className={classes.welcome}
-            >
-              Bienvenido {user.name}
-            </Typography>
+            <Container>
+              <Typography
+                component="p"
+                variant="body2"
+                className={classes.welcome}
+              >
+                Bienvenido {user.given_name}
+              </Typography>
+            </Container>
           )}
           <IconButton
             aria-label="show 4 new mails"

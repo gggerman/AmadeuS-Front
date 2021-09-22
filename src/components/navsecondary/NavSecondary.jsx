@@ -4,6 +4,7 @@ import logo from './logo.jpg';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Link } from 'react-router-dom';
 
+
 const useStyles = makeStyles((theme) => ({
     nav:{
         
@@ -24,9 +25,15 @@ const useStyles = makeStyles((theme) => ({
     
   }));
 
-export default function NavSecondary(props){
+
+
+export default function NavSecondary({shipping}){
     const classes = useStyles();
-    console.log(props)
+   
+
+
+  
+
     return (
         <AppBar className={classes.nav}>
           <Toolbar>
@@ -35,12 +42,12 @@ export default function NavSecondary(props){
           </Link>
           <Typography>Home</Typography>
 
-          {  props.shipping &&
+          {  shipping &&
             <Container style={{display: 'flex', justifyContent:'flex-end'}}>
              <LocationOnIcon className={classes.text} /> 
             <Typography style={{fontSize:'0.95em', marginTop: '1vh'}} className={classes.text}>
 
-              {`${props.shipping.street} ${props.shipping.number}`}
+              {shipping.street && `${shipping.street} ${shipping.number}, ${shipping.state}`}
             </Typography>
             
 

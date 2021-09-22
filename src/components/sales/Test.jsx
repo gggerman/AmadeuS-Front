@@ -96,9 +96,9 @@ export default function Test() {
             )
         }, 0),
         "Status": order.status,
-        // "Cliente": order.buyer.mail,
+        // "Cliente": order.buyer.email,
         "Ubicacion": order.shipping,
-        "Cliente": order.buyer && order.buyer.mail
+        "Cliente": order.buyer && order.buyer.email
 
     }))
     const data = arr
