@@ -1,5 +1,7 @@
 import axios from "axios";
 import { ADD_USER, GET_ALL_USERS, SAVE_USER, CLEAN_USER } from "./index";
+import { headers } from "../../utils/GetHeaders"
+
 const { REACT_APP_SERVER } = process.env;
 
 export function addUser(user) {
@@ -31,7 +33,8 @@ export function getAllUsers() {
 }
 
 //Cuando inicia sesión el usuario, se envían los datos a la DB para guardarse y volver con la información actualizada
-export function saveUser(headers, user) {
+export function saveUser(user, headers) {
+  console.log("headers", headers)
   try {
     return async (dispatch) => {
       const userDB = await axios.post(

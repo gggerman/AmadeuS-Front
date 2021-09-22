@@ -273,7 +273,7 @@ const useStyles = makeStyles((theme) => ({
       setShippingAddress(input)
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
       //un axios.put/:id que agregue el obj con la direccion al array shipping 
-      //logica: getallusers, me traigo los users, los filtro con el mail de auth0
+      //logica: getallusers, me traigo los users, los filtro con el email de auth0
 
       setInput(initialInput)
     }

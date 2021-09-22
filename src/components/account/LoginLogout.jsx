@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button, MenuItem } from "@material-ui/core";
+import { MenuItem } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import cleanCart from "../../redux/actions/cleanCart";
 import { linkUserCart } from "../../redux/actions/linkUserCart";
@@ -11,10 +11,11 @@ export default function LoginLogout() {
   const userDB = useSelector((state) => state.app.user);
   const shoppingCart = useSelector(state => state.cart.cart)
   const dispatch = useDispatch();
+  
   const handleChangeLogout = () => {
     logout();
     const userCartToDb = {
-      user: userDB._id,
+      user: userDB,
       cart: shoppingCart
     }
     dispatch( linkUserCart( userCartToDb ))
