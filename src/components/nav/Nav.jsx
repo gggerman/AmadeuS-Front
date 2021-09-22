@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -10,7 +11,8 @@ import {
   MenuItem,
   Menu,
   Button,
-  Container
+  Container,
+  CssBaseline,
 } from "@material-ui/core";
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -130,6 +132,8 @@ export default function Nav() {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const favorites = useSelector(({app}) => app.favorites);
+  const currentUser = useSelector(({app}) => app.user);
   const { isAuthenticated, user, isLoading } = useAuth0();
 
   // console.log("nav", isAuthenticated);
@@ -293,10 +297,15 @@ export default function Nav() {
             </Badge>
           </IconButton>
 
-          <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={null} color="secondary">
-              <FavoriteIcon />
-            </Badge>
+          <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
+              component={Link}
+              to="/favorites"
+            >
+              <Badge badgeContent={user ? (favorites?.length > 0 ? favorites.length : null) : null} color="secondary">
+                <FavoriteIcon />
+              </Badge>
           </IconButton>
 
           <IconButton

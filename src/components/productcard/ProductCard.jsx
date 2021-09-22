@@ -21,10 +21,10 @@ import { EmailShareButton, FacebookShareButton, WhatsappShareButton, FacebookIco
 import { Link } from "react-router-dom";
 import {numberWithCommas} from '../../utils';
 import addToCart from "../../redux/actions/addToCart";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserContext } from "../shoppingcart/UserContext";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { getAllFavorites, addFavorite, deleteFavorite, removeAllFavorites } from "../../redux/actions/favorites";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +57,15 @@ const useStyles = makeStyles((theme) => ({
     },
     "&:focus":{
       color: theme.palette.primary.light,
+    }
+  },
+  iconFavorite: {
+    color: theme.palette.primary.light,
+    "&:hover": {
+    color: "grey",
+    },
+    "&:focus":{
+      color: "grey",
     }
   },
   text: {
@@ -109,8 +118,14 @@ export default function ProductCard(product) {
   const {cartQuantity, cartItems} = shoppingCart
   const [shareOpen, setShareOpen] = useState(false)
   const dispatch = useDispatch()
+  const favorites = useSelector(({ app }) => app.favorites);
+  const currentUser = useSelector(({ app }) => app.user);
+  
+  const { user } = useAuth0();
   const REACT_APP_SERVER = process.env
   
+  let flag = false;
+
   const agregar = (e) => {
     setShoppingCart( value => ({
       ...value,
@@ -128,11 +143,35 @@ export default function ProductCard(product) {
       }
   }, [cartQuantity])
 
+  function favoritesButton() {
+    if (user?.email) {
+        dispatch(getAllFavorites(currentUser._id))
+        let post = true;
+        favorites?.forEach(favorite => {
+          if (favorite._id === id) {
+            if(favorites.length === 1){
+              dispatch(deleteFavorite(currentUser._id, id));
+              dispatch(removeAllFavorites());
+            } else {
+              dispatch(deleteFavorite(currentUser._id, id));
+              dispatch(getAllFavorites(currentUser._id))
+            }
+            post = false;
+          }
+        })
+        if (post) {
+          dispatch(addFavorite(currentUser._id, id));
+          dispatch(getAllFavorites(currentUser._id))
+        }
+      }
+  }
+
+
   const handleShare = () => {
     setShareOpen(!shareOpen)
   }
   const handleClose = () => setShareOpen(false)
-
+  
   return (
     <Card className={classes.root}>     
 
@@ -151,12 +190,11 @@ export default function ProductCard(product) {
                 Sin stock
               </Typography>
             ) : (
-              <></>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Entrega en 24hs
+            </Typography>
             ))
           }
-          <Typography variant="body2" color="textSecondary" component="p">
-            Entrega en 24hs
-          </Typography>
         </CardContent>
 
         
@@ -178,12 +216,16 @@ export default function ProductCard(product) {
           </Box>
         }
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
-        <IconButton aria-label="add to favorites" /*onClick={addToFavorite}*/>
-          <FavoriteIcon className={classes.icon} />
-        </IconButton>
-
+        {favorites?.forEach(favorite => {
+          if(favorite._id === id) flag = true;
+        })}
+          <IconButton aria-label="add to favorites"
+            onClick={favoritesButton}
+          >
+            <FavoriteIcon className={user? (flag? classes.iconFavorite : classes.icon) : classes.icon} />
+          </IconButton>
         <IconButton aria-label="share" onClick={handleShare}>
-          <ShareIcon className={classes.icon} /> 
+          <ShareIcon className={classes.icon} />
         </IconButton>
         
           <Button 

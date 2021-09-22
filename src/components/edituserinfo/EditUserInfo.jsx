@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/styles';
 import { FormHelperText, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Typography, Container, Paper, Grid, TextField, Button, Snackbar } from '@material-ui/core';
 import { Visibility, VisibilityOff, Check, Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
-import { addUser, getAllUsers } from '../../redux/actions/users';
+import axios from 'axios';
+const { REACT_APP_SERVER } = process.env
 
 const useStyles = makeStyles((theme) => ({
     gridContainer: {
@@ -28,38 +29,38 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function AddUser(){
+export default function EditUserInfo(){
 
     const classes = useStyles();
 
     const history = useHistory();
-    const users = useSelector(({ app }) => app.usersLoaded);
     const dispatch = useDispatch();
-
+    const currentUser = useSelector(({app}) => app.user);
+    // const [user, setUser] = useState({});
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [error, setError] = useState({});
     const [input, setInput] = useState({
-        // name:'',
-        // surname:'',
-        // document:'',
-        phone:'',
+        name:'',
+        nickname:'',
+        // phone:'',
         // email:'',
-        // password:'',
-        // showPassword: false,
-        province:'',
-        match:'',
-        location:'',
-        cp:'',
-        address:'',
-        number:'',
-        department:'',
-        floor:'',
     })
 
+    let data = {};
+
+    async function getUser(){
+        let response = await axios.get(`${REACT_APP_SERVER}/users/${currentUser._id}`);
+        data = response.data;
+        setInput({
+            name: data.name,
+            nickname: data.nickname
+        })  
+    }
+
     useEffect(() => {
-        dispatch(getAllUsers());
-    },[dispatch])
+        getUser();
+    },[])
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -70,29 +71,30 @@ export default function AddUser(){
         setOpenError(false);
     };
 
-    function validateEmail(email){
-        // let equals = false;
-        // users.forEach(user => {
-        //     if(user.email === email){
-        //         equals = true;
-        //     }
-        // })
-        // return equals;
-        return users.some(user => {
-            return user.email === email;
-        })
-    }
+    // function validateEmail(email){
+    //     return users.some(user => {
+    //         return user.email === email;
+    //     })
+    // }
 
     function validate(input){
         let error = {};
 
-        // if(!input.name){
-        //     error.name = 'Debe ingresar su nombre'
-        // } else if(!/^[a-zA-Z ,.'-]+$/u.test(input.name)){
-        //     error.name = 'El nombre no es válido'
-        // } else if(input.name.length < 3){
-        //     error.name = 'El nombre debe tener un minimo de 3 letras'
-        // }
+        if(!input.name){
+            error.name = 'Debe ingresar su nombre y apellido'
+        } else if(!/^[a-zA-Z ,.'-]+$/u.test(input.name)){
+            error.name = 'El nombre no es válido'
+        } else if(input.name.length < 3){
+            error.name = 'El nombre completo debe tener un minimo de 8 letras'
+        }
+
+        if(!input.nickname){
+            error.nickname = 'Debe ingresar su nickname'
+        } else if(!/^[a-zA-Z0-9 ,.'-]+$/u.test(input.nickname)){
+            error.nickname = 'El nickname no es válido'
+        } else if(input.nickname.length < 4){
+            error.nickname = 'El nickname debe tener un minimo de 4 letras'
+        }
 
         // if(!input.surname){
         //     error.surname = 'Debe ingresar su apellido'
@@ -128,60 +130,10 @@ export default function AddUser(){
         //     error.password = 'La contraseña debe tener entre 8 y 16 caracteres'
         // }
 
-        if(input.phone){
-            if(!/^[0-9+ -]+$/u.test(input.phone)){
-                error.phone = 'Formato no válido'
-            }
-        }
-
-        if(input.province){
-            if(!/^[a-zA-Z ]+$/u.test(input.province)){
-                error.province = 'Formato no válido'
-            }
-        }
-
-        if(input.match){
-            if(!/^[a-zA-Z 0-9]+$/u.test(input.match)){
-                error.match = 'Formato no válido'
-            }
-        }
-
-        if(input.location){
-            if(!/^[a-zA-Z 0-9]+$/u.test(input.location)){
-                error.location = 'Formato no válido'
-            }
-        }
-
-        if(input.cp){
-            if(!/^[0-9]+$/u.test(input.cp)){
-                error.cp = 'Formato no válido'
-            }
-        }
-
-        if(input.address){
-            if(!/^[a-zA-Z 0-9]+$/u.test(input.address)){
-                error.address = 'Formato no válido'
-            }
-        }
-
-        if(input.number){
-            if(!/^[0-9]+$/u.test(input.number)){
-                error.number = 'Formato no válido'
-            }
-        }
-
-        if(input.department){
-            if(!/^[a-zA-Z0-9° ]+$/u.test(input.department)){
-                error.department = 'Formato no válido'
-            }
-        }
-
-        if(input.floor){
-            if(!/^[a-zA-Z0-9° ]+$/u.test(input.floor)){
-                error.floor = 'Formato no válido'
-            }
-        }
-
+        // if(input.phone){
+        //     if(!/^[0-9+ -]+$/u.test(input.phone)){
+        //         error.phone = 'Formato no válido'
+        //     }
 
         return error;
     }
@@ -199,22 +151,20 @@ export default function AddUser(){
 
     function handleSubmit(e){
         e.preventDefault();
-        dispatch(addUser(input));
+        data = {
+            ...data,
+            name: input.name,
+            nickname: input.nickname
+        };
+        axios.put(`${REACT_APP_SERVER}/users/${currentUser._id}`, data)
         setInput({
-            // name:'',
+            name:'',
+            nickname:'',
             // surname:'',
             // document:'',
-            phone:'',
+            // phone:'',
             // email:'',
             // password:''
-            province:'',
-            match:'',
-            location:'',
-            cp:'',
-            address:'',
-            number:'',
-            department:'',
-            floor:'',
         });
         setOpenSuccess(true);
         // setOpenError(true);
@@ -223,22 +173,15 @@ export default function AddUser(){
 
     function handleClick(e){
         setInput({
-            // name:'',
+            name:'',
+            nickname:'',
             // surname:'',
             // document:'',
-            phone:'',
+            // phone:'',
             // email:'',
             // password:''
-            province:'',
-            match:'',
-            location:'',
-            cp:'',
-            address:'',
-            number:'',
-            department:'',
-            floor:'',
         });
-        history.push('/');
+        history.push('/userprofile');
     }
 
     function handleVisibilityPassword(){
@@ -249,21 +192,32 @@ export default function AddUser(){
     }
 
     return (
-    <Grid container component="main" className={classes.gridContainer}>
+    <Grid container component="main" direction="row" className={classes.gridContainer}>
         <Container component={Paper} elevation={24} style={{ padding: '2vh', maxWidth: '26vw' }}>
-            <Typography align='center' variant='h6' color='primary' style={{ marginBottom: '1vh' }}>Datos de envio</Typography>
+            <Typography align='center' variant='h6' color='primary' style={{ marginBottom: '1vh' }}>Editar info básica</Typography>
             <form onSubmit={handleSubmit}>
 
-                {/* <TextField
+                <TextField
                     className={classes.textField}
                     required
                     name="name"
                     value={input.name}
-                    label="Nombre/s"
+                    label="Nombre y Apellido"
                     variant="outlined"
                     onChange={handleInput}
                     helperText={error.name}
-                /> */}
+                />
+
+                    <TextField
+                        className={classes.textField}
+                        required
+                        name="nickname"
+                        value={input.nickname}
+                        label="Nickname"
+                        variant="outlined"
+                        onChange={handleInput}
+                        helperText={error.nickname}
+                    />
 
                 {/* <TextField
                     className={classes.textField}
@@ -287,7 +241,7 @@ export default function AddUser(){
                     helperText={error.document}
                 /> */}
 
-                <TextField
+                {/* <TextField
                     className={classes.textField}
                     required
                     name="phone"
@@ -296,14 +250,14 @@ export default function AddUser(){
                     variant="outlined"
                     onChange={handleInput}
                     helperText={error.phone}
-                />
+                /> */}
 
                 {/* <TextField
                     className={classes.textField}
                     required
                     name="email"
                     value={input.email}
-                    label="E-email"
+                    label="E-mail"
                     variant="outlined"
                     onChange={handleInput}
                     helperText={error.email}
@@ -331,97 +285,10 @@ export default function AddUser(){
                     <FormHelperText id="contraseña" className={classes.formHelper}>{error.password}</FormHelperText>
                 </FormControl> */}
 
-                <TextField
-                    className={classes.textField}
-                    required
-                    name="province"
-                    value={input.province}
-                    label="Provincia"
-                    variant="outlined"
-                    onChange={handleInput}
-                    helperText={error.province}
-                />
-
-                <TextField
-                    className={classes.textField}
-                    required
-                    name="match"
-                    value={input.match}
-                    label="Partido"
-                    variant="outlined"
-                    onChange={handleInput}
-                    helperText={error.match}
-                />
-
-                <TextField
-                    className={classes.textField}
-                    required
-                    name="location"
-                    value={input.location}
-                    label="Localidad"
-                    variant="outlined"
-                    onChange={handleInput}
-                    helperText={error.location}
-                />
-
-                <TextField
-                    className={classes.textField}
-                    required
-                    name="cp"
-                    value={input.cp}
-                    label="Código Postal"
-                    variant="outlined"
-                    onChange={handleInput}
-                    helperText={error.cp}
-                />
-
-                <TextField
-                    className={classes.textField}
-                    required
-                    name="address"
-                    value={input.address}
-                    label="Dirección"
-                    variant="outlined"
-                    onChange={handleInput}
-                    helperText={error.address}
-                />
-
-                <TextField
-                    className={classes.textField}
-                    required
-                    name="number"
-                    value={input.number}
-                    label="Número"
-                    variant="outlined"
-                    onChange={handleInput}
-                    helperText={error.number}
-                />
-
-                <TextField
-                    className={classes.textField}
-                    name="department"
-                    value={input.department}
-                    label="Departamento"
-                    variant="outlined"
-                    onChange={handleInput}
-                    helperText={error.department}
-                />
-
-                <TextField
-                    className={classes.textField}
-                    name="floor"
-                    value={input.floor}
-                    label="Piso"
-                    variant="outlined"
-                    onChange={handleInput}
-                    helperText={error.floor}
-                />
-
-
                 <Grid container direction="row" justifyContent="center" alignItems="center">
-                    {!error.phone && !error.province && !error.match && !error.location && !error.cp && !error.address && !error.number &&
+                    {!error.name && !error.nickname && 
                         <Button type="submit" variant="contained" color="primary" endIcon={<Check />}>
-                            Enviar
+                            Editar
                         </Button>
                     }
 
@@ -436,7 +303,7 @@ export default function AddUser(){
                         </Alert>
                     </Snackbar>
 
-                    <Button className={classes.buttom} variant="contained" endIcon={<Close />} onClick={handleClick}>Cancelar</Button>
+                    <Button className={classes.buttom} variant="contained" endIcon={<Close />} onClick={handleClick}>Volver</Button>
                 </Grid>
             </form>
         </Container>

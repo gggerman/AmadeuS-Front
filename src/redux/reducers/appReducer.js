@@ -8,6 +8,14 @@ import {
   SET_SEARCHBAR,
   GET_ALL_CATEGORIES,
   GET_ALL_REVIEWS,
+  REMOVE_ALL_REVIEWS,
+  GET_ALL_FAVORITES,
+  ADD_FAVORITE,
+  DELETE_FAVORITE,
+  REMOVE_ALL_FAVORITES,
+  SORT_BY_PRICE_FAVORITES,
+  SORT_BY_NAME_FAVORITES,
+  FILTER_BY_CATEGORY_FAVORITES,
   ADD_USER,
   GET_ALL_USERS,
   ADD_ORDER_ID,
@@ -39,6 +47,8 @@ const initialState = {
   usersLoaded: [],
   order: "",
   reviewsLoaded: [],
+  favorites: [],
+  // allFavorites:[],
   user: null,
 };
 
@@ -170,6 +180,89 @@ const appReducer = (state = initialState, action) => {
         ...state,
         reviewsLoaded: action.payload,
       };
+
+      case REMOVE_ALL_REVIEWS:
+        return {
+            ...state,
+            reviewsLoaded: [],
+        }
+
+    case GET_ALL_FAVORITES:
+      return {
+          ...state,
+          favorites: action.payload,
+          allFavorites: action.payload
+      }
+
+    case ADD_FAVORITE:
+        return state;
+
+    case DELETE_FAVORITE:
+        return state;
+
+    case REMOVE_ALL_FAVORITES:
+        return {
+            ...state,
+            favorites: [],
+        }
+
+    case SORT_BY_PRICE_FAVORITES:
+      let sortPriceFavorites = action.payload === "Lower to Higher"? 
+              state.favorites.sort((a, b) => {
+              return a.price - b.price;
+            })
+            : state.favorites.sort((a, b) => {
+              return b.price - a.price;
+            });
+      return {
+        ...state,
+        favorites: sortPriceFavorites
+      };
+
+    case SORT_BY_NAME_FAVORITES:
+      let sortNameFavorites = action.payload === "A - Z"? 
+            state.favorites.sort((a, b) => {
+              if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return 1;
+              }
+              if (a.name.toLowerCase() < b.name.toLowerCase()) {
+                return -1;
+              }
+              return 0;
+            })
+            : state.favorites.sort((a, b) => {
+              if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return -1;
+              }
+              if (a.name.toLowerCase() < b.name.toLowerCase()) {
+                return 1;
+              }
+              return 0;
+            });
+      return {
+        ...state,
+        favorites: sortNameFavorites
+      };
+
+      // case FILTER_BY_CATEGORY_FAVORITES:
+      //   let allFavorites = state.allFavorites;
+      //   var filterCategoryFavorites = [];
+      //   if(action.payload === "All"){
+      //     filterCategoryFavorites = allFavorites
+      //   } else {
+      //     allFavorites.forEach((favorite) => {
+      //       favorite.categories.forEach((c) => {
+      //         if (c.name === action.payload) {
+      //           filterCategoryFavorites.push(favorite);
+      //         }
+      //       });
+      //     });
+      //   };
+      //   return {
+      //     ...state,
+      //     favorites: filterCategoryFavorites
+      //   };
+
     case SAVE_USER:
       return {
         ...state,
