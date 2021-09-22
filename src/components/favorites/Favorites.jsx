@@ -56,13 +56,7 @@ export default function Favorites() {
     const indexFirstFavorite = indexLastFavorite - favoritesPerPage;
     const currentFavorites = favorites.slice(indexFirstFavorite, indexLastFavorite);
 
-
-    useEffect(() => {
-        user?.email &&
-        dispatch(getAllFavorites(currentUser._id))
-    },[dispatch]);
-
-
+    
     function handleSortName(e) {
         dispatch(sortByNameFavorites(e.target.value));
         setRender(`Sort ${e.target.value}`);
