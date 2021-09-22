@@ -26,6 +26,7 @@ import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
 import logo from "./logo.jpg";
 import axios from 'axios';
+import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -174,7 +175,7 @@ export default function Nav() {
 
   const getUserById = async () => {
     try{
-       const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`)
+       const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`, { headers })
         setUserDb(response.data)
     }
     catch (error){

@@ -79,7 +79,6 @@ export default function OrderDetail() {
   console.log(infoOrder);
   console.log(orderUpdated)
   
-  const query = new URLSearchParams(useLocation().search);
 
   const query = new URLSearchParams(useLocation().search);
   const status = query.get("status");
@@ -120,7 +119,7 @@ useEffect(() => {
 //aca dispara el mail de notificacion al usuario  
 useEffect(() => {
   
-   axios.post(`${REACT_APP_SERVER}/users/${infoOrder.buyer?._id}/purchaseEmail`, { orderUpdated } ) 
+   axios.post(`${REACT_APP_SERVER}/users/${infoOrder.buyer?._id}/purchaseEmail`, { orderUpdated }, { headers } ) 
   
 },[orderUpdated])
  

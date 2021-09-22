@@ -20,7 +20,9 @@ import {
   GET_ALL_USERS,
   ADD_ORDER_ID,
   SAVE_USER,
-  CLEAN_USER
+  CLEAN_USER,
+  CLEAN_USER_CART
+
 } from "../actions/index";
 
 const initialState = {
@@ -72,23 +74,23 @@ const appReducer = (state = initialState, action) => {
         data:
           action.payload.data === "A - Z"
             ? state.productsLoaded.data.sort((a, b) => {
-                if (a.name.toLowerCase() > b.name.toLowerCase()) {
-                  return 1;
-                }
-                if (a.name.toLowerCase() < b.name.toLowerCase()) {
-                  return -1;
-                }
-                return 0;
-              })
+              if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return 1;
+              }
+              if (a.name.toLowerCase() < b.name.toLowerCase()) {
+                return -1;
+              }
+              return 0;
+            })
             : state.productsLoaded.data.sort((a, b) => {
-                if (a.name.toLowerCase() > b.name.toLowerCase()) {
-                  return -1;
-                }
-                if (a.name.toLowerCase() < b.name.toLowerCase()) {
-                  return 1;
-                }
-                return 0;
-              }),
+              if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return -1;
+              }
+              if (a.name.toLowerCase() < b.name.toLowerCase()) {
+                return 1;
+              }
+              return 0;
+            }),
         success: true,
         error: false,
         loading: false,
@@ -102,11 +104,11 @@ const appReducer = (state = initialState, action) => {
         data:
           action.payload.data === "Lower to Higher"
             ? state.productsLoaded.data.sort((a, b) => {
-                return a.price - b.price;
-              })
+              return a.price - b.price;
+            })
             : state.productsLoaded.data.sort((a, b) => {
-                return b.price - a.price;
-              }),
+              return b.price - a.price;
+            }),
         success: true,
         error: false,
         loading: false,
@@ -181,87 +183,87 @@ const appReducer = (state = initialState, action) => {
         reviewsLoaded: action.payload,
       };
 
-      case REMOVE_ALL_REVIEWS:
-        return {
-            ...state,
-            reviewsLoaded: [],
-        }
+    case REMOVE_ALL_REVIEWS:
+      return {
+        ...state,
+        reviewsLoaded: [],
+      }
 
     case GET_ALL_FAVORITES:
       return {
-          ...state,
-          favorites: action.payload,
-          allFavorites: action.payload
+        ...state,
+        favorites: action.payload,
+        allFavorites: action.payload
       }
 
     case ADD_FAVORITE:
-        return state;
+      return state;
 
     case DELETE_FAVORITE:
-        return state;
+      return state;
 
     case REMOVE_ALL_FAVORITES:
-        return {
-            ...state,
-            favorites: [],
-        }
+      return {
+        ...state,
+        favorites: [],
+      }
 
     case SORT_BY_PRICE_FAVORITES:
-      let sortPriceFavorites = action.payload === "Lower to Higher"? 
-              state.favorites.sort((a, b) => {
-              return a.price - b.price;
-            })
-            : state.favorites.sort((a, b) => {
-              return b.price - a.price;
-            });
+      let sortPriceFavorites = action.payload === "Lower to Higher" ?
+        state.favorites.sort((a, b) => {
+          return a.price - b.price;
+        })
+        : state.favorites.sort((a, b) => {
+          return b.price - a.price;
+        });
       return {
         ...state,
         favorites: sortPriceFavorites
       };
 
     case SORT_BY_NAME_FAVORITES:
-      let sortNameFavorites = action.payload === "A - Z"? 
-            state.favorites.sort((a, b) => {
-              if (a.name.toLowerCase() > b.name.toLowerCase()) {
-                return 1;
-              }
-              if (a.name.toLowerCase() < b.name.toLowerCase()) {
-                return -1;
-              }
-              return 0;
-            })
-            : state.favorites.sort((a, b) => {
-              if (a.name.toLowerCase() > b.name.toLowerCase()) {
-                return -1;
-              }
-              if (a.name.toLowerCase() < b.name.toLowerCase()) {
-                return 1;
-              }
-              return 0;
-            });
+      let sortNameFavorites = action.payload === "A - Z" ?
+        state.favorites.sort((a, b) => {
+          if (a.name.toLowerCase() > b.name.toLowerCase()) {
+            return 1;
+          }
+          if (a.name.toLowerCase() < b.name.toLowerCase()) {
+            return -1;
+          }
+          return 0;
+        })
+        : state.favorites.sort((a, b) => {
+          if (a.name.toLowerCase() > b.name.toLowerCase()) {
+            return -1;
+          }
+          if (a.name.toLowerCase() < b.name.toLowerCase()) {
+            return 1;
+          }
+          return 0;
+        });
       return {
         ...state,
         favorites: sortNameFavorites
       };
 
-      // case FILTER_BY_CATEGORY_FAVORITES:
-      //   let allFavorites = state.allFavorites;
-      //   var filterCategoryFavorites = [];
-      //   if(action.payload === "All"){
-      //     filterCategoryFavorites = allFavorites
-      //   } else {
-      //     allFavorites.forEach((favorite) => {
-      //       favorite.categories.forEach((c) => {
-      //         if (c.name === action.payload) {
-      //           filterCategoryFavorites.push(favorite);
-      //         }
-      //       });
-      //     });
-      //   };
-      //   return {
-      //     ...state,
-      //     favorites: filterCategoryFavorites
-      //   };
+    // case FILTER_BY_CATEGORY_FAVORITES:
+    //   let allFavorites = state.allFavorites;
+    //   var filterCategoryFavorites = [];
+    //   if(action.payload === "All"){
+    //     filterCategoryFavorites = allFavorites
+    //   } else {
+    //     allFavorites.forEach((favorite) => {
+    //       favorite.categories.forEach((c) => {
+    //         if (c.name === action.payload) {
+    //           filterCategoryFavorites.push(favorite);
+    //         }
+    //       });
+    //     });
+    //   };
+    //   return {
+    //     ...state,
+    //     favorites: filterCategoryFavorites
+    //   };
 
     case SAVE_USER:
       return {
@@ -272,6 +274,11 @@ const appReducer = (state = initialState, action) => {
       return {
         ...state,
         user: null,
+      };
+    case CLEAN_USER_CART:
+      return {
+        ...state,
+        user: {...state.user, cart:[]},
       };
 
     default:

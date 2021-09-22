@@ -15,6 +15,9 @@ import addOrder from '../../redux/actions/addOrder';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavSecondary from '../navsecondary/NavSecondary';
 import { headers } from "../../utils/GetHeaders"
+import cleanCart from '../../redux/actions/cleanCart';
+import { cleanUserCart } from '../../redux/actions/users';
+
 const { REACT_APP_SERVER } = process.env;
 
 
@@ -186,12 +189,7 @@ const useStyles = makeStyles((theme) => ({
     
     const dispatch = useDispatch()
     const cartProducts = useSelector(state => state.cart.cart)
-    
     const userRedux = useSelector((state) => state.app.user);
-  
-  
-  
-
 
     const [quantity, setQuantity] = useState(1)
     const [idOrder, setIdOrder] = useState()
@@ -220,7 +218,7 @@ const useStyles = makeStyles((theme) => ({
 
     const getUserById = async () => {
       try{
-         const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`)
+         const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`, { headers })
           setUserDb(response.data)
           setShippingAddress(response.data.shipping[0])
       }
@@ -242,7 +240,7 @@ const useStyles = makeStyles((theme) => ({
 
     const handleCheckout = () => {
      
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name), user: user, shipping:  shippingAddress  }, { headers })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts, user: user, shipping:  shippingAddress  }, { headers })
       .then((response) => setIdOrder(response.data)) 
   
       .catch((err) => console.log(err))
@@ -250,6 +248,9 @@ const useStyles = makeStyles((theme) => ({
       axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts})
       .then((response) => window.location = response.data )
       .catch((err) => console.log(err))
+      
+      dispatch(cleanUserCart());
+      dispatch(cleanCart())
     }
   
     const handleShipping = (e) => {
@@ -257,7 +258,6 @@ const useStyles = makeStyles((theme) => ({
       if(e.target.value === '2' && selectedValue === 'domicilio') setShipping(500)
       if(e.target.value === '3' && selectedValue === 'domicilio') setShipping(750)
     }
-    
     
     const handleAddress = () => {
       setAddress(!address)
@@ -281,7 +281,7 @@ const useStyles = makeStyles((theme) => ({
     const handleSave = (e) => {
       e.preventDefault()
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
-      axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input } )
+      axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input }, { headers } )
       .then(() => setShippingAddress(input))
       .catch((err) => console.log(err) )
       setInput(initialInput)

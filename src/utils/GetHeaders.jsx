@@ -6,7 +6,7 @@ export let headers;
 function GetHeaders() {
   const { user, getAccessTokenSilently, isAuthenticated } = useAuth0();
   console.log('user en GetHeaders', user)
-  if(user){
+  if (user) {
     const setHeaders = async () => {
       const token = isAuthenticated && (await getAccessTokenSilently());
       console.log('toke', token)
@@ -15,11 +15,11 @@ function GetHeaders() {
         email: user?.email,
       });
     };
-  
+
     setHeaders();
   }
 
-  return <div></div>
+  return <></>
 }
 
 export default GetHeaders;

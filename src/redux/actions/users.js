@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADD_USER, GET_ALL_USERS, SAVE_USER, CLEAN_USER } from "./index";
+import { ADD_USER, GET_ALL_USERS, SAVE_USER, CLEAN_USER, CLEAN_USER_CART } from "./index";
 import { headers } from "../../utils/GetHeaders"
 
 const { REACT_APP_SERVER } = process.env;
@@ -7,7 +7,7 @@ const { REACT_APP_SERVER } = process.env;
 export function addUser(user) {
   return async (dispatch) => {
     try {
-      await axios.post(`${REACT_APP_SERVER}/users`, user);
+      await axios.post(`${REACT_APP_SERVER}/users`, user, { headers });
       dispatch({
         type: ADD_USER,
       });
@@ -20,7 +20,7 @@ export function addUser(user) {
 export function getAllUsers() {
   return async (dispatch) => {
     try {
-      const users = await axios.get(`${REACT_APP_SERVER}/users`);
+      const users = await axios.get(`${REACT_APP_SERVER}/users`, { headers });
       // console.log(users)
       return dispatch({
         type: GET_ALL_USERS,
@@ -55,5 +55,11 @@ export function saveUser(user, headers) {
 export function cleanUser() {
   return {
     type: CLEAN_USER,
+  };
+}
+
+export function cleanUserCart() {
+  return {
+    type: CLEAN_USER_CART,
   };
 }

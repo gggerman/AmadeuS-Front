@@ -6,6 +6,7 @@ import { FormHelperText, FormControl, InputLabel, OutlinedInput, InputAdornment,
 import { Visibility, VisibilityOff, Check, Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
+import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +51,7 @@ export default function EditUserInfo(){
     let data = {};
 
     async function getUser(){
-        let response = await axios.get(`${REACT_APP_SERVER}/users/${currentUser._id}`);
+        let response = await axios.get(`${REACT_APP_SERVER}/users/${currentUser._id}`, { headers });
         data = response.data;
         setInput({
             name: data.name,
@@ -156,7 +157,7 @@ export default function EditUserInfo(){
             name: input.name,
             nickname: input.nickname
         };
-        axios.put(`${REACT_APP_SERVER}/users/${currentUser._id}`, data)
+        axios.put(`${REACT_APP_SERVER}/users/${currentUser._id}`, data, { headers })
         setInput({
             name:'',
             nickname:'',
