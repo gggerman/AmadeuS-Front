@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import {makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia} from '@material-ui/core';
+import { makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia } from '@material-ui/core';
 import logo from './logo.jpg';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { numberWithCommas } from '../../utils';
 import NavSecondary from '../navsecondary/NavSecondary';
+import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -43,43 +44,40 @@ export default function OrderDetail() {
   const classes = useStyles();
   const orderId = useSelector((state) => state.app.order); //me traigo el orderId generado en Order
   const [infoOrder, setInfoOrder] = useState({});
- 
 
   console.log(infoOrder);
-  
+
   const query = new URLSearchParams(useLocation().search);
-
- 
   const status = query.get("status");
-//status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
+  //status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
 
-  
 
-const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
-  try{
-     const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`)
+
+  const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
+    try {
+      const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`, { headers })
       setInfoOrder(response.data)
-  }
-  catch (error){
+    }
+    catch (error) {
       console.log(error)
+    }
   }
-}
 
-useEffect(() => {
+  useEffect(() => {
     // me traigo con redux el id de Order addOrder
     getOrderById(orderId)
-}, [])
+  }, [])
 
-//--------------ACTUALIZAMOS LA ORDEN EN NUESTRA DB CON EL STATUS QUE DEVUELVE MP--------------//
-useEffect(() => {
-  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, {status: status}) 
-}, [infoOrder])
- 
+  //--------------ACTUALIZAMOS LA ORDEN EN NUESTRA DB CON EL STATUS QUE DEVUELVE MP--------------//
+  useEffect(() => {
+    axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, { status: status }/* , { headers } */)
+  }, [infoOrder])
 
-    return (
-        <div>
-         <CssBaseline>
-         <NavSecondary />
+
+  return (
+    <div>
+      <CssBaseline>
+        <NavSecondary />
 
         <Container className={classes.container}>
           {status === "approved" ? (

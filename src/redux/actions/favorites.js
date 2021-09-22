@@ -21,7 +21,7 @@ export function getAllFavorites(idUser){
 export function addFavorite(idUser, idProduct){
     return async( dispatch ) => {
         try {
-            await axios.post(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`)
+            await axios.post(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`, null, {headers})
             dispatch({
                 type: ADD_FAVORITE
             })
@@ -35,7 +35,7 @@ export function addFavorite(idUser, idProduct){
 export function deleteFavorite(idUser, idProduct){
     return async( dispatch ) => {
         try {
-            await axios.delete(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`)
+            await axios.delete(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`, {headers})
             dispatch({
                 type: DELETE_FAVORITE
             })

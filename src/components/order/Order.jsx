@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import addOrder from '../../redux/actions/addOrder';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavSecondary from '../navsecondary/NavSecondary';
-
+import { headers } from "../../utils/GetHeaders"
 
 const { REACT_APP_SERVER } = process.env;
 
@@ -235,7 +235,7 @@ const useStyles = makeStyles((theme) => ({
     console.log(shippingAddress)
     const handleCheckout = () => {
       
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name, user: user, shipping: shippingAddress })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name, user: user, shipping: shippingAddress }, { headers })
       .then((response) => setIdOrder(response.data)) 
       .catch((err) => console.log(err))
       
