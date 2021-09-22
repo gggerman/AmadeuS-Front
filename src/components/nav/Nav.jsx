@@ -185,20 +185,20 @@ export default function Nav() {
     }
   };
 
-  const getUserById = async () => {
-    try {
-      const response = await axios.get(
-        `${REACT_APP_SERVER}/users/${userRedux._id}`
-      );
-      setUserDb(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getUserById = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${REACT_APP_SERVER}/users/${userRedux._id}`
+  //     );
+  //     setUserDb(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getUserById(userRedux._id);
-  }, []);
+  // useEffect(() => {
+  //   getUserById(userRedux._id);
+  // }, []);
 
   const renderMenu = (
     <Menu

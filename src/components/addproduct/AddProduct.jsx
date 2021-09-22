@@ -22,6 +22,7 @@ import {
   Fade,
   Backdrop,
   CssBaseline,
+  Fab,
 } from "@material-ui/core";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +31,7 @@ import { getDetails } from "../../redux/actions/getDetails";
 import { useParams } from "react-router";
 import { numberWithCommas } from "../../utils";
 import NavSecondary from "./../navsecondary/NavSecondary";
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -116,6 +118,20 @@ const useStyles = makeStyles((theme) => ({
   },
   msg: {
     fontStyle: "italic",
+  },
+  uploadInput: {
+    display: "none",
+  },
+  uploadButton: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+    },
+    marginTop: "1vh",
+  },
+  descError: {
+    marginTop: "10vh",
   },
 }));
 
@@ -215,9 +231,6 @@ function AddProduct() {
     if (!input.brand || !input.brand.length) {
       errors.brand = "Debe tener marca";
     }
-    if (input.image && input.image.length > 255) {
-      errors.image = "La URL de la imagen no debe ser mayor a 255 caracteres";
-    }
     if (!input.image || !input.image.length) {
       errors.image = "Elegí una imagen";
     }
@@ -239,17 +252,19 @@ function AddProduct() {
 
   const handleUpload = async (file) => {
     const formData = new FormData();
-    formData.append("file", file, `asd.${file.type.replace(/(.*)\//g, "")}`);
-    console.log("file", formData, file);
-    const image = await axios.post(
-      `${REACT_APP_SERVER}/products/images`,
-      formData
-    );
-    console.log(image.data);
-    setInput({
-      ...input,
-      image: image.data,
-    });
+    if (file) {
+      formData.append("file", file, `asd.${file?.type.replace(/(.*)\//g, "")}`);
+      console.log("file", formData, file);
+      const image = await axios.post(
+        `${REACT_APP_SERVER}/products/images`,
+        formData
+      );
+      console.log(image.data);
+      setInput({
+        ...input,
+        image: image.data,
+      });
+    }
   };
 
   return (
@@ -287,9 +302,17 @@ function AddProduct() {
               )}
               <Input
                 type="file"
+                id="contained-button-file"
+                required
+                className={classes.uploadInput}
                 onChange={(e) => handleUpload(e.target.files[0])}
-              ></Input>
-              <TextField
+              />
+              <label htmlFor="contained-button-file">
+                <Fab component="span" className={classes.uploadButton}>
+                  <AddPhotoAlternateIcon />
+                </Fab>
+              </label>
+              {/* <TextField
                 className={classes.field}
                 required
                 inputProps={{ className: classes.text }}
@@ -300,6 +323,7 @@ function AddProduct() {
                 variant="outlined"
                 onChange={handleInputChange}
               />
+              */}
               {errors.image && (
                 <FormHelperText error id="component-error">
                   {errors.image}
@@ -427,7 +451,11 @@ function AddProduct() {
                 onChange={handleInputChange}
               />
               {errors.description && (
-                <FormHelperText error id="component-error">
+                <FormHelperText
+                  error
+                  id="component-error"
+                  className={classes.descError}
+                >
                   {errors.description}
                 </FormHelperText>
               )}
@@ -459,7 +487,10 @@ function AddProduct() {
 
         <Grid item xs={6} style={{ marginRight: "0%" }}>
           <Grid item xs={6}>
-            <CardMedia className={classes.media} image={`${REACT_APP_SERVER}/products/images/${input.image}`} />
+            <CardMedia
+              className={classes.media}
+              image={`${REACT_APP_SERVER}/products/images/${input.image}`}
+            />
           </Grid>
           <Grid item xs={6}>
             <Typography
