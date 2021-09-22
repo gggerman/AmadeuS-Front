@@ -67,10 +67,10 @@ export default function OrderDetail() {
     // me traigo con redux el id de Order addOrder
     getOrderById(orderId)
   }, [])
-
+  
   //--------------ACTUALIZAMOS LA ORDEN EN NUESTRA DB CON EL STATUS QUE DEVUELVE MP--------------//
   useEffect(() => {
-    axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, { status: status }/* , { headers } */)
+    axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, { status: status }, { headers })
   }, [infoOrder])
 
 
@@ -87,7 +87,7 @@ export default function OrderDetail() {
                 component="h2"
                 variant="body1"
               >
-                Tu compra fue un exito
+                Tu compra fue un éxito
               </Typography>
 
               {infoOrder.products &&
