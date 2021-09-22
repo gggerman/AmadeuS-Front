@@ -23,8 +23,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
 import logo from "./logo.jpg";
-import { useSelector } from "react-redux";
-import { saveUser } from "../../redux/actions/users";
+import { getUserById, saveUser } from "../../redux/actions/users";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -146,8 +145,8 @@ export default function Nav() {
   const menuId = "primary-search-account-menu";
 
   useEffect(() => {
-    if (user) {
-      dispatch(saveUser(user));
+    if (userDB) {
+      dispatch(getUserById(userDB._id));
     }
   }, [dispatch]);
 

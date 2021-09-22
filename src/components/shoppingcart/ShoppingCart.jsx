@@ -36,14 +36,8 @@ const ShoppingCart = () => {
   const classes = useStyles();
   const shoppingCartProducts = useSelector((state) => state.cart.cart);
   const { shoppingCart, setShoppingCart } = useContext(UserContext);
-  const { cartQuantity, cartItems } = shoppingCart;
-  const dispatch = useDispatch();
-  const [idOrder, setIdOrder] = useState();
 
-  const classes = useStyles();
-  const shoppingCartProducts = useSelector((state) => state.cart.cart);
   const user = useSelector((state) => state.app.user);
-  const { shoppingCart, setShoppingCart } = useContext(UserContext);
   const { cartQuantity, cartItems, userItems, cantItemsDbToCart } =
     shoppingCart;
   const dispatch = useDispatch();

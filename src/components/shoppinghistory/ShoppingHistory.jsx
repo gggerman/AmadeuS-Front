@@ -17,7 +17,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { numberWithCommas } from "../../utils";
 import NavSecondary from "./../navsecondary/NavSecondary";
 import { useDispatch, useSelector } from "react-redux";
-import { saveUser } from "../../redux/actions/users";
+import { getUserById, saveUser } from "../../redux/actions/users";
 import { useAuth0 } from "@auth0/auth0-react";
 const { REACT_APP_SERVER } = process.env;
 
@@ -55,8 +55,8 @@ export default function ShoppingHistory() {
   const userDB = useSelector((state) => state.app.user);
 
   useEffect(() => {
-    if (user) {
-      dispatch(saveUser(user));
+    if (userDB) {
+      dispatch(getUserById(userDB._id));
     }
   }, [dispatch]);
 

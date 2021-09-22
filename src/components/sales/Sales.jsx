@@ -88,7 +88,7 @@ export default function Sales(){
                                                 }, 0))} 
                                 </TableCell>
                                  <TableCell> {order.status === 'approved' && order.status.toUpperCase()} </TableCell>
-                                 <TableCell>{ order.buyer && order.buyer.mail} </TableCell>
+                                 <TableCell>{ order.buyer && order.buyer.email} </TableCell>
                                  {/* <TableCell> {order.shipping && order.shipping}Buenos Aires </TableCell> */}
                             </TableRow>
                         ))

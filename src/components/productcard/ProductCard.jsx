@@ -12,18 +12,30 @@ import {
   Modal,
   Container,
   Backdrop,
-  Box
+  Box,
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
-import { EmailShareButton, FacebookShareButton, WhatsappShareButton, FacebookIcon, WhatsappIcon, EmailIcon} from 'react-share';
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  WhatsappIcon,
+  EmailIcon,
+} from "react-share";
 import { Link } from "react-router-dom";
-import {numberWithCommas} from '../../utils';
+import { numberWithCommas } from "../../utils";
 import addToCart from "../../redux/actions/addToCart";
 import { useDispatch, useSelector } from "react-redux";
 import { UserContext } from "../shoppingcart/UserContext";
-import { getAllFavorites, addFavorite, deleteFavorite, removeAllFavorites } from "../../redux/actions/favorites";
+import {
+  getAllFavorites,
+  addFavorite,
+  deleteFavorite,
+  removeAllFavorites,
+} from "../../redux/actions/favorites";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,14 +67,14 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: theme.palette.primary.light,
     },
-    "&:focus":{
+    "&:focus": {
       color: theme.palette.primary.light,
-    }
+    },
   },
   iconDelete: {
     color: theme.palette.primary.light,
     "&:hover": {
-    color: "grey",
+      color: "grey",
     },
   },
   text: {
@@ -79,31 +91,31 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.palette.primary.dark,
-    textDecoration: 'none',
+    textDecoration: "none",
     "&:focus": {
-      color: theme.palette.primary.light
-    }
+      color: theme.palette.primary.light,
+    },
   },
   modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    height:'20vh',
-    width:'60vh'
+    height: "20vh",
+    width: "60vh",
   },
   shareIcon: {
-    width:'5vh',
-    height: '5vh',
+    width: "5vh",
+    height: "5vh",
     "&:hover": {
-      width: '5.2vh',
-      height: '5.2vh'
-    }
-  }
+      width: "5.2vh",
+      height: "5.2vh",
+    },
+  },
 }));
 
 export default function ProductCard(product) {
@@ -111,126 +123,133 @@ export default function ProductCard(product) {
   //recibe de Products las props
   const cartState = useSelector(({ cart }) => cart);
   const classes = useStyles();
-  const {shoppingCart, setShoppingCart} = useContext( UserContext )
-  const {cartQuantity, cartItems} = shoppingCart
-  const [shareOpen, setShareOpen] = useState(false)
-  const dispatch = useDispatch()
+  const { shoppingCart, setShoppingCart } = useContext(UserContext);
+  const { cartQuantity, cartItems } = shoppingCart;
+  const [shareOpen, setShareOpen] = useState(false);
+  const dispatch = useDispatch();
   const favorites = useSelector(({ app }) => app.favorites);
   const currentUser = useSelector(({ app }) => app.user);
-  
+
   const { user } = useAuth0();
-  const REACT_APP_SERVER = process.env
-  
+  const REACT_APP_SERVER = process.env;
+
   const agregar = (e) => {
-    setShoppingCart( value => ({
+    setShoppingCart((value) => ({
       ...value,
       cartQuantity: cartQuantity + 1,
-    }))
-    dispatch( addToCart (id))       
-  } 
+    }));
+    dispatch(addToCart(id));
+  };
 
-  const alStorage = JSON.stringify(cartState)
-  
+  const alStorage = JSON.stringify(cartState);
+
   useEffect(() => {
-    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) ) 
-      return () =>{
-        window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
-      }
-  }, [cartQuantity])
+    window.localStorage.setItem("cant", JSON.stringify(cartQuantity));
+    return () => {
+      window.localStorage.setItem("cant", JSON.stringify(cartQuantity));
+    };
+  }, [cartQuantity]);
 
   function favoritesButton() {
     if (user?.email) {
-        dispatch(getAllFavorites(currentUser._id))
-        let post = true;
-        favorites?.forEach(favorite => {
-          if (favorite._id === id) {
-            if(favorites.length === 1){
-              dispatch(deleteFavorite(currentUser._id, id));
-              dispatch(removeAllFavorites());
-            } else {
-              dispatch(deleteFavorite(currentUser._id, id));
-            }
-            post = false;
+      dispatch(getAllFavorites(currentUser._id));
+      let post = true;
+      favorites?.forEach((favorite) => {
+        if (favorite._id === id) {
+          if (favorites.length === 1) {
+            dispatch(deleteFavorite(currentUser._id, id));
+            dispatch(removeAllFavorites());
+          } else {
+            dispatch(deleteFavorite(currentUser._id, id));
           }
-        })
-        if (post) {
-          dispatch(addFavorite(currentUser._id, id));
+          post = false;
         }
-        dispatch(getAllFavorites(currentUser._id))
+      });
+      if (post) {
+        dispatch(addFavorite(currentUser._id, id));
       }
+      dispatch(getAllFavorites(currentUser._id));
+    }
   }
-
 
   const handleShare = () => {
-    setShareOpen(!shareOpen)
-  }
-  const handleClose = () => setShareOpen(false)
-  
-  return (
-    <Card className={classes.root}>     
+    setShareOpen(!shareOpen);
+  };
+  const handleClose = () => setShareOpen(false);
 
-      <Link to={`/detail/${id}`} className ={classes.link}>
+  return (
+    <Card className={classes.root}>
+      <Link to={`/detail/${id}`} className={classes.link}>
         <CardMedia className={classes.media} image={image} />
         <CardContent>
           <Typography component="h1" className={classes.price}>
             $ {numberWithCommas(price)}
           </Typography>
           <Typography variant="body2" component="h3">
-            {name.substring(0,30) + '...'}
+            {name.substring(0, 30) + "..."}
           </Typography>
-          {
-            (stock === 0 ? (
-              <Typography variant="body2" color="error" component="p">
-                Sin stock
-              </Typography>
-            ) : (
-              <></>
-            ))
-          }
-          <Typography variant="body2" color="textSecondary" component="p">
-            Entrega en 24hs
-          </Typography>
+          {stock === 0 ? (
+            <Typography variant="body2" color="error" component="p">
+              Sin stock
+            </Typography>
+          ) : (
+            <Typography variant="body2" color="textSecondary" component="p">
+              Entrega en 24hs
+            </Typography>
+          )}
         </CardContent>
-
-        
 
         <Divider variant="middle" light />
       </Link>
-      { shareOpen &&
-          <Box style={{display: 'flex', justifyContent: 'space-around', width: '18vh', marginTop:'-6vh', marginLeft:'25vh'}}>
-               <EmailShareButton  url ={`https://musical-e-commerce.vercel.app//detail/${id}`} text="Mira este hermoso instrumento!">
-                 <EmailIcon className={classes.shareIcon} round={true}/>
-                </EmailShareButton>
-
-                <FacebookShareButton url ={`https://musical-e-commerce.vercel.app//detail/${id}`} quote="Mira este hermoso instrumento!" hashtag="[instrument]">
-                   <FacebookIcon className={classes.shareIcon} round={true}  />
-                 </FacebookShareButton>
-                  <WhatsappShareButton  url ={`https://musical-e-commerce.vercel.app//detail/${id}`}  text="Mira este hermoso instrumento!">
-                     <WhatsappIcon className={classes.shareIcon} round={true}/>
-                 </WhatsappShareButton>
-          </Box>
-        }
-      <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
-          <IconButton aria-label="add to favorites"
-            onClick={favoritesButton}
+      {shareOpen && (
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            width: "18vh",
+            marginTop: "-6vh",
+            marginLeft: "25vh",
+          }}
+        >
+          <EmailShareButton
+            url={`https://musical-e-commerce.vercel.app//detail/${id}`}
+            text="Mira este hermoso instrumento!"
           >
-            <FavoriteIcon className={classes.icon} />
-          </IconButton>
+            <EmailIcon className={classes.shareIcon} round={true} />
+          </EmailShareButton>
+
+          <FacebookShareButton
+            url={`https://musical-e-commerce.vercel.app//detail/${id}`}
+            quote="Mira este hermoso instrumento!"
+            hashtag="[instrument]"
+          >
+            <FacebookIcon className={classes.shareIcon} round={true} />
+          </FacebookShareButton>
+          <WhatsappShareButton
+            url={`https://musical-e-commerce.vercel.app//detail/${id}`}
+            text="Mira este hermoso instrumento!"
+          >
+            <WhatsappIcon className={classes.shareIcon} round={true} />
+          </WhatsappShareButton>
+        </Box>
+      )}
+      <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
+        <IconButton aria-label="add to favorites" onClick={favoritesButton}>
+          <FavoriteIcon className={classes.icon} />
+        </IconButton>
         <IconButton aria-label="share" onClick={handleShare}>
           <ShareIcon className={classes.icon} />
         </IconButton>
-        
-          <Button 
-            variant="contained" 
-            className={classes.button}
-            onClick={ agregar }
-            endIcon = {<ShoppingCartIcon />}
-            >
-           Agregar
+
+        <Button
+          variant="contained"
+          className={classes.button}
+          onClick={agregar}
+          endIcon={<ShoppingCartIcon />}
+        >
+          Agregar
         </Button>
-        
       </CardActions>
-      
     </Card>
   );
 }

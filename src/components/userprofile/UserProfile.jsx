@@ -22,9 +22,8 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import CreateIcon from "@material-ui/icons/Create";
 import HistoryIcon from "@material-ui/icons/History";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { saveUser } from "../../redux/actions/users";
+import { getUserById, saveUser } from "../../redux/actions/users";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -63,8 +62,8 @@ function UserProfile() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user) {
-      dispatch(saveUser(user));
+    if (userDB) {
+      dispatch(getUserById(userDB._id));
     }
   }, [dispatch]);
 
@@ -79,13 +78,13 @@ function UserProfile() {
     >
       <Nav />
       <Container className={classes.container}>
-        <img className={classes.media} src={user.picture} />
+        <img className={classes.media} src={userDB.picture} />
         <CardContent>
           <Typography variant="h5" component="h1">
-            Nombre: {user.name}
+            Nombre: {userDB.name}
           </Typography>
           <Typography component="h1" className={classes.price}>
-            Email: {user.mail}
+            Email: {userDB.email}
           </Typography>
         </CardContent>
         <div style={{ display: "flex" }}>
@@ -96,18 +95,18 @@ function UserProfile() {
               </ListItemIcon>
               <ListItemText primary="Favoritos" />
             </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <HistoryIcon />
-              </ListItemIcon>
-              <ListItemText primary="Historial de compras" />
-            </ListItem>
             <ListItem
               button
               component={Link}
               to="/shoppinghistory"
               className={classes.link}
             >
+              <ListItemIcon>
+                <HistoryIcon />
+              </ListItemIcon>
+              <ListItemText primary="Historial de compras" />
+            </ListItem>
+            <ListItem button>
               <ListItemIcon>
                 <CreateIcon />
               </ListItemIcon>
