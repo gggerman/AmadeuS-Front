@@ -116,6 +116,7 @@ export default function Nav() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const favorites = useSelector(({app}) => app.favorites);
   const currentUser = useSelector(({app}) => app.user);
+  const users = useSelector(({app}) => app.usersLoaded);
   const { isAuthenticated, user, isLoading } = useAuth0();
 
   // console.log("nav", isAuthenticated);
@@ -142,14 +143,21 @@ export default function Nav() {
   const menuId = "primary-search-account-menu";
 
   const adminAuth = function () {
+    let usersAdmin = [];
     if (!isLoading) {
       if (user) {
-        return (user.email && user.email === "crismaxbar@gmail.com") ||
-          user.email === "heisjuanpablo@gmail.com" ||
-          user.email === "leandrobuzeta@gmail.com" ||
-          user.email === "juanmhdz99@gmail.com"
+        users.forEach(u => {
+          u.isAdmin === true && usersAdmin.push(u.email);
+        })
+          return (user.email && usersAdmin.includes(user.email))
           ? true
           : false;
+        // return (user.email && user.email === "crismaxbar@gmail.com") ||
+        //   user.email === "heisjuanpablo@gmail.com" ||
+        //   user.email === "leandrobuzeta@gmail.com" ||
+        //   user.email === "juanmhdz99@gmail.com"
+        //   ? true
+        //   : false;
       }
     }
   };
