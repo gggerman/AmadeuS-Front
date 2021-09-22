@@ -44,7 +44,7 @@ export default function AddUser(){
         // surname:'',
         // document:'',
         phone:'',
-        // mail:'',
+        // email:'',
         // password:'',
         // showPassword: false,
         province:'',
@@ -70,16 +70,16 @@ export default function AddUser(){
         setOpenError(false);
     };
 
-    function validateEmail(mail){
+    function validateEmail(email){
         // let equals = false;
         // users.forEach(user => {
-        //     if(user.mail === mail){
+        //     if(user.email === email){
         //         equals = true;
         //     }
         // })
         // return equals;
         return users.some(user => {
-            return user.mail === mail;
+            return user.email === email;
         })
     }
 
@@ -112,12 +112,12 @@ export default function AddUser(){
             // error.document = 'Ya hay un usuario registrado con ese número de documento'
         //}
 
-        // if(!input.mail){
-        //     error.mail = 'Debe ingresar su email'
-        // } else if(!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(input.mail)){
-        //     error.mail = 'El email no es válido'
-        // }  else if(validateEmail(input.mail)){
-        //     error.mail = 'El email ya esta registrado'
+        // if(!input.email){
+        //     error.email = 'Debe ingresar su email'
+        // } else if(!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(input.email)){
+        //     error.email = 'El email no es válido'
+        // }  else if(validateEmail(input.email)){
+        //     error.email = 'El email ya esta registrado'
         // }
         
         // if(!input.password){
@@ -205,7 +205,7 @@ export default function AddUser(){
             // surname:'',
             // document:'',
             phone:'',
-            // mail:'',
+            // email:'',
             // password:''
             province:'',
             match:'',
@@ -227,7 +227,7 @@ export default function AddUser(){
             // surname:'',
             // document:'',
             phone:'',
-            // mail:'',
+            // email:'',
             // password:''
             province:'',
             match:'',
@@ -301,12 +301,12 @@ export default function AddUser(){
                 {/* <TextField
                     className={classes.textField}
                     required
-                    name="mail"
-                    value={input.mail}
-                    label="E-mail"
+                    name="email"
+                    value={input.email}
+                    label="E-email"
                     variant="outlined"
                     onChange={handleInput}
-                    helperText={error.mail}
+                    helperText={error.email}
                 /> */}
 
                 {/* <FormControl variant="outlined">

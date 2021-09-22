@@ -51,7 +51,7 @@ export default function Review({product}) {
             modified: "",
             user:{
                 name: user.name,
-                mail: user.email,
+                email: user.email,
                 picture: user.picture,
             },
         };

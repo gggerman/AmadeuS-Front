@@ -105,8 +105,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light,
       color: theme.palette.primary.contrastText,
       height: '6vh',
-      width: '20vh',
-      fontSize: '80%',
+      width: '17vh',
+      fontSize: '75%',
       "&:hover": {
         backgroundColor: 'rgb(0, 139, 183)'
       },
@@ -184,10 +184,11 @@ const useStyles = makeStyles((theme) => ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const cartProducts = useSelector(state => state.cart.cart)
+    const userDB = useSelector((state) => state.app.user);
     console.log(cartProducts)
-    
-
   
+  
+
 
     const [quantity, setQuantity] = useState(1)
     const [idOrder, setIdOrder] = useState()
@@ -208,7 +209,7 @@ const useStyles = makeStyles((theme) => ({
       zip: ""
     };
     const [input, setInput] = useState(initialInput);
-    const [shippingAddress, setShippingAddress] = useState({})
+    const [shippingAddress, setShippingAddress] = useState(userDB.shipping[0])
 
     useEffect(() => {            
       dispatch(addOrder(idOrder))
@@ -217,7 +218,7 @@ const useStyles = makeStyles((theme) => ({
 
     const handleCheckout = () => {
      
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name), user: user })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name), user: user, shipping:  shippingAddress  })
       .then((response) => setIdOrder(response.data)) 
   
       .catch((err) => console.log(err))
@@ -256,6 +257,8 @@ const useStyles = makeStyles((theme) => ({
       e.preventDefault()
       setShippingAddress(input)
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
+      axios.post(`${REACT_APP_SERVER}/users/${userDB._id}/shipping`, { shipping: input } )
+
       setInput(initialInput)
     }
     const handleQuantity = (e) =>{
@@ -265,7 +268,7 @@ const useStyles = makeStyles((theme) => ({
     return (
       <div>
         <CssBaseline>
-         <NavSecondary style={{marginBottom: '5vh'}}  />
+         <NavSecondary style={{marginBottom: '5vh'}} shipping = {shippingAddress}  />
 
          <Container className={classes.container}>
 
@@ -319,15 +322,39 @@ const useStyles = makeStyles((theme) => ({
                 <InputLabel style ={{marginTop:'1.7vh'}}>Elige tu zona</InputLabel>
                  <ArrowRightAltIcon style={{marginTop:'1vh', marginLeft: '-3vh',color:'blue'}}/>
                 <TextField type="number"  defaultValue="1" inputProps={ {min :"1", max :"3"}} size= 'small'   onChange={handleShipping} style={{marginLeft: '-2vh'}} />
+
                {
                  selectedValue === 'domicilio'&& 
-                    <Button variant = "contained" className={classes.address} endIcon={<AddLocationIcon />} onClick ={handleAddress}>
-                      Agregar
-                    </Button>
+                 <Box style={{marginTop:'-1vh'}}>
+                 { shippingAddress ?
+                    <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
+                    { `${shippingAddress.street} ${shippingAddress.number}, ${shippingAddress.state}` }
+                    </InputLabel>
+                    :
+                    <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
+                    { userDB.shipping[0] ?  `${userDB.shipping[0].street} ${userDB.shipping[0].number}, ${userDB.shipping[0].state}` : null }
+                    </InputLabel>
+
+                 }  
+                  {
+                        userDB.shipping[0] ?
+                        <Button variant = "contained" className={classes.edit}  endIcon={<EditIcon  />}onClick ={handleAddress} style={{marginLeft: '9vh'}}>
+                        Modificar
+                      </Button>
+                       : 
+                       <Button variant = "contained" className={classes.address}  endIcon={<AddLocationIcon  />}onClick ={handleAddress} style={{marginLeft: '9vh'}}>
+                        Agregar
+                      </Button>
+                      }
+
+
+
+                    </Box>
                } 
                
 
            </Container> 
+
            <Container className={classes.root}> 
                  <Box>
                    <Typography component="h1" variant = "body1">
@@ -399,11 +426,13 @@ const useStyles = makeStyles((theme) => ({
           </Container>
 
 
+
+
           <Container className={classes.containerDer}>
             <Typography component ="h4" variant= "p" style = {{marginTop: '-4vh', alignSelf:'flex-start', marginLeft: '4vh'}}>
               Tus Productos:
             </Typography>
-            <Container style={{marginTop:'-10vh'}}>
+            <Container style={{marginTop:'-5vh'}}>
            
             { 
               cartProducts.map((product) => {
@@ -458,7 +487,7 @@ const useStyles = makeStyles((theme) => ({
                       <Typography variant = 'body1'>
 
                             {
-                              cartProducts[0].price && <Typography variant ='body1' >
+                              cartProducts[0]?.price && <Typography variant ='body1' >
                             $ {numberWithCommas(cartProducts.reduce((acc, item) => {
                               return (
                               acc += item.price * item.quantity 
