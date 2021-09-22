@@ -25,7 +25,6 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
 import logo from "./logo.jpg";
-import {useSelector} from 'react-redux';
 import axios from 'axios';
 const { REACT_APP_SERVER } = process.env;
 
