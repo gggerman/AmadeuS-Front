@@ -222,7 +222,7 @@ export default function ProductCard(product) {
           <IconButton aria-label="add to favorites"
             onClick={favoritesButton}
           >
-            <FavoriteIcon className={currentUser?._id? (flag? classes.iconFavorite : classes.icon) : classes.icon} />
+            <FavoriteIcon className={user? (flag? classes.iconFavorite : classes.icon) : classes.icon} />
           </IconButton>
         <IconButton aria-label="share" onClick={handleShare}>
           <ShareIcon className={classes.icon} />

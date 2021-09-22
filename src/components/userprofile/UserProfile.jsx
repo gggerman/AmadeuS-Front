@@ -81,7 +81,10 @@ function UserProfile() {
               </ListItemIcon>
               <ListItemText primary="Historial de compras" />
             </ListItem>
-            <ListItem button>
+            <ListItem button
+              component={Link}
+              to="edituserinfo"
+            >
               <ListItemIcon>
                 <CreateIcon />
               </ListItemIcon>

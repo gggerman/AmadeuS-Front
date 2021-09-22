@@ -237,7 +237,7 @@ export default function Nav() {
         <div className={classes.sectionDesktop}>
              {user && 
                 <Typography component="p" variant="body2" className={classes.welcome}>
-                   Bienvenido {user.name}
+                   Bienvenido {currentUser?.name}
                 </Typography>
               }
           <IconButton
@@ -257,7 +257,7 @@ export default function Nav() {
               component={Link}
               to="/favorites"
             >
-              <Badge badgeContent={currentUser?._id ? (favorites?.length > 0 ? favorites.length : null) : null} color="secondary">
+              <Badge badgeContent={user ? (favorites?.length > 0 ? favorites.length : null) : null} color="secondary">
                 <FavoriteIcon />
               </Badge>
           </IconButton>
