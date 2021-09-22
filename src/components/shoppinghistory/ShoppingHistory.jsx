@@ -17,7 +17,6 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { numberWithCommas } from "../../utils";
 import NavSecondary from "./../navsecondary/NavSecondary";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserById, saveUser } from "../../redux/actions/users";
 import { useAuth0 } from "@auth0/auth0-react";
 const { REACT_APP_SERVER } = process.env;
 
@@ -48,17 +47,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShoppingHistory() {
   const classes = useStyles();
-  const [invoice, setInvoice] = useState(1);
-  const dispatch = useDispatch();
-  const [orders, setOrders] = useState();
-  const { user } = useAuth0();
-  const userDB = useSelector((state) => state.app.user);
+  const userRedux = useSelector((state) => state.app.user);
+
+  const [userDb, setUserDb] = useState();
+
+  const getUserById = async () => {
+    try {
+      const response = await axios.get(
+        `${REACT_APP_SERVER}/users/${userRedux._id}`
+      );
+      setUserDb(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    if (userDB) {
-      dispatch(getUserById(userDB._id));
-    }
-  }, [dispatch]);
+    getUserById(userRedux._id);
+  }, []);
 
   return (
     <>
@@ -75,8 +81,8 @@ export default function ShoppingHistory() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userDB &&
-              userDB.orders.map((order) => (
+            {userDb &&
+              userDb.orders.map((order) => (
                 <TableRow>
                   <TableCell className={classes.tableCell}> 0001 </TableCell>
                   <TableCell className={classes.tableCell}>
