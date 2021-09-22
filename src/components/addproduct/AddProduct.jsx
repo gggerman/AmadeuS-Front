@@ -21,7 +21,8 @@ import {
   Modal,
   Fade,
   Backdrop,
-  CssBaseline
+  CssBaseline,
+  Fab,
 } from "@material-ui/core";
 import { getAllCategories } from "../../redux/actions/getAllCategories";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,18 +30,18 @@ import { Link } from "react-router-dom";
 import { getDetails } from "../../redux/actions/getDetails";
 import { useParams } from "react-router";
 import { numberWithCommas } from "../../utils";
-import NavSecondary from './../navsecondary/NavSecondary';
+import NavSecondary from "./../navsecondary/NavSecondary";
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     width: "60vh",
-    height: '80%',
-    margin: '2%',
-    padding: '3vh',
+    height: "80%",
+    margin: "2%",
+    padding: "3vh",
     border: `3px solid ${theme.palette.primary.dark}`,
-    borderRadius: '2vh'   
-    
+    borderRadius: "2vh",
   },
   btnBack: {
     backgroundColor: "#16222A",
@@ -48,8 +49,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
     },
-    width: '29.5vh',
-    
+    width: "29.5vh",
   },
   btnPublicar: {
     backgroundColor: theme.palette.primary.main,
@@ -65,13 +65,11 @@ const useStyles = makeStyles((theme) => ({
   },
   field: {
     marginTop: "1vh",
-    marginBottom: "1vh",   
-    height: '8vh',
-   
-
+    marginBottom: "1vh",
+    height: "8vh",
   },
   text: {
-    color: theme.palette.primary.dark
+    color: theme.palette.primary.dark,
   },
   media: {
     width: "100%",
@@ -120,6 +118,20 @@ const useStyles = makeStyles((theme) => ({
   },
   msg: {
     fontStyle: "italic",
+  },
+  uploadInput: {
+    display: "none",
+  },
+  uploadButton: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+    },
+    marginTop: "1vh",
+  },
+  descError: {
+    marginTop: "10vh",
   },
 }));
 
@@ -190,9 +202,6 @@ function AddProduct() {
     }
   };
 
- 
-
-
   function validate() {
     let errors = {};
     if (!input.name) {
@@ -222,9 +231,6 @@ function AddProduct() {
     if (!input.brand || !input.brand.length) {
       errors.brand = "Debe tener marca";
     }
-    if (input.image && input.image.length > 255) {
-      errors.image = "La URL de la imagen no debe ser mayor a 255 caracteres";
-    }
     if (!input.image || !input.image.length) {
       errors.image = "Elegí una imagen";
     }
@@ -244,166 +250,200 @@ function AddProduct() {
     setOpen(false);
   };
 
+  const handleUpload = async (file) => {
+    const formData = new FormData();
+    if (file) {
+      formData.append("file", file, `asd.${file?.type.replace(/(.*)\//g, "")}`);
+      console.log("file", formData, file);
+      const image = await axios.post(
+        `${REACT_APP_SERVER}/products/images`,
+        formData
+      );
+      console.log(image.data);
+      setInput({
+        ...input,
+        image: image.data,
+      });
+    }
+  };
+
   return (
     <>
-    
-    <NavSecondary />
-    
-        <Grid container style = {{marginTop: '10vh', marginLeft: '2%', overflowX: 'hidden'}}>
-      
-        <Grid item xs={6}>
+      <NavSecondary />
 
-        <Typography variant ="h5" color="primary">Completa los campos para crear producto</Typography>
-        <form onSubmit={handleSubmit}>
-          <FormControl className={classes.formControl} onSubmit={handleSubmit}>
-           
-            <TextField
-              className={classes.field}
-              inputProps={{className: classes.text}} 
-              InputLabelProps={{className: classes.text}}
-              required
-              name="name"
-              value={input.name}
-              label="Producto"
-              variant="outlined"
-              onChange={handleInputChange}
-            />
-            {errors.name && (
-              <FormHelperText error id="component-error">
-                {errors.name}
-              </FormHelperText>
-            )}
-            <TextField
-              className={classes.field}
-              required
-              inputProps={{className: classes.text}} 
-              InputLabelProps={{className: classes.text}}
-              name="image"
-              value={input.image}
-              label="Imagen URL"
-              variant="outlined"
-              onChange={handleInputChange}
-            />
-            {errors.image && (
-              <FormHelperText error id="component-error">
-                {errors.image}
-              </FormHelperText>
-            )}
-            <TextField
-              className={classes.field}
-              inputProps={{className: classes.text}} 
-              InputLabelProps={{className: classes.text}}
-              required
-              name="price"
-              value={input.price}
-              label="Precio"
-              variant="outlined"
-              type="number"
-              onChange={handleInputChange}
-            />
-            {errors.price && (
-              <FormHelperText error id="component-error">
-                {errors.price}
-              </FormHelperText>
-            )}
-            <TextField
-              className={classes.field}
-              inputProps={{className: classes.text}} 
-              InputLabelProps={{className: classes.text}}
-              required
-              name="brand"
-              value={input.brand}
-              label="Marca"
-              variant="outlined"
-              onChange={handleInputChange}
-            />
-            {errors.brand && (
-              <FormHelperText error id="component-error">
-                {errors.brand}
-              </FormHelperText>
-            )}
-            <TextField
-              className={classes.field}
-              inputProps={{className: classes.text}} 
-              InputLabelProps={{className: classes.text}}
-              required
-              name="stock"
-              value={input.stock}
-              label="Unidades disponibles"
-              variant="outlined"
-              type="number"
-              onChange={handleInputChange}
-            />
-            {errors.stock && (
-              <FormHelperText error id="component-error">
-                {errors.stock}
-              </FormHelperText>
-            )}
-            {input._id ? (
-              <FormControl variant="outlined" className={classes.field}>
-                <InputLabel>Categorías</InputLabel>
-                <Select
-                  multiple
-                  label="Categorías"
-                  value={input.categories}
-                  name="categories"
-                  onChange={handleSelectChange}
-                  input={<OutlinedInput label="Categorias" />}
-                  renderValue={(selected) =>
-                    categories
-                      .filter((c) => selected.indexOf(c._id) > -1)
-                      .map((c) => c.name)
-                      .join(", ")
-                  }
-                >
-                  {categories.map((category) => (
-                    <MenuItem key={category.name} value={category._id}>
-                      <Checkbox checked={val.indexOf(category._id) > -1} />
-                      <ListItemText primary={category.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            ) : (
-              <FormControl variant="outlined" className={classes.field}>
-                <InputLabel>Categorías</InputLabel>
-                <Select
-                  multiple
-                  label="Categorías"
-                  value={input.categories}
-                  name="categories"
-                  onChange={handleSelectChange}
-                  input={<OutlinedInput label="Categorias" />}
-                  renderValue={(selected) =>
-                    categories
-                      .filter((c) => selected.indexOf(c.name) > -1)
-                      .map((c) => c.name)
-                      .join(", ")
-                  }
-                >
-                  {categories.map((category) => (
-                    <MenuItem key={category.name} value={category.name}>
-                      <Checkbox checked={val.indexOf(category.name) > -1} />
-                      <ListItemText primary={category.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-            {errors.categories && (
-              <FormHelperText error id="component-error">
-                {errors.categories}
-              </FormHelperText>
-            )}
-            
+      <Grid
+        container
+        style={{ marginTop: "10vh", marginLeft: "2%", overflowX: "hidden" }}
+      >
+        <Grid item xs={6}>
+          <Typography variant="h5" color="primary">
+            Completa los campos para crear producto
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <FormControl
+              className={classes.formControl}
+              onSubmit={handleSubmit}
+            >
+              <TextField
+                className={classes.field}
+                inputProps={{ className: classes.text }}
+                InputLabelProps={{ className: classes.text }}
+                required
+                name="name"
+                value={input.name}
+                label="Producto"
+                variant="outlined"
+                onChange={handleInputChange}
+              />
+              {errors.name && (
+                <FormHelperText error id="component-error">
+                  {errors.name}
+                </FormHelperText>
+              )}
+              <Input
+                type="file"
+                id="contained-button-file"
+                required
+                className={classes.uploadInput}
+                onChange={(e) => handleUpload(e.target.files[0])}
+              />
+              <label htmlFor="contained-button-file">
+                <Fab component="span" className={classes.uploadButton}>
+                  <AddPhotoAlternateIcon />
+                </Fab>
+              </label>
+              {/* <TextField
+                className={classes.field}
+                required
+                inputProps={{ className: classes.text }}
+                InputLabelProps={{ className: classes.text }}
+                name="image"
+                value={input.image}
+                label="Imagen URL"
+                variant="outlined"
+                onChange={handleInputChange}
+              />
+              */}
+              {errors.image && (
+                <FormHelperText error id="component-error">
+                  {errors.image}
+                </FormHelperText>
+              )}
+              <TextField
+                className={classes.field}
+                inputProps={{ className: classes.text }}
+                InputLabelProps={{ className: classes.text }}
+                required
+                name="price"
+                value={input.price}
+                label="Precio"
+                variant="outlined"
+                type="number"
+                onChange={handleInputChange}
+              />
+              {errors.price && (
+                <FormHelperText error id="component-error">
+                  {errors.price}
+                </FormHelperText>
+              )}
+              <TextField
+                className={classes.field}
+                inputProps={{ className: classes.text }}
+                InputLabelProps={{ className: classes.text }}
+                required
+                name="brand"
+                value={input.brand}
+                label="Marca"
+                variant="outlined"
+                onChange={handleInputChange}
+              />
+              {errors.brand && (
+                <FormHelperText error id="component-error">
+                  {errors.brand}
+                </FormHelperText>
+              )}
+              <TextField
+                className={classes.field}
+                inputProps={{ className: classes.text }}
+                InputLabelProps={{ className: classes.text }}
+                required
+                name="stock"
+                value={input.stock}
+                label="Unidades disponibles"
+                variant="outlined"
+                type="number"
+                onChange={handleInputChange}
+              />
+              {errors.stock && (
+                <FormHelperText error id="component-error">
+                  {errors.stock}
+                </FormHelperText>
+              )}
+              {input._id ? (
+                <FormControl variant="outlined" className={classes.field}>
+                  <InputLabel>Categorías</InputLabel>
+                  <Select
+                    multiple
+                    label="Categorías"
+                    value={input.categories}
+                    name="categories"
+                    onChange={handleSelectChange}
+                    input={<OutlinedInput label="Categorias" />}
+                    renderValue={(selected) =>
+                      categories
+                        .filter((c) => selected.indexOf(c._id) > -1)
+                        .map((c) => c.name)
+                        .join(", ")
+                    }
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category.name} value={category._id}>
+                        <Checkbox checked={val.indexOf(category._id) > -1} />
+                        <ListItemText primary={category.name} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              ) : (
+                <FormControl variant="outlined" className={classes.field}>
+                  <InputLabel>Categorías</InputLabel>
+                  <Select
+                    multiple
+                    label="Categorías"
+                    value={input.categories}
+                    name="categories"
+                    onChange={handleSelectChange}
+                    input={<OutlinedInput label="Categorias" />}
+                    renderValue={(selected) =>
+                      categories
+                        .filter((c) => selected.indexOf(c.name) > -1)
+                        .map((c) => c.name)
+                        .join(", ")
+                    }
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category.name} value={category.name}>
+                        <Checkbox checked={val.indexOf(category.name) > -1} />
+                        <ListItemText primary={category.name} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+              {errors.categories && (
+                <FormHelperText error id="component-error">
+                  {errors.categories}
+                </FormHelperText>
+              )}
+
               <TextField
                 id="standard-multiline-static"
                 name="description"
                 label="Descripción"
                 value={input.description}
                 className={classes.field}
-                inputProps={{className: classes.text}} 
-                InputLabelProps={{className: classes.text}}
+                inputProps={{ className: classes.text }}
+                InputLabelProps={{ className: classes.text }}
                 multiline
                 variant="outlined"
                 rows={4}
@@ -411,46 +451,46 @@ function AddProduct() {
                 onChange={handleInputChange}
               />
               {errors.description && (
-                <FormHelperText error id="component-error">
+                <FormHelperText
+                  error
+                  id="component-error"
+                  className={classes.descError}
+                >
                   {errors.description}
                 </FormHelperText>
               )}
-            
-            
 
-            
               <Button type="submit" className={classes.btnPublicar}>
-              Publicar
+                Publicar
               </Button>
               <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginTop: "1vh",
-              }}
-            >
-              <Link to="/" className={classes.link}>
-                <Button variant="contained" className={classes.btnBack}>
-                  Home
-                </Button>
-              </Link>
-              <Link to="/adminpanel" className={classes.link}>
-                <Button variant="contained" className={classes.btnBack}>
-                  Volver
-                </Button>
-              </Link>
-            </div>
-            
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: "1vh",
+                }}
+              >
+                <Link to="/" className={classes.link}>
+                  <Button variant="contained" className={classes.btnBack}>
+                    Home
+                  </Button>
+                </Link>
+                <Link to="/adminpanel" className={classes.link}>
+                  <Button variant="contained" className={classes.btnBack}>
+                    Volver
+                  </Button>
+                </Link>
+              </div>
+            </FormControl>
+          </form>
+        </Grid>
 
-          </FormControl>
-        </form>
-        </Grid>  
-
-      
-        
-        <Grid item xs={6} style = {{marginRight: '0%'}}> 
+        <Grid item xs={6} style={{ marginRight: "0%" }}>
           <Grid item xs={6}>
-            <CardMedia className={classes.media} image={input.image} />
+            <CardMedia
+              className={classes.media}
+              image={`${REACT_APP_SERVER}/products/images/${input.image}`}
+            />
           </Grid>
           <Grid item xs={6}>
             <Typography
@@ -506,28 +546,27 @@ function AddProduct() {
             </Typography>
           </Grid>
         </Grid>
-      
-      <div>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            <div className={classes.paper}>
-              <h2 id="transition-modal-title">Creacion exitosa</h2>
-            </div>
-          </Fade>
-        </Modal>
-      </div>
-      
+
+        <div>
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={classes.modal}
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>
+              <div className={classes.paper}>
+                <h2 id="transition-modal-title">Creacion exitosa</h2>
+              </div>
+            </Fade>
+          </Modal>
+        </div>
       </Grid>
     </>
   );
