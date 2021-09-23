@@ -79,7 +79,7 @@ const AppRouter = () => {
             <Route path="/addcategory" component={adminAuth(AddCategory)} />
             <Route path="/addproduct" component={adminAuth(AddProduct)} />
             <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
-            <Route path='/cart' component={ ShoppingCart } />        
+            <Route path='/cart' component={ ShoppingCart } />
             <Route path="/order/:id" component={withAuthenticationRequired(Order)} />
             <Route path ="/ordercart" component = {withAuthenticationRequired(OrderCart)} />
             <Route path="/orderdetail" component = {OrderDetail} />
@@ -92,7 +92,7 @@ const AppRouter = () => {
             <Route path ="/profile" component={Profile} /> */}
             <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />
             <Route path ="/favorites" component={Favorites} />
-
+            
 
             </UserContext.Provider>
             <Redirect to="/" />
