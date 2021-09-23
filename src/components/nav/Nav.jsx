@@ -25,7 +25,6 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
 import logo from "./logo.jpg";
-import { getUserById, saveUser } from "../../redux/actions/users";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 const { REACT_APP_SERVER } = process.env;
@@ -135,8 +134,8 @@ export default function Nav() {
   // const currentUser = useSelector(({app}) => app.user);
   const users = useSelector(({ app }) => app.usersLoaded);
   const { isAuthenticated, user, isLoading } = useAuth0();
-  const userDB = useSelector((state) => state.app.user);
-  console.log("usuario DB", userDB);
+  // const userDB = useSelector((state) => state.app.user);
+  console.log("usuario DB", userDb);
   const dispatch = useDispatch();
   // console.log("nav", isAuthenticated);
   console.log("auth0 user", user);
@@ -161,11 +160,7 @@ export default function Nav() {
   const { cartQuantity } = shoppingCart;
   const menuId = "primary-search-account-menu";
 
-  // useEffect(() => {
-  //   if (userDB) {
-  //     dispatch(getUserById(userDB._id));
-  //   }
-  // }, [dispatch]);
+ 
 
   const adminAuth = function () {
     let usersAdmin = [];
@@ -186,19 +181,19 @@ export default function Nav() {
   };
 
   const getUserById = async () => {
-    try{
-       const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`)
-        setUserDb(response.data)
+    try {
+      const response = await axios.get(
+        `${REACT_APP_SERVER}/users/${userRedux._id}`
+      );
+      setUserDb(response.data);
+    } catch (error) {
+      console.log(error);
     }
-    catch (error){
-        console.log(error)
-    }
-  }
-  
-  
+  };
+
   useEffect(() => {
-    getUserById(userRedux?._id) 
-  }, [])
+    getUserById(userRedux?._id);
+  }, [userRedux]);
 
   const renderMenu = (
     <Menu
@@ -216,7 +211,7 @@ export default function Nav() {
           <MenuItem>Administrar</MenuItem>
         </Link>
       )}
-      {userDB && (
+      {userDb && (
         <Link to="/userprofile" className={classes.link}>
           <MenuItem>Perfil</MenuItem>
         </Link>
@@ -337,8 +332,8 @@ export default function Nav() {
             onClick={handleProfileMenuOpen}
             color="inherit"
           >
-            {userDB ? (
-              <img src={userDB.picture} className={classes.avatar} />
+            {userDb ? (
+              <img src={userDb.picture} className={classes.avatar} />
             ) : (
               <AccountCircle />
             )}
