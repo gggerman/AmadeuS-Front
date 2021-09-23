@@ -8,6 +8,7 @@ import {
   SET_SEARCHBAR,
   GET_ALL_CATEGORIES,
   GET_ALL_REVIEWS,
+  REMOVE_ALL_REVIEWS,
   GET_ALL_FAVORITES,
   ADD_FAVORITE,
   DELETE_FAVORITE,
@@ -179,6 +180,12 @@ const appReducer = (state = initialState, action) => {
         ...state,
         reviewsLoaded: action.payload,
       };
+
+      case REMOVE_ALL_REVIEWS:
+        return {
+            ...state,
+            reviewsLoaded: [],
+        }
 
     case GET_ALL_FAVORITES:
       return {

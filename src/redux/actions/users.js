@@ -46,6 +46,21 @@ export function saveUser(user) {
   };
 }
 
+// export function getUserById(id) {
+//   return async (dispatch) => {
+//     try {
+//       const userDB = await axios.get(`${REACT_APP_SERVER}/users/${id}`);
+//       console.log("get userDB", userDB.data);
+//       return dispatch({
+//         type: SAVE_USER,
+//         payload: userDB.data,
+//       });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// }
+
 export function cleanUser() {
   return {
     type: CLEAN_USER,
