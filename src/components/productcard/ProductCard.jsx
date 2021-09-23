@@ -195,7 +195,7 @@ export default function ProductCard(product) {
           <Typography variant="body2" component="h3">
             {name.substring(0, 30) + "..."}
           </Typography>
-          {stock === 0 ? (
+          {stock <= 0 ? (
             <Typography variant="body2" color="error" component="p">
               Sin stock
             </Typography>
@@ -258,6 +258,7 @@ export default function ProductCard(product) {
         <Button
           variant="contained"
           className={classes.button}
+          disabled={stock <= 0 && true}
           onClick={agregar}
           endIcon={<ShoppingCartIcon />}
         >

@@ -22,7 +22,6 @@ import "../../App.css";
 import Detail from "../detail/Detail";
 import Test from '../sales/Test';
 import { useDispatch, useSelector } from "react-redux";
-import { linkUserCart } from "../../redux/actions/linkUserCart";
 import GetHeaders from "../../utils/GetHeaders"
 
 // import Account from "../account/Account";
