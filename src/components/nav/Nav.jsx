@@ -192,8 +192,8 @@ export default function Nav() {
   };
 
   useEffect(() => {
-    getUserById(userRedux._id);
-  }, []);
+    getUserById(userRedux?._id);
+  }, [userRedux]);
 
   const renderMenu = (
     <Menu
