@@ -184,7 +184,7 @@ export default function Nav() {
   
   
   useEffect(() => {
-    getUserById(userRedux._id) 
+    getUserById(userRedux?._id) 
   }, [])
 
   const renderMenu = (
@@ -267,7 +267,7 @@ export default function Nav() {
         <SearchBar />
 
         <div className={classes.grow} />
-             {userDb && user && 
+             {userDb?.shipping[0] && user && 
                 <Container>
                   
                   <Typography className={classes.text} component="p" variant="body2">

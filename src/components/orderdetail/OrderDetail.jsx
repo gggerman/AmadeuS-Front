@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import {makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia, Table, TableHead, TableRow, TableCell, TableBody} from '@material-ui/core';
+import {makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia, Table, TableHead, TableRow, TableCell, TableBody, InputLabel} from '@material-ui/core';
+import MailIcon from "@material-ui/icons/Mail";
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import { numberWithCommas } from '../../utils';
@@ -64,6 +66,17 @@ const useStyles = makeStyles((theme) => ({
     height: '80vh',
     backgroundColor:'RGB(245, 245, 244)',
     borderRadius: '5px',
+    marginTop: '10vh'
+  },
+  text:{
+    color: theme.palette.primary.light
+  },
+  link: {
+    color: theme.palette.primary.dark,
+    textDecoration: 'none',
+    "&:focus": {
+      color: theme.palette.primary.light
+    }
   },
 }));
 
@@ -121,25 +134,57 @@ useEffect(() => {
     return (
         <div>
          <CssBaseline>
-         <NavSecondary shipping ={infoOrder.shipping} />
+         <NavSecondary shipping ={infoOrder.shipping} success={orderUpdated.status} />
 
         <Container className={classes.containerDer} >
-          <Box>
-            <Typography component ="h2" variant= "body" style = {{marginTop: '-1vh', alignSelf:'flex-center', marginLeft: '4vh'}}>
-              Tu Compra:
+        {
+          status === "approved" ? 
+
+          <Container style={{marginBottom:'10vh'}} >
+            <Typography component ="h2" variant= "body" >
+              Tu compra fue un exito!
             </Typography>
-          </Box>  
+            <InputLabel component = 'h3'>
+                  Entre 24 y 48hs va estar arribando a tu domicilio: 
+                  {/* <ArrowRightAltIcon style={{marginBottom: '-1vh', color: 'blue', marginLeft: '1vh'}} /> */}
+                  <Box style={{display: 'flex' , justifyContent:'row'}}>
+                  <LocationOnIcon className={classes.text} /> 
+                  <Typography className={classes.text} style={{fontSize:'0.8em', marginTop: '1vh',marginLeft: '1vh'}}>
+                    {infoOrder.shipping?.street && `${infoOrder.shipping.street} ${infoOrder.shipping.number}, ${infoOrder.shipping.state}`}
+                  </Typography>
+                  </Box>
+             </InputLabel>
+             <InputLabel component = 'h3'>
+               Te enviamos un mail con toda la informacion del envio a: 
+               
+               <Box style={{display: 'flex' , justifyContent:'row'}}>
+               <MailIcon className={classes.text} /> 
+               <Typography className={classes.text} style={{fontSize:'0.8em', marginTop: '1vh',marginLeft: '1vh'}}>
+                 {infoOrder.buyer?.email}
+               </Typography>
+               </Box>
+              </InputLabel>
+
+
+          </Container>  
+          
+
+
+
+          :
+          null
+       
+        }
        
             <Container style={{marginTop:'-15vh'}}>
-              
-
-
+  
         {    
              infoOrder.products &&
 
               infoOrder.products.map((product) => {
                 return (
                
+                <Link to={`/detail/${product._id}`}  className ={classes.link}> 
                 <Container className={classes.rootProduct}>
                   <Box >
                     <Typography variant="p" color ="primary">
@@ -153,31 +198,39 @@ useEffect(() => {
                   </CardMedia>
 
                 </Container> 
+                </Link>
                 )
               }) 
 
         }
+              <Container>
               <Table>
 
                 <TableHead>
                   <TableRow>
                     <TableCell>
-                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Precio
+                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Envio
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Envio
+                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Total Compra
                       </Typography>
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                    <TableRow>
+                    <TableCell>
+                          <Typography variant ="body1">
+                              $ {orderUpdated.cost}
+                          </Typography>
+                        </TableCell>
+
                       <TableCell>
                         
-                          {/* {   orderUpdated && 
+                          {   orderUpdated.products && 
                             <Typography variant ="body1">
-                            $ {numberWithCommas(orderUpdated.products.reduce((acc, item) => {
+                            $ {numberWithCommas(orderUpdated?.products?.reduce((acc, item) => {
                               return (
                               acc += item.price //aca hay que agregarle * quantity
                               )
@@ -186,17 +239,15 @@ useEffect(() => {
                             }
                               </Typography>
                          
-                          } */}
+                          } 
                         
                       </TableCell> 
-                      <TableCell>
-                        <Typography variant ="body1">
-                            Entrega a domicilio
-                        </Typography>
-                      </TableCell>
+                      
                    </TableRow>
                 </TableBody>             
                 </Table>
+              </Container>
+
               </Container>
               
 

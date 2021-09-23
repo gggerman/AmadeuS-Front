@@ -223,7 +223,6 @@ const useStyles = makeStyles((theme) => ({
       floor: "",
       between: "",
       zip: "",
-      cost: ""
     };
     const [input, setInput] = useState(initialInput);
     const [shippingAddress, setShippingAddress] = useState({})
@@ -269,7 +268,7 @@ const useStyles = makeStyles((theme) => ({
 
     const handleCheckout = () => {
       //en shipping pasarle o direccion nueva en caso de haber o la que ya tiene el usuario
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name, user: user, shipping:  shippingAddress })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name, user: user, shipping:  shippingAddress, cost: shipping })
       .then((response) => setIdOrder(response.data)) 
       .catch((err) => console.log(err))
       

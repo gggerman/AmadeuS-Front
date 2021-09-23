@@ -230,7 +230,7 @@ const useStyles = makeStyles((theme) => ({
     
     
     useEffect(() => {
-      getUserById(userRedux._id) 
+      getUserById(userRedux?._id) 
     }, [])
 
 
@@ -241,7 +241,7 @@ const useStyles = makeStyles((theme) => ({
 
     const handleCheckout = () => {
      
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name), user: user, shipping:  shippingAddress  })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name), user: user, shipping:  shippingAddress, cost: shipping   })
       .then((response) => setIdOrder(response.data)) 
   
       .catch((err) => console.log(err))

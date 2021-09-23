@@ -20,7 +20,6 @@ import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
-import Test from '../sales/Test';
 import { useDispatch, useSelector } from "react-redux";
 import { linkUserCart } from "../../redux/actions/linkUserCart";
 
@@ -85,7 +84,7 @@ const AppRouter = () => {
             <Route path="/usermanagement" component={adminAuth(UserManagement)} />
             <Route path="/edituserinfo" component={EditUserInfo} />
             <Route path ="/sales" component={adminAuth(Sales)} />
-            <Route path ="/test" component={Test} />
+           
             {/* <Route path ="/account" component={Account} />
             <Route path ="/profile" component={Profile} /> */}
             <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />

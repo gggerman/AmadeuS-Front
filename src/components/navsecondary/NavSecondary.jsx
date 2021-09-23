@@ -1,5 +1,5 @@
 import React from 'react';
-import {makeStyles, AppBar, Toolbar, Typography, Divider, Container, InputLabel } from '@material-ui/core';
+import {makeStyles, AppBar, Toolbar, Typography, Box, Container, InputLabel } from '@material-ui/core';
 import logo from './logo.jpg';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Link } from 'react-router-dom';
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function NavSecondary({shipping}){
+export default function NavSecondary({shipping, success}){
     const classes = useStyles();
    
 
@@ -41,6 +41,19 @@ export default function NavSecondary({shipping}){
           <img src ={logo} className={classes.icon}/>
           </Link>
           <Typography>Home</Typography>
+
+          {
+            success === "approved" &&
+
+            <Box style={{marginLeft:'30%', width:'90%'}}>
+              <Typography style={{fontSize:'1.1em'}} className={classes.text}>
+
+                Gracias por tu compra! Te queremos mucho! por favor vuelvas prontos
+              </Typography>
+            </Box>
+
+
+          }
 
           {  shipping &&
             <Container style={{display: 'flex', justifyContent:'flex-end'}}>
