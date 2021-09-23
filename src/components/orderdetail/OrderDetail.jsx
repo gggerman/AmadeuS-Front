@@ -95,15 +95,9 @@ export default function OrderDetail() {
         user,
         cart: [],
       };
-      user.cart = [];
+      // user?.cart = [];
       dispatch(linkUserCart(obj));
       dispatch(cleanCart())
-
-      // setShoppingCart((value) => ({
-      //   ...value,
-      //   cartQuantity: 0,
-      //   cantItemsDbToCart: 0,
-      // }))
     }
   }, [status])
 

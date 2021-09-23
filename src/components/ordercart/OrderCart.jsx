@@ -226,7 +226,7 @@ const useStyles = makeStyles((theme) => ({
     
     useEffect(() => {
       getUserById(userRedux?._id) 
-    }, [])
+    }, [userRedux])
 
     const handleCheckout = () => {
       axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts , user: user, shipping:  shippingAddress, cost: shipping }, { headers })

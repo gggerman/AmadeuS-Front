@@ -288,14 +288,14 @@ export default function Nav() {
           </Container>
         )}
         <div className={classes.sectionDesktop}>
-          {user && (
+          {userDb && (
             <Container>
               <Typography
                 component="p"
                 variant="body2"
                 className={classes.welcome}
               >
-                Bienvenido {user.given_name}
+                Bienvenido {userDb.name}
               </Typography>
             </Container>
           )}

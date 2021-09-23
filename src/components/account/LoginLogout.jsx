@@ -14,6 +14,7 @@ export default function LoginLogout() {
   const dispatch = useDispatch();
 
   const handleChangeLogout = () => {
+    logout();
     const userCartToDb = {
       user: userDB,
       cart: shoppingCartin
@@ -22,12 +23,11 @@ export default function LoginLogout() {
     dispatch(cleanUser());
     dispatch( cleanCart() )
     dispatch(clearApp());
-    logout();
   };
 
   return (
     <div>
-      {isAuthenticated && userDB ? (
+      {isAuthenticated  && userDB  ? (
         <MenuItem onClick={handleChangeLogout}>Cerrar sesión</MenuItem>
       ) : (
         <MenuItem onClick={loginWithRedirect}>Acceder</MenuItem>

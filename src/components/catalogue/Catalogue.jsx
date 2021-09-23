@@ -25,7 +25,8 @@ import { linkUserCart } from "../../redux/actions/linkUserCart";
 import { getCart } from "../../utils";
 import {getAllUsers} from '../../redux/actions/users'
 import { itemsDbToCart } from "../../redux/actions/itemsDbToCart";
-
+import { getAllFavorites } from "../../redux/actions/favorites";
+  
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -62,6 +63,7 @@ export default function Catalogue() {
   useEffect(() => {
     if(user) {
       dispatch( itemsDbToCart( user.cart ))
+      dispatch(getAllFavorites(user._id));
     }
   }, [user])
 
@@ -70,7 +72,6 @@ export default function Catalogue() {
     if( !user ){
       window.localStorage.setItem('cartItems', alStorage )
     } else {
-      console.log('cambiostate')
       const { cart } = JSON.parse(alStorage)
       const userCart = {
         user,
