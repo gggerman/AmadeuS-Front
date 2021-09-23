@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Nav from "../nav/Nav";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -23,7 +23,8 @@ import CreateIcon from "@material-ui/icons/Create";
 import HistoryIcon from "@material-ui/icons/History";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getUserById, saveUser } from "../../redux/actions/users";
+import axios from "axios";
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -57,68 +58,79 @@ const useStyles = makeStyles((theme) => ({
 
 function UserProfile() {
   const { user } = useAuth0();
-  const userDB = useSelector((state) => state.app.user);
+  const userRedux = useSelector(({ app }) => app.user);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [userDb, setUserDb] = useState();
+
+  const getUserById = async () => {
+    try {
+      const response = await axios.get(
+        `${REACT_APP_SERVER}/users/${userRedux._id}`
+      );
+      setUserDb(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    if (userDB) {
-      dispatch(getUserById(userDB._id));
-    }
-  }, [dispatch]);
+    getUserById(userRedux._id);
+  }, []);
 
   return (
-    <Grid
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <Nav />
-      <Container className={classes.container}>
-        <img className={classes.media} src={userDB.picture} />
-        <CardContent>
-          <Typography variant="h5" component="h1">
-            Nombre: {userDB.name}
-          </Typography>
-          <Typography component="h1" className={classes.price}>
-            Email: {userDB.email}
-          </Typography>
-        </CardContent>
-        <div style={{ display: "flex" }}>
-          <List component="nav" aria-label="main mailbox folders">
-            <ListItem button component={Link} to="/favorites">
-              <ListItemIcon>
-                <FavoriteIcon />
-              </ListItemIcon>
-              <ListItemText primary="Favoritos" />
-            </ListItem>
-            <ListItem
-              button
-              component={Link}
-              to="/shoppinghistory"
-              className={classes.link}
-            >
-              <ListItemIcon>
-                <HistoryIcon />
-              </ListItemIcon>
-              <ListItemText primary="Historial de compras" />
-            </ListItem>
-            <ListItem button
-              component={Link}
-              to="edituserinfo"
-            >
-              <ListItemIcon>
-                <CreateIcon />
-              </ListItemIcon>
-              <ListItemText primary="Editar cuenta" />
-            </ListItem>
-          </List>
-        </div>
-      </Container>
-    </Grid>
+    <>
+      {userDb && (
+        <Grid
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Nav />
+          <Container className={classes.container}>
+            <img className={classes.media} src={userDb.picture} />
+            <CardContent>
+              <Typography variant="h5" component="h1">
+                Nombre: {userDb.name}
+              </Typography>
+              <Typography component="h1" className={classes.price}>
+                Email: {userDb.email}
+              </Typography>
+            </CardContent>
+            <div style={{ display: "flex" }}>
+              <List component="nav" aria-label="main mailbox folders">
+                <ListItem button component={Link} to="/favorites">
+                  <ListItemIcon>
+                    <FavoriteIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Favoritos" />
+                </ListItem>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/shoppinghistory"
+                  className={classes.link}
+                >
+                  <ListItemIcon>
+                    <HistoryIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Historial de compras" />
+                </ListItem>
+                <ListItem button component={Link} to="edituserinfo">
+                  <ListItemIcon>
+                    <CreateIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Editar cuenta" />
+                </ListItem>
+              </List>
+            </div>
+          </Container>
+        </Grid>
+      )}
+    </>
   );
 }
 
