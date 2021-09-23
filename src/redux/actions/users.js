@@ -55,7 +55,7 @@ export function saveUser(user, headers) {
 export function getUserById(id) {
   return async (dispatch) => {
     try {
-      const userDB = await axios.get(`${REACT_APP_SERVER}/users/${id}`);
+      const userDB = await axios.get(`${REACT_APP_SERVER}/users/${id}`, { headers });
       console.log("get userDB", userDB.data);
       return dispatch({
         type: SAVE_USER,

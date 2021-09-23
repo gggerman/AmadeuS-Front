@@ -156,7 +156,7 @@ export default function ProductCard(product) {
   }, [cartQuantity]);
 
   function favoritesButton() {
-    if (user?.email) {
+    if (currentUser?.email) {
       dispatch(getAllFavorites(currentUser._id));
       let post = true;
       favorites?.forEach((favorite) => {

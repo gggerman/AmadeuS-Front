@@ -15,9 +15,6 @@ import addOrder from '../../redux/actions/addOrder';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavSecondary from '../navsecondary/NavSecondary';
 import { headers } from "../../utils/GetHeaders"
-import cleanCart from '../../redux/actions/cleanCart';
-import { cleanUserCart } from '../../redux/actions/users';
-
 const { REACT_APP_SERVER } = process.env;
 
 
@@ -227,30 +224,18 @@ const useStyles = makeStyles((theme) => ({
       }
     }
     
-    
     useEffect(() => {
-      getUserById(userRedux._id) 
+      getUserById(userRedux?._id) 
     }, [])
 
-
-    useEffect(() => {            
-      dispatch(addOrder(idOrder))
-    },[idOrder])
-
-
     const handleCheckout = () => {
-     
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts, user: user, shipping:  shippingAddress  }, { headers })
-      .then((response) => setIdOrder(response.data)) 
-  
-      .catch((err) => console.log(err))
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts , user: user, shipping:  shippingAddress, cost: shipping }, { headers })
+      .then(response => dispatch(addOrder(response.data))) 
+      .catch(err => console.log(err))
       
-      axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts})
-      .then((response) => window.location = response.data )
-      .catch((err) => console.log(err))
-      
-      dispatch(cleanUserCart());
-      dispatch(cleanCart())
+      axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts}, { headers })
+      .then(response => window.location = response.data )
+      .catch(err => console.log(err))
     }
   
     const handleShipping = (e) => {
@@ -258,6 +243,7 @@ const useStyles = makeStyles((theme) => ({
       if(e.target.value === '2' && selectedValue === 'domicilio') setShipping(500)
       if(e.target.value === '3' && selectedValue === 'domicilio') setShipping(750)
     }
+    
     
     const handleAddress = () => {
       setAddress(!address)
@@ -303,7 +289,7 @@ const useStyles = makeStyles((theme) => ({
            <Box>
 
             <Typography component ="h3" variant= "h5" style = {{marginTop: '-2vh', marginBottom: '5vh'}}>
-               ¿Como queres recibir o retirar tu compra?
+              ¿Como queres recibir o retirar tu compra?
             </Typography>
             <Box style={{display:'flex',   justifyContent: 'center'}}>
                 <InputLabel component = 'h3'style = {{marginTop: '-3vh', marginBottom: '3vh', display:'flex',   justifyContent: 'center'}}>

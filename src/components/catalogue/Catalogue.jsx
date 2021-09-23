@@ -48,10 +48,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Catalogue() {
-    const {shoppingCart, setShoppingCart} = useContext( UserContext )
-    const {cartQuantity, userItems, cantItemsDbToCart} = shoppingCart    
-    const { data, loading, success } = useSelector(
-      ({ app }) => app.productsLoaded
+  const {shoppingCart, setShoppingCart} = useContext( UserContext )
+  const {cartQuantity, userItems, cantItemsDbToCart} = shoppingCart
+  const { data, loading, success } = useSelector(
+    ({ app }) => app.productsLoaded
   );
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const search = useSelector(({ app }) => app.searchBar);
@@ -66,27 +66,27 @@ export default function Catalogue() {
   }, [user])
 
   useEffect(() => {
-        const alStorage = JSON.stringify(cartState)
-        if( !user ){
-          window.localStorage.setItem('cartItems', alStorage )
-        } else {      
-          console.log('cambiostate')
-            const { cart } = JSON.parse(alStorage)
-            const userCart = {
-                  user,
-                  cart
-                }
-            window.localStorage.removeItem('cartItems')
-            if(userCart)
-                dispatch( linkUserCart( userCart ) )        
-        }
-        setShoppingCart( prev => ({
-          ...prev,
-          cartQuantity: cartState.cart.reduce( (acc, elem) => {
-            return ( acc = acc + elem.quantity)
-          }, 0),     
-      }))
-    }, [cartQuantity, cartState])
+    const alStorage = JSON.stringify(cartState)
+    if( !user ){
+      window.localStorage.setItem('cartItems', alStorage )
+    } else {
+      console.log('cambiostate')
+      const { cart } = JSON.parse(alStorage)
+      const userCart = {
+        user,
+        cart
+      }
+      window.localStorage.removeItem('cartItems')
+      if(userCart)
+        dispatch( linkUserCart( userCart ) )
+    }
+    setShoppingCart( prev => ({
+      ...prev,
+      cartQuantity: cartState.cart.reduce( (acc, elem) => {
+        return ( acc = acc + elem.quantity)
+      }, 0),
+    }))
+  }, [cartQuantity, cartState])
 
   useEffect(() => {
     if (!search || search.length === 0) {

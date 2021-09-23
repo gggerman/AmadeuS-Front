@@ -1,26 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import {makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia, Table, TableHead, TableRow, TableCell, TableBody} from '@material-ui/core';
+import { makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { numberWithCommas } from '../../utils';
 import NavSecondary from '../navsecondary/NavSecondary';
 import { headers } from "../../utils/GetHeaders"
 import { InfoRounded } from '@material-ui/icons';
+import cleanCart from "../../redux/actions/cleanCart";
+import { linkUserCart } from "../../redux/actions/linkUserCart";
+import { UserContext } from '../shoppingcart/UserContext';
+
+
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
-  rootProduct: {      
+  rootProduct: {
     display: 'flex',
-    flexDirection:'row',
-    width: '100%', 
-    height:'12vh',  
-    padding:'2vh', 
-    margin:'2vh',
+    flexDirection: 'row',
+    width: '100%',
+    height: '12vh',
+    padding: '2vh',
+    margin: '2vh',
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
     borderRadius: '3%',
     backgroundColor: 'white',
-    
+
 
   },
   media: {
@@ -38,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
   img2: {
     width: '15%',
     backgroundSize: 'contain',
-    
-},
+
+  },
   container: {
     height: "100vh",
     width: "100%",
@@ -59,129 +64,103 @@ const useStyles = makeStyles((theme) => ({
   containerDer: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent:'space-around',
+    justifyContent: 'space-around',
     alignItems: 'center',
     width: "50%",
     height: '80vh',
-    backgroundColor:'RGB(245, 245, 244)',
+    backgroundColor: 'RGB(245, 245, 244)',
     borderRadius: '5px',
   },
 }));
 
 export default function OrderDetail() {
   const classes = useStyles();
-  const orderId = useSelector((state) => state.app.order); //me traigo el orderId generado en Order
-  const [infoOrder, setInfoOrder] = useState({});
-  const [orderUpdated, setOrderUpdated] = useState({})
- 
- 
-
-  console.log(infoOrder);
-  console.log(orderUpdated)
+  const order = useSelector((state) => state.app.order);
+  const user = useSelector((state) => state.app.user);
+  //me traigo el orderId generado en Order
+  const dispatch = useDispatch()
+  const { shoppingCart, setShoppingCart } = useContext(UserContext);
+  const { cartQuantity } = shoppingCart;
   
-
   const query = new URLSearchParams(useLocation().search);
   const status = query.get("status");
-  //status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
-
-
  
-
-
-  const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
-    try {
-      const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`, { headers })
-      setInfoOrder(response.data)
-    }
-    catch (error) {
-      console.log(error)
-    }
-  }
-
   useEffect(() => {
-    // me traigo con redux el id de Order addOrder
+    axios.put(`${REACT_APP_SERVER}/orders/stock/${order._id}`, { status: status })
+    .then(response => axios.post(`${REACT_APP_SERVER}/users/${order.buyer?._id}/purchaseEmail`, response.data, {headers}))
+    .catch(error => console.log(error))
     
-    getOrderById(orderId)
-  }, [])
-  
-  //--------------ACTUALIZAMOS LA ORDEN EN NUESTRA DB CON EL STATUS QUE DEVUELVE MP--------------//
-  useEffect(() => {
-    axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, { status: status }, { headers })
-  }, [infoOrder])
+    if(status==='approved'){
+      let obj = {
+        user,
+        cart: [],
+      };
+      user.cart = [];
+      dispatch(linkUserCart(obj));
+      dispatch(cleanCart())
 
-//--------------ACTUALIZAMOS LA ORDEN EN NUESTRA DB CON EL STATUS QUE DEVUELVE MP--------------//
-useEffect(() => {
-  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, {status: status}) 
-  .then((response) => setOrderUpdated(response.data))
-  .catch((err) => console.log(err))
-}, [status])
+      // setShoppingCart((value) => ({
+      //   ...value,
+      //   cartQuantity: 0,
+      //   cantItemsDbToCart: 0,
+      // }))
+    }
+  }, [status])
 
-//aca dispara el mail de notificacion al usuario  
-useEffect(() => {
-  
-   axios.post(`${REACT_APP_SERVER}/users/${infoOrder.buyer?._id}/purchaseEmail`, { orderUpdated }, { headers } ) 
-  
-},[orderUpdated])
- 
-
-    return (
-        <div>
-         <CssBaseline>
-         <NavSecondary shipping ={infoOrder.shipping} />
+  return (
+    <div>
+      <CssBaseline>
+        <NavSecondary shipping={order.shipping} />
 
         <Container className={classes.containerDer} >
           <Box>
-            <Typography component ="h2" variant= "body" style = {{marginTop: '-1vh', alignSelf:'flex-center', marginLeft: '4vh'}}>
+            <Typography component="h2" variant="body" style={{ marginTop: '-1vh', alignSelf: 'flex-center', marginLeft: '4vh' }}>
               Tu Compra:
             </Typography>
-          </Box>  
-       
-            <Container style={{marginTop:'-15vh'}}>
-              
+          </Box>
 
-
-        {    
-             infoOrder.products &&
-
-              infoOrder.products.map((product) => {
+          <Container style={{ marginTop: '-15vh' }}>
+            {
+              status === 'approved' &&
+              order.products.map((product) => {
                 return (
-               
-                <Container className={classes.rootProduct}>
-                  <Box >
-                    <Typography variant="p" color ="primary">
+
+                  <Container className={classes.rootProduct}>
+                    <Box >
+                      <Typography variant="p" color="primary">
                         {product.name}
-                    </Typography>
-                  </Box>
-                  <CardMedia style={{display:'flex', justifyContent:'flex-end'}} 
-                    image={product.image} 
-                    className = {classes.img2}>
-                
-                  </CardMedia>
+                      </Typography>
+                    </Box>
+                    <CardMedia style={{ display: 'flex', justifyContent: 'flex-end' }}
+                      image={product.image}
+                      className={classes.img2}>
 
-                </Container> 
+                    </CardMedia>
+
+                  </Container>
                 )
-              }) 
+              })
 
-        }
-              <Table>
+            }
+            <Table>
 
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Precio
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Envio
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                   <TableRow>
-                      <TableCell>
-                        
-                          {/* {   orderUpdated && 
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="overline" style={{ textDecoration: 'underline', fontSize: '1.1em' }}>Precio
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="overline" style={{ textDecoration: 'underline', fontSize: '1.1em' }}>Envio
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+
+                    {/* {   orderUpdated && 
                             <Typography variant ="body1">
                             $ {numberWithCommas(orderUpdated.products.reduce((acc, item) => {
                               return (
@@ -193,18 +172,18 @@ useEffect(() => {
                               </Typography>
                          
                           } */}
-                        
-                      </TableCell> 
-                      <TableCell>
-                        <Typography variant ="body1">
-                            Entrega a domicilio
-                        </Typography>
-                      </TableCell>
-                   </TableRow>
-                </TableBody>             
-                </Table>
-              </Container>
-              
+
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body1">
+                      Entrega a domicilio
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Container>
+
 
         </Container>
 

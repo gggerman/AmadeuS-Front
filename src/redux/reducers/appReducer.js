@@ -21,7 +21,8 @@ import {
   ADD_ORDER_ID,
   SAVE_USER,
   CLEAN_USER,
-  CLEAN_USER_CART
+  CLEAN_USER_CART,
+  CLEAR_APP
 
 } from "../actions/index";
 
@@ -280,6 +281,8 @@ const appReducer = (state = initialState, action) => {
         ...state,
         user: {...state.user, cart:[]},
       };
+    case CLEAR_APP:
+      return initialState
 
     default:
       return state;

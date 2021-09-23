@@ -126,6 +126,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Nav() {
   const classes = useStyles();
   const userRedux = useSelector(({ app }) => app.user);
+  const shoppingCartProducts = useSelector((state) => state.cart.cart);
 
   const [userDb, setUserDb] = useState();
   console.log(userDb);
@@ -137,10 +138,10 @@ export default function Nav() {
   const users = useSelector(({ app }) => app.usersLoaded);
   const { isAuthenticated, user, isLoading } = useAuth0();
   const userDB = useSelector((state) => state.app.user);
-  console.log("usuario DB", userDB);
+  // console.log("usuario DB", userDB);
   const dispatch = useDispatch();
   // console.log("nav", isAuthenticated);
-  console.log("auth0 user", user);
+  // console.log("auth0 user", user);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -308,7 +309,7 @@ export default function Nav() {
             component={Link}
             to="/cart"
           >
-            <Badge badgeContent={cartQuantity} color="secondary">
+            <Badge badgeContent={shoppingCartProducts?.reduce((acc, item) => (acc+item.quantity), 0)} color="secondary">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>

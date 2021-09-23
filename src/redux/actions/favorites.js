@@ -21,7 +21,7 @@ export function getAllFavorites(idUser){
 export function addFavorite(idUser, idProduct){
     return async( dispatch ) => {
         try {
-            await axios.post(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`, null, {headers})
+            await axios.post(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`, {}, {headers})
             dispatch({
                 type: ADD_FAVORITE
             })
