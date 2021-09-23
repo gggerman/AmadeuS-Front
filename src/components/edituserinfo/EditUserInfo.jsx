@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
-import { FormHelperText, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Typography, Container, Paper, Grid, TextField, Button, Snackbar } from '@material-ui/core';
+import { makeStyles, styled } from '@material-ui/styles';
+import { FormHelperText, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Typography, Container, Paper, Grid, TextField, Button, Snackbar, Avatar } from '@material-ui/core';
 import { Visibility, VisibilityOff, Check, Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+const Input = styled('input')({
+    display: 'none',
+});
+
 export default function EditUserInfo(){
 
     const classes = useStyles();
@@ -36,15 +40,16 @@ export default function EditUserInfo(){
     const history = useHistory();
     const dispatch = useDispatch();
     const currentUser = useSelector(({app}) => app.user);
+    const users = useSelector(({app}) => app.usersLoaded);
     // const [user, setUser] = useState({});
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [error, setError] = useState({});
+    const [image, setImage] = useState(null);
     const [input, setInput] = useState({
         name:'',
         nickname:'',
-        // phone:'',
-        // email:'',
+        email:'',
     })
 
     let data = {};
@@ -54,13 +59,20 @@ export default function EditUserInfo(){
         data = response.data;
         setInput({
             name: data.name,
-            nickname: data.nickname
+            nickname: data.nickname,
+            email: data.email
         })  
+        console.log(data)
+        console.log(input)
     }
 
     useEffect(() => {
         getUser();
     },[])
+
+    function subirImage(e){
+        setImage(e.target.files[0]);
+    }
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -71,11 +83,11 @@ export default function EditUserInfo(){
         setOpenError(false);
     };
 
-    // function validateEmail(email){
-    //     return users.some(user => {
-    //         return user.email === email;
-    //     })
-    // }
+    function validateEmail(email){
+        return users.some(user => {
+            return user.email === email;
+        })
+    }
 
     function validate(input){
         let error = {};
@@ -114,13 +126,13 @@ export default function EditUserInfo(){
             // error.document = 'Ya hay un usuario registrado con ese número de documento'
         //}
 
-        // if(!input.email){
-        //     error.email = 'Debe ingresar su email'
-        // } else if(!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(input.email)){
-        //     error.email = 'El email no es válido'
-        // }  else if(validateEmail(input.email)){
-        //     error.email = 'El email ya esta registrado'
-        // }
+        if(!input.email){
+            error.email = 'Debe ingresar su email'
+        } else if(!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(input.email)){
+            error.email = 'El email no es válido'
+        }  else if(validateEmail(input.email)){
+            error.email = 'El email ya esta registrado'
+        }
         
         // if(!input.password){
         //     error.password = 'Debe ingresar su contraseña'
@@ -151,35 +163,29 @@ export default function EditUserInfo(){
 
     function handleSubmit(e){
         e.preventDefault();
+        console.log(image);
         data = {
             ...data,
             name: input.name,
-            nickname: input.nickname
+            nickname: input.nickname,
+            email: input.email
         };
         axios.put(`${REACT_APP_SERVER}/users/${currentUser._id}`, data)
         setInput({
             name:'',
             nickname:'',
-            // surname:'',
-            // document:'',
-            // phone:'',
-            // email:'',
-            // password:''
+            email:'',
         });
         setOpenSuccess(true);
         // setOpenError(true);
-        history.push('/');
+        history.push('/userprofile');
     }
 
     function handleClick(e){
         setInput({
             name:'',
             nickname:'',
-            // surname:'',
-            // document:'',
-            // phone:'',
-            // email:'',
-            // password:''
+            email:'',
         });
         history.push('/userprofile');
     }
@@ -218,6 +224,15 @@ export default function EditUserInfo(){
                         onChange={handleInput}
                         helperText={error.nickname}
                     />
+
+
+                        <label htmlFor="contained-button-file">
+                            <Input accept="image/*" id="contained-button-file" type="file" onChange={subirImage}/>
+                            <Button variant="contained" component="span">
+                                Subir imagen
+                            </Button>
+                        </label>
+
 
                 {/* <TextField
                     className={classes.textField}
@@ -294,7 +309,7 @@ export default function EditUserInfo(){
 
                     <Snackbar open={openSuccess} autoHideDuration={5000} onClose={handleClose}>
                         <Alert onClose={handleClose} severity="success" variant="filled">
-                            Datos enviados exitosamente!
+                            Datos modificados exitosamente!
                         </Alert>
                     </Snackbar>
                     <Snackbar open={openError} autoHideDuration={5000} onClose={handleClose}>

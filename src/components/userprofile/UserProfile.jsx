@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Nav from "../nav/Nav";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -21,6 +21,9 @@ import { makeStyles } from "@material-ui/styles";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import CreateIcon from "@material-ui/icons/Create";
 import HistoryIcon from "@material-ui/icons/History";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getUserById, saveUser } from "../../redux/actions/users";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -29,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     height: "13vw",
     margin: "0vh",
     borderRadius: "6.5vw",
-    backgroundSize: 'contain'
+    backgroundSize: "contain",
   },
   icon: {
     color: "grey",
@@ -46,36 +49,58 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "10px",
     padding: "2vh",
   },
+  link: {
+    textDecoration: "none",
+    color: "black",
+  },
 }));
 
 function UserProfile() {
   const { user } = useAuth0();
+  const userDB = useSelector((state) => state.app.user);
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userDB) {
+      dispatch(getUserById(userDB._id));
+    }
+  }, [dispatch]);
+
   return (
-    <Grid style={{ display: "flex", flexDirection:'column', alignItems: "center", height: "100%" }}>
-      <Nav/>
+    <Grid
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100%",
+      }}
+    >
+      <Nav />
       <Container className={classes.container}>
-        <img className={classes.media} src={user.picture} />
+        <img className={classes.media} src={userDB.picture} />
         <CardContent>
           <Typography variant="h5" component="h1">
-            Nombre: {user.name}
+            Nombre: {userDB.name}
           </Typography>
           <Typography component="h1" className={classes.price}>
-            Email: {user.email}
+            Email: {userDB.email}
           </Typography>
         </CardContent>
         <div style={{ display: "flex" }}>
           <List component="nav" aria-label="main mailbox folders">
-            <ListItem button
-              component={Link}
-              to="/favorites"
-            >
+            <ListItem button component={Link} to="/favorites">
               <ListItemIcon>
                 <FavoriteIcon />
               </ListItemIcon>
               <ListItemText primary="Favoritos" />
             </ListItem>
-            <ListItem button>
+            <ListItem
+              button
+              component={Link}
+              to="/shoppinghistory"
+              className={classes.link}
+            >
               <ListItemIcon>
                 <HistoryIcon />
               </ListItemIcon>

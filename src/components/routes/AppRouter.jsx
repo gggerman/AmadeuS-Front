@@ -28,6 +28,7 @@ import { linkUserCart } from "../../redux/actions/linkUserCart";
 // import Profile from "../account/Profile";
 import { useHistory } from "react-router";
 import UserProfile from "../userprofile/UserProfile";
+import ShoppingHistory from "../shoppinghistory/ShoppingHistory";
 import Favorites from '../favorites/Favorites';
 
 const AppRouter = () => {
@@ -84,7 +85,7 @@ const AppRouter = () => {
             <Route path="/usermanagement" component={adminAuth(UserManagement)} />
             <Route path="/edituserinfo" component={EditUserInfo} />
             <Route path ="/sales" component={adminAuth(Sales)} />
-           
+            <Route path ="/shoppinghistory" component={ShoppingHistory} />
             {/* <Route path ="/account" component={Account} />
             <Route path ="/profile" component={Profile} /> */}
             <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />
