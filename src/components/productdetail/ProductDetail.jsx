@@ -140,11 +140,15 @@ export default function ProductDetail() {
                 >
                   Agregar
                 </Button>
-                <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
+                {
+                  data.stock >= 1 &&
+                  <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
                   <Button variant="contained" className={classes.button}>
                     Comprar
                   </Button>
                 </Link>
+                }
+                
               </Grid>
                 <Box className = {classes.box}>
                 {data.stock === 0 ? (

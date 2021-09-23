@@ -8,6 +8,7 @@ import {useSelector} from 'react-redux';
 import { numberWithCommas } from '../../utils';
 import NavSecondary from '../navsecondary/NavSecondary';
 import { InfoRounded } from '@material-ui/icons';
+import Order from '../order/Order';
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -62,11 +63,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent:'space-around',
     alignItems: 'center',
-    width: "50%",
-    height: '80vh',
+    width: "60%",
+    height: '80%',
     backgroundColor:'RGB(245, 245, 244)',
     borderRadius: '5px',
-    marginTop: '10vh'
+    padding:'5vh',
+    marginTop: '5vh'
   },
   text:{
     color: theme.palette.primary.light
@@ -82,13 +84,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderDetail() {
   const classes = useStyles();
-  const orderId = useSelector((state) => state.app.order); //me traigo el orderId generado en Order
+  const order = useSelector((state) => state.app.order); //me traigo el orderId generado en Order
   const [infoOrder, setInfoOrder] = useState({});
   const [orderUpdated, setOrderUpdated] = useState({})
  
  
 
-  console.log(infoOrder);
+  console.log(order);
   console.log(orderUpdated)
   
   const query = new URLSearchParams(useLocation().search);
@@ -97,50 +99,52 @@ export default function OrderDetail() {
   const status = query.get("status");
 //status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
 
+// const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
+//   try{
+//      const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`)
+//       setInfoOrder(response.data)
+//   }
+//   catch (error){
+//       console.log(error)
+//   }
+// }
 
- 
-
-const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
-  try{
-     const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`)
-      setInfoOrder(response.data)
-  }
-  catch (error){
-      console.log(error)
-  }
-}
-
-useEffect(() => {
-    // me traigo con redux el id de Order addOrder
+// useEffect(() => {
+//     // me traigo con redux el id de Order addOrder
     
-    getOrderById(orderId)
-}, [])
+//     getOrderById(orderId)
+// }, [])
+  useEffect(() => {
+    axios.put(`${REACT_APP_SERVER}/orders/stock/${order?._id}`, { status: status })
+    .then(response => axios.post(`${REACT_APP_SERVER}/users/${order.buyer?._id}/purchaseEmail`, response.data))
+    .catch(error => console.log(error))
+  }, [status])
 
 //--------------ACTUALIZAMOS LA ORDEN EN NUESTRA DB CON EL STATUS QUE DEVUELVE MP--------------//
-useEffect(() => {
-  axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, {status: status}) 
-  .then((response) => setOrderUpdated(response.data))
-  .catch((err) => console.log(err))
-}, [status])
+// useEffect(() => {
+//   axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, {status: status}) 
+//   .then((response) => setOrderUpdated(response.data))
+//   .catch((err) => console.log(err))
+// }, [status])
 
 //aca dispara el mail de notificacion al usuario  
-useEffect(() => {
+// useEffect(() => {
   
-   axios.post(`${REACT_APP_SERVER}/users/${infoOrder.buyer?._id}/purchaseEmail`, { orderUpdated } ) 
+//    axios.post(`${REACT_APP_SERVER}/users/${infoOrder.buyer?._id}/purchaseEmail`, { orderUpdated } ) 
   
-},[orderUpdated])
+// },[orderUpdated])
  
 
     return (
         <div>
          <CssBaseline>
-         <NavSecondary shipping ={infoOrder.shipping} success={orderUpdated.status} />
+         <NavSecondary shipping ={order?.shipping} success={orderUpdated.status} />
 
         <Container className={classes.containerDer} >
         {
           status === "approved" ? 
 
-          <Container style={{marginBottom:'10vh'}} >
+          <Container style={{marginBottom:'13vh', marginTop: '3vh'}} >
             <Typography component ="h2" variant= "body" >
               Tu compra fue un exito!
             </Typography>
@@ -150,7 +154,7 @@ useEffect(() => {
                   <Box style={{display: 'flex' , justifyContent:'row'}}>
                   <LocationOnIcon className={classes.text} /> 
                   <Typography className={classes.text} style={{fontSize:'0.8em', marginTop: '1vh',marginLeft: '1vh'}}>
-                    {infoOrder.shipping?.street && `${infoOrder.shipping.street} ${infoOrder.shipping.number}, ${infoOrder.shipping.state}`}
+                    {order?.shipping?.street && `${order?.shipping?.street} ${order?.shipping?.number}, ${order?.shipping?.state}`}
                   </Typography>
                   </Box>
              </InputLabel>
@@ -160,7 +164,7 @@ useEffect(() => {
                <Box style={{display: 'flex' , justifyContent:'row'}}>
                <MailIcon className={classes.text} /> 
                <Typography className={classes.text} style={{fontSize:'0.8em', marginTop: '1vh',marginLeft: '1vh'}}>
-                 {infoOrder.buyer?.email}
+                 {order?.buyer.email}
                </Typography>
                </Box>
               </InputLabel>
@@ -179,9 +183,9 @@ useEffect(() => {
             <Container style={{marginTop:'-15vh'}}>
   
         {    
-             infoOrder.products &&
+             order?.products &&
 
-              infoOrder.products.map((product) => {
+              order?.products?.map((product) => {
                 return (
                
                 <Link to={`/detail/${product._id}`}  className ={classes.link}> 
@@ -222,20 +226,21 @@ useEffect(() => {
                    <TableRow>
                     <TableCell>
                           <Typography variant ="body1">
-                              $ {orderUpdated.cost}
+                              $ {order?.cost}
                           </Typography>
                         </TableCell>
 
                       <TableCell>
                         
-                          {   orderUpdated.products && 
+                          {   order?.products && 
                             <Typography variant ="body1">
-                            $ {numberWithCommas(orderUpdated?.products?.reduce((acc, item) => {
+                            $ {numberWithCommas( order?.products?.reduce((acc, item) => {
+                              const quant = order.quantity ? order.quantity : item.quantity
                               return (
-                              acc += item.price //aca hay que agregarle * quantity
+                              acc += item.price * quant //aca hay que agregarle * quantity
                               )
                             }, 0
-                            ))
+                            ) + order?.cost )
                             }
                               </Typography>
                          

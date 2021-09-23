@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavSecondary({shipping, success}){
     const classes = useStyles();
-   
+    console.log(shipping)
 
 
   
@@ -60,7 +60,7 @@ export default function NavSecondary({shipping, success}){
              <LocationOnIcon className={classes.text} /> 
             <Typography style={{fontSize:'0.95em', marginTop: '1vh'}} className={classes.text}>
 
-              {shipping.street && `${shipping.street} ${shipping.number}, ${shipping.state}`}
+              {shipping[0]?.street && `${shipping[0]?.street} ${shipping[0]?.number}, ${shipping[0]?.state}`}
             </Typography>
             
 

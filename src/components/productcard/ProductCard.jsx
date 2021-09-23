@@ -176,7 +176,7 @@ export default function ProductCard(product) {
         dispatch(getAllFavorites(currentUser._id));
       }
     }
-    dispatch(getAllFavorites(currentUser._id));
+    dispatch(getAllFavorites(currentUser?._id));
   }
 
   const handleShare = () => {

@@ -86,6 +86,7 @@ const AppRouter = () => {
             <Route path="/edituserinfo" component={EditUserInfo} />
             <Route path ="/sales" component={adminAuth(Sales)} />
             <Route path ="/shoppinghistory" component={ShoppingHistory} />
+
             {/* <Route path ="/account" component={Account} />
             <Route path ="/profile" component={Profile} /> */}
             <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />

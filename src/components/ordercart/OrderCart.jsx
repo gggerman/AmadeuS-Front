@@ -9,6 +9,7 @@ import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import LocalShippingIcon from '@material-ui/icons//LocalShipping';
 import zonas from './zonas.png';
 import axios from 'axios';
+import ProcesoEnvios from './ProcesoEnvio.png';
 import { numberWithCommas } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import addOrder from '../../redux/actions/addOrder';
@@ -197,7 +198,17 @@ const useStyles = makeStyles((theme) => ({
     const [selectedValue, setSelectedValue] = useState('');
     const [zones, setZones] = useState(false)
     const handleZones = () => setZones(true)
-    const handleClose = () => setZones(false)
+
+    
+    const [policy, setPolicy] = useState(false)
+    const handlePolicy = () => setPolicy(true)
+
+    const handleClose = () =>{
+      setZones(false)
+      setPolicy(false)
+    }
+
+
     const [shipping, setShipping] = useState(0)
     const [open, setOpen] = useState(false);
     const [address, setAddress] = useState(false)
@@ -241,12 +252,12 @@ const useStyles = makeStyles((theme) => ({
 
     const handleCheckout = () => {
      
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name), user: user, shipping:  shippingAddress, cost: shipping   })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts, user: user, shipping:  shippingAddress, cost: shipping   })
       .then((response) => setIdOrder(response.data)) 
   
       .catch((err) => console.log(err))
       
-      axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts})
+      axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts, shipping: shipping})
       .then((response) => window.location = response.data )
       .catch((err) => console.log(err))
     }
@@ -281,6 +292,7 @@ const useStyles = makeStyles((theme) => ({
       e.preventDefault()
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
       axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input } )
+      // .then((response) => dispatch(addOrder(response.data)))
       .then(() => setShippingAddress(input))
       .catch((err) => console.log(err) )
       setInput(initialInput)
@@ -293,7 +305,7 @@ const useStyles = makeStyles((theme) => ({
     return (
       <div>
         <CssBaseline>
-         <NavSecondary style={{marginBottom: '5vh'}} shipping = {shippingAddress}  />
+         <NavSecondary style={{marginBottom: '5vh'}} shipping = {userDb?.shipping}  />
 
          <Container className={classes.container}>
 
@@ -362,7 +374,7 @@ const useStyles = makeStyles((theme) => ({
 
                  }  
                   {
-                        userDb.shipping[0] ?
+                        userDb?.shipping[0] ?
                         <Button variant = "contained" className={classes.edit}  endIcon={<EditIcon  />}onClick ={handleAddress} style={{marginLeft: '9vh'}}>
                         Modificar
                       </Button>
@@ -444,9 +456,25 @@ const useStyles = makeStyles((theme) => ({
                   <ArrowRightAltIcon style={{marginTop:'-0.5vh', color: 'blue', marginLeft: '1vh'}} />     
             </InputLabel>
             <Button className={classes.truck} style={{marginTop: '8.5vh', marginLeft: '0vh'}}>
-                <LocalShippingIcon />
-             </Button>
+                <LocalShippingIcon onClick={handlePolicy}/>
+             </Button>  
           </Box>
+          <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={policy}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500,
+                    }}
+                >
+                    <Container className={classes.paper}>
+                      <img src={ProcesoEnvios} className={classes.zones} />          
+                   </Container>
+                </Modal>
           
           </Container>
 
@@ -537,10 +565,10 @@ const useStyles = makeStyles((theme) => ({
                             cartProducts[0].price && <Typography variant ='body1' >
                           $ {numberWithCommas(cartProducts.reduce((acc, item) => {
                             return (
-                             acc += item.price * item.quantity + shipping
+                             acc += item.price * item.quantity 
                             )
                         }, 0
-                        ))
+                        ) + shipping )
                           }
 
                           </Typography> }
@@ -550,7 +578,7 @@ const useStyles = makeStyles((theme) => ({
                    </TableRow>
                  </TableBody>
             </Table>
-            {  selectedValue === '' && 
+            {  selectedValue === '' && shippingAddress && 
                 <Typography variant='error' style={{color:'red'}}>
                   *Debes seleccionar envio o retiro
                 </Typography>

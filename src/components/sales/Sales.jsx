@@ -6,8 +6,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {Container, makeStyles} from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import {Button} from "@material-ui/core";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { numberWithCommas } from '../../utils';
 const { REACT_APP_SERVER } = process.env;
 
@@ -29,7 +30,26 @@ const useStyles = makeStyles((theme) => ({
       width: '10%',
       backgroundSize: 'contain',
       backgroundColor: 'grey'
-    }
+    },
+    link: {
+      textDecoration: "none",
+      color: theme.palette.primary.contrastText,
+    },
+    backhome: {
+      display: "flex",
+      justifyContent: "center",
+    },
+    btn: {
+      backgroundColor: "#16222A",
+      color: "white",
+      "&:hover": {
+        backgroundColor: theme.palette.primary.light,
+      },
+      margin:'2vh',
+      width: '12vh',
+      fontSize: '80%'
+    },
+    
   }));
 
 export default function Sales() {
@@ -181,10 +201,21 @@ export default function Sales() {
           title={"Historial de Ventas"}
           data={data}
           columns={columns}
-          options={options}
-          
-                 
+          options={options}       
         />
+
+          <Container className={classes.backhome}>
+                  <Link to="/" className={classes.link}>
+                    <Button variant="contained" className={classes.btn}>
+                      Home
+                    </Button>
+                  </Link>
+                  <Link to="/adminpanel" className={classes.link}>
+                    <Button variant="contained" className={classes.btn}>
+                      Volver
+                    </Button>
+                  </Link>
+                </Container>
          </Container>
         
         )
