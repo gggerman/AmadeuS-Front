@@ -161,11 +161,11 @@ export default function Nav() {
   const { cartQuantity } = shoppingCart;
   const menuId = "primary-search-account-menu";
 
-  useEffect(() => {
-    if (userDB) {
-      dispatch(getUserById(userDB._id));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (userDB) {
+  //     dispatch(getUserById(userDB._id));
+  //   }
+  // }, [dispatch]);
 
   const adminAuth = function () {
     let usersAdmin = [];
