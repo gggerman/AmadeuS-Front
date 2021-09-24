@@ -1,11 +1,19 @@
-import React, {useEffect, useState} from 'react';
+
+import React, { useState, useEffect } from "react";
+import MUIDataTable from "mui-datatables";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import {Container, makeStyles} from "@material-ui/core";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import {Button} from "@material-ui/core";
 import axios from 'axios';
-import { Typography, Container, CardMedia, makeStyles, Grid, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Link } from 'react-router-dom';
 import { numberWithCommas } from '../../utils';
 import NavSecondary from './../navsecondary/NavSecondary';
 import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
+
 
 const useStyles = makeStyles((theme) => ({
     root:{
@@ -16,28 +24,52 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid black'
     },
     media: {
-        width: "10%",
-        margin: "0vh",
+        width: "13%",
         backgroundSize: "contain",
       },
-    tableCell:{
-        padding:'1vw',
-        height: '10%',
-        width: '10vh'
-    },
+
     img: {
-      width: '25%',
+      width: '10%',
       backgroundSize: 'contain',
       backgroundColor: 'grey'
-    }
+    },
+    link: {
+      textDecoration: "none",
+      color: theme.palette.primary.contrastText,
+    },
+    backhome: {
+      display: "flex",
+      justifyContent: "center",
+    },
+    btn: {
+      backgroundColor: "#16222A",
+      color: "white",
+      "&:hover": {
+        backgroundColor: theme.palette.primary.light,
+      },
+      margin:'2vh',
+      width: '12vh',
+      fontSize: '80%'
+    },
+    
   }));
 
-export default function Sales(){
+export default function Sales() {
     const classes = useStyles()
-    const [invoice, setInvoice] = useState(1)
 
-    const [orders, setOrders] = useState()
+    const [responsive, setResponsive] = useState("standard");
+    const [tableBodyHeight, setTableBodyHeight] = useState("400px");
+    const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
+  
+    
+    const [orders, setOrders] = useState([])
     console.log(orders)
+
+    const [editOrder, setEditOrder ] = useState()
+    console.log(editOrder)
+    //me guardo el id de rowOrder, para hacerle un put en base de datos y cambiarle el estado
+    const[orderStatus, setOrderStatus] = useState()
+    console.log(orderStatus)
 
     const getOrders = async () => {      //me traigo las compras
         try{
@@ -54,86 +86,139 @@ export default function Sales(){
 
     }, [])
 
+
+     //put a la base de datos modificando status
+    useEffect(() => {
+     axios.put(`${REACT_APP_SERVER}/orders/${editOrder}`, {status: orderStatus === "Pending" ? "Approved" : "Pending"})
+        .then(() => window.location.reload(true))  //actualize las orders 
+        .catch((err) => console.log(err))
+    }, [editOrder])
+
     
+
+   
+    
+    
+
+    const columns = [
+
+        {
+          name: "Editar Status",
+          options: {
+            filter: true,
+            sort: false,
+            empty: true,
+            customBodyRenderLite: (dataIndex, rowIndex) => {
+              return (
+                <button onClick={() => {
+                    const rowOrder = orders[rowIndex]
+                    console.log(rowOrder)
+                    setEditOrder(rowOrder._id)
+                    setOrderStatus(rowOrder.status)
+                } }>
+                  Editar Status
+                </button>
+              );
+            }
+          }
+        },
+        {
+          name: "Orden",
+          options: {
+            filter: true,
+          }
+        },
+        {
+          name: "Productos",
+          options: {
+            filter: true,
+          }
+        },
+        {
+          name: "Ingreso",
+          options: {
+            filter: false,
+          }
+        },
+        {
+          name: "Status",
+          options: {
+            filter: true,
+          }
+        },
+        {
+          name: "Cliente",
+          options: {
+            filter: true,
+            
+          }
+        },
+        {
+          name: "Ubicacion",
+          options: {
+            filter: true,
+            sort: false,
+            empty: true
+          }
+        },
+      ];
+
+    
+    const options = {
+      filter: true,
+      filterType: "dropdown",
+      responsive,
+      tableBodyHeight,
+      tableBodyMaxHeight,
+      resizableColumns: true
+    };
+
+
+  
+   
+    const arr = orders.map((order) => ({
+        "Orden": order._id,
+        "Productos": order.products?.map((product) => <img src ={product.image} className={classes.media}/>),
+        "Ingreso": order.products?.reduce((acc, item) => {
+            return (
+                acc += item.price
+            )
+        }, 0),
+        "Status": order.status,
+        // "Cliente": order.buyer.email,
+        "Ubicacion": order.shipping && order.shipping.state,
+        "Cliente": order.buyer && order.buyer.email
+
+    }))
+    const data = arr
+
+
     return (
-        <>
-        <NavSecondary />
-        <Grid container style ={{marginTop: '15vh'}}>
-            <Table style = {{ marginLeft: '45vh'}}>
-                <TableHead>
-                    <TableRow>
-                        <TableCell className={classes.tableCell} > Factura </TableCell>
-                        <TableCell className={classes.tableCell} > Productos </TableCell>
-                        <TableCell className={classes.tableCell} > Ingreso </TableCell>
-                        <TableCell className={classes.tableCell} > Estado </TableCell>
-                        <TableCell className={classes.tableCell} > Cliente </TableCell>
-                        <TableCell className={classes.tableCell} > Ubicacion </TableCell>
+      
+       <Container style ={{marginBottom: '1000px'}}>
 
-                    </TableRow>
+      
+       
+        <MUIDataTable
+          title={"Historial de Ventas"}
+          data={data}
+          columns={columns}
+          options={options}       
+        />
 
-                </TableHead>
-                <TableBody>
-                    {   orders &&
-                        orders.map((order) => (
-                            <TableRow>
-                                <TableCell className={classes.tableCell} > 0001 </TableCell>
-                                <TableCell className={classes.tableCell} > 
-                                {order.products && order.products.map((product) => <img src = {product.image} className={classes.img}  /> )} 
-                                </TableCell>
-                                <TableCell> $
-                                { numberWithCommas(order.products.reduce((acc, item) => {
-                                         return (
-                                            acc += item.price
-                                                    
-                                                )
-                                                }, 0))} 
-                                </TableCell>
-                                 <TableCell> {order.status === 'approved' && order.status.toUpperCase()} </TableCell>
-                                 <TableCell>{ order.buyer && order.buyer.email} </TableCell>
-                                 {/* <TableCell> {order.shipping && order.shipping}Buenos Aires </TableCell> */}
-                            </TableRow>
-                        ))
-
-                    }
-                </TableBody>
-
-                {/* <TableBody>
-                   { orders &&
-                    orders.map((order) => (
-                       <TableRow key={order._id}>
-
-                            <TableCell className={classes.tableCell} > 0001 </TableCell>
-                            <TableCell className={classes.tableCell} > 
-                                {order.products && order.products.map((product) => <img src = {product.image} className={classes.img}  /> )} 
-                            </TableCell>
-                            <TableCell> $
-                                { numberWithCommas(order.products.reduce((acc, item) => {
-                                         return (
-                                            acc += item.price
-                                                    
-                                                )
-                                                }, 0))} 
-                            </TableCell>
-                            <TableCell> {order.status && order.status.toUpperCase()} </TableCell>
-                            <TableCell>{ order.buyer && order.buyer.email} </TableCell>
-                            <TableCell> {order.shipping}Buenos Aires </TableCell>
-                            <MoreVertIcon/>
-                           
-
-                       </TableRow>
-
-                   ))
-                   
-                   
-                   }
-
-
-                </TableBody> */}
-            </Table>
-
-            
-            
-        </Grid>
-        </>
-    )
+          <Container className={classes.backhome}>
+                  <Link to="/" className={classes.link}>
+                    <Button variant="contained" className={classes.btn}>
+                      Home
+                    </Button>
+                  </Link>
+                  <Link to="/adminpanel" className={classes.link}>
+                    <Button variant="contained" className={classes.btn}>
+                      Volver
+                    </Button>
+                  </Link>
+                </Container>
+         </Container>
+        
+        )
 }
