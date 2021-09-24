@@ -8,6 +8,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
+import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
 
 
@@ -60,7 +61,7 @@ export default function Test() {
 
     const getOrders = async () => {      //me traigo las compras
         try{
-           const response = await axios.get(`${REACT_APP_SERVER}/orders`)
+           const response = await axios.get(`${REACT_APP_SERVER}/orders`, { headers })
             setOrders(response.data)
         }
         catch (error){

@@ -1,11 +1,13 @@
 import axios from "axios"
 import { GET_ALL_FAVORITES, ADD_FAVORITE, DELETE_FAVORITE, REMOVE_ALL_FAVORITES, SORT_BY_NAME_FAVORITES, SORT_BY_PRICE_FAVORITES, FILTER_BY_CATEGORY_FAVORITES } from "./index"
+import { headers } from "../../utils/GetHeaders"
+
 const { REACT_APP_SERVER } = process.env;
 
 export function getAllFavorites(idUser){
     return async (dispatch) => {
         try {
-            const favorites = await axios.get(`${REACT_APP_SERVER}/users/${idUser}/favorites`)
+            const favorites = await axios.get(`${REACT_APP_SERVER}/users/${idUser}/favorites`, {headers})
             return dispatch({
                 type: GET_ALL_FAVORITES,
                 payload: favorites.data
@@ -19,7 +21,7 @@ export function getAllFavorites(idUser){
 export function addFavorite(idUser, idProduct){
     return async( dispatch ) => {
         try {
-            await axios.post(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`)
+            await axios.post(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`, {}, {headers})
             dispatch({
                 type: ADD_FAVORITE
             })
@@ -33,7 +35,7 @@ export function addFavorite(idUser, idProduct){
 export function deleteFavorite(idUser, idProduct){
     return async( dispatch ) => {
         try {
-            await axios.delete(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`)
+            await axios.delete(`${REACT_APP_SERVER}/users/${idUser}/favorites/${idProduct}`, {headers})
             dispatch({
                 type: DELETE_FAVORITE
             })

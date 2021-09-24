@@ -22,8 +22,7 @@ import "../../App.css";
 import Detail from "../detail/Detail";
 import Test from '../sales/Test';
 import { useDispatch, useSelector } from "react-redux";
-import { linkUserCart } from "../../redux/actions/linkUserCart";
-
+import GetHeaders from "../../utils/GetHeaders"
 
 // import Account from "../account/Account";
 // import Profile from "../account/Profile";
@@ -66,6 +65,7 @@ const AppRouter = () => {
     <>
       <div className="app">
         <ThemeProvider theme={theme}>
+        <Route path="/" component={GetHeaders} />
           <Switch>
             {/* <UserContext.Provider value={{quantityCart, setQuantityCart}}> */}
             <UserContext.Provider value={{ shoppingCart, setShoppingCart }}>

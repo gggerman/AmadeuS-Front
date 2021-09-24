@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import addOrder from '../../redux/actions/addOrder';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavSecondary from '../navsecondary/NavSecondary';
+import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
 
 
@@ -185,12 +186,7 @@ const useStyles = makeStyles((theme) => ({
     
     const dispatch = useDispatch()
     const cartProducts = useSelector(state => state.cart.cart)
-    
     const userRedux = useSelector((state) => state.app.user);
-  
-  
-  
-
 
     const [quantity, setQuantity] = useState(1)
     const [idOrder, setIdOrder] = useState()
@@ -219,7 +215,7 @@ const useStyles = makeStyles((theme) => ({
 
     const getUserById = async () => {
       try{
-         const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`)
+         const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`, { headers })
           setUserDb(response.data)
           setShippingAddress(response.data.shipping[0])
       }
@@ -228,27 +224,18 @@ const useStyles = makeStyles((theme) => ({
       }
     }
     
-    
     useEffect(() => {
-      getUserById(userRedux._id) 
-    }, [])
-
-
-    useEffect(() => {            
-      dispatch(addOrder(idOrder))
-    },[idOrder])
-
+      getUserById(userRedux?._id) 
+    }, [userRedux])
 
     const handleCheckout = () => {
-     
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts.map((item) => item.name), user: user, shipping:  shippingAddress  })
-      .then((response) => setIdOrder(response.data)) 
-  
-      .catch((err) => console.log(err))
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts , user: user, shipping:  shippingAddress, cost: shipping }, { headers })
+      .then(response => dispatch(addOrder(response.data))) 
+      .catch(err => console.log(err))
       
-      axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts})
-      .then((response) => window.location = response.data )
-      .catch((err) => console.log(err))
+      axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts}, { headers })
+      .then(response => window.location = response.data )
+      .catch(err => console.log(err))
     }
   
     const handleShipping = (e) => {
@@ -280,7 +267,7 @@ const useStyles = makeStyles((theme) => ({
     const handleSave = (e) => {
       e.preventDefault()
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
-      axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input } )
+      axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input }, { headers } )
       .then(() => setShippingAddress(input))
       .catch((err) => console.log(err) )
       setInput(initialInput)
@@ -302,7 +289,7 @@ const useStyles = makeStyles((theme) => ({
            <Box>
 
             <Typography component ="h3" variant= "h5" style = {{marginTop: '-2vh', marginBottom: '5vh'}}>
-               ¿Como queres recibir o retirar tu compra?
+              ¿Como queres recibir o retirar tu compra?
             </Typography>
             <Box style={{display:'flex',   justifyContent: 'center'}}>
                 <InputLabel component = 'h3'style = {{marginTop: '-3vh', marginBottom: '3vh', display:'flex',   justifyContent: 'center'}}>

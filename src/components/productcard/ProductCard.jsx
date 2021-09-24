@@ -124,7 +124,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductCard(product) {
   const { id, name, price, image, stock } = product;
   //recibe de Products las props
-  const cartState = useSelector(({ cart }) => cart);
+  const cartState = useSelector(state => state.cart.cart);
+
   const classes = useStyles();
   const { shoppingCart, setShoppingCart } = useContext(UserContext);
   const { cartQuantity, cartItems } = shoppingCart;
@@ -156,27 +157,27 @@ export default function ProductCard(product) {
   }, [cartQuantity]);
 
   function favoritesButton() {
-    if (user?.email) {
-      dispatch(getAllFavorites(currentUser._id));
+    if (currentUser?.email) {
+      dispatch(getAllFavorites(currentUser?._id));
       let post = true;
       favorites?.forEach((favorite) => {
         if (favorite._id === id) {
           if (favorites.length === 1) {
-            dispatch(deleteFavorite(currentUser._id, id));
+            dispatch(deleteFavorite(currentUser?._id, id));
             dispatch(removeAllFavorites());
           } else {
-            dispatch(deleteFavorite(currentUser._id, id));
-            dispatch(getAllFavorites(currentUser._id));
+            dispatch(deleteFavorite(currentUser?._id, id));
+            dispatch(getAllFavorites(currentUser?._id));
           }
           post = false;
         }
       });
       if (post) {
-        dispatch(addFavorite(currentUser._id, id));
-        dispatch(getAllFavorites(currentUser._id));
+        dispatch(addFavorite(currentUser?._id, id));
+        dispatch(getAllFavorites(currentUser?._id));
       }
     }
-    dispatch(getAllFavorites(currentUser._id));
+    dispatch(getAllFavorites(currentUser?._id));
   }
 
   const handleShare = () => {
@@ -195,7 +196,7 @@ export default function ProductCard(product) {
           <Typography variant="body2" component="h3">
             {name.substring(0, 30) + "..."}
           </Typography>
-          {stock === 0 ? (
+          {stock <= 0 ? (
             <Typography variant="body2" color="error" component="p">
               Sin stock
             </Typography>
@@ -258,6 +259,7 @@ export default function ProductCard(product) {
         <Button
           variant="contained"
           className={classes.button}
+          disabled={stock <= 0 || cartState?.find( e => e._id===id)?.quantity===stock}
           onClick={agregar}
           endIcon={<ShoppingCartIcon />}
         >
