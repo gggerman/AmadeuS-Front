@@ -281,7 +281,7 @@ export default function Nav() {
                   <Typography className={classes.text} component="p" variant="body2">
                     
                     <LocationOnIcon  /> 
-                    {userDB.shipping &&  `${userDb?.shipping[0]?.street} ${userDb?.shipping[0]?.number} `}
+                    {userDb.shipping &&  `${userDb?.shipping[0]?.street} ${userDb?.shipping[0]?.number} `}
                   </Typography>
                 </Container>
               }
@@ -293,7 +293,7 @@ export default function Nav() {
                 variant="body2"
                 className={classes.welcome}
               >
-                Bienvenido {user.given_name}
+                Bienvenido {userDb?.name}
               </Typography>
             </Container>
           )}

@@ -242,7 +242,7 @@ const useStyles = makeStyles((theme) => ({
     
     useEffect(() => {
       getUserById(userRedux?._id) 
-    }, [])
+    }, [userRedux])
 
 
     useEffect(() => {            
@@ -356,16 +356,17 @@ const useStyles = makeStyles((theme) => ({
                     Recibe tu Compra en tu domicilio
                 </Typography>
                 
-                <InputLabel style ={{marginTop:'1.7vh'}}>Elige tu zona</InputLabel>
+                
+                <InputLabel style ={{marginTop:'1.7vh', fontSize: '90%'}}>Elige tu zona</InputLabel>
                  <ArrowRightAltIcon style={{marginTop:'1vh', marginLeft: '-3vh',color:'blue'}}/>
                 <TextField type="number"  defaultValue="1" inputProps={ {min :"1", max :"3"}} size= 'small'   onChange={handleShipping} style={{marginLeft: '-2vh'}} />
-
+               
                {
                  selectedValue === 'domicilio'&& 
                  <Box style={{marginTop:'-1vh'}}>
                  { shippingAddress ?
                     <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
-                    { `${shippingAddress.street} ${shippingAddress.number}, ${shippingAddress.state}` }
+                    { (`${shippingAddress.street} ${shippingAddress.number}, ${shippingAddress.state}`).substring(0,30) }
                     </InputLabel>
                     :
                     <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
