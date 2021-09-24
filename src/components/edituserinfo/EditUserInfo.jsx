@@ -5,8 +5,9 @@ import { makeStyles, styled } from '@material-ui/styles';
 import { FormHelperText, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Typography, Container, Paper, Grid, TextField, Button, Snackbar, Avatar } from '@material-ui/core';
 import { Visibility, VisibilityOff, Check, Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
+import Nav from '../nav/Nav'
 import axios from 'axios';
-import { headers } from "../../utils/GetHeaders"
+import { headers } from "../../utils/GetHeaders";
 const { REACT_APP_SERVER } = process.env
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +51,7 @@ export default function EditUserInfo(){
     const [input, setInput] = useState({
         name:'',
         nickname:'',
-        email:'',
+        phone:'',
     })
 
     let data = {};
@@ -61,19 +62,17 @@ export default function EditUserInfo(){
         setInput({
             name: data.name,
             nickname: data.nickname,
-            email: data.email
+            phone: data.phone
         })  
-        console.log(data)
-        console.log(input)
     }
 
     useEffect(() => {
         getUser();
     },[])
 
-    function subirImage(e){
-        setImage(e.target.files[0]);
-    }
+    // function subirImage(e){
+    //     setImage(e.target.files[0]);
+    // }
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -84,11 +83,11 @@ export default function EditUserInfo(){
         setOpenError(false);
     };
 
-    function validateEmail(email){
-        return users.some(user => {
-            return user.email === email;
-        })
-    }
+    // function validateEmail(email){
+    //     return users.some(user => {
+    //         return user.email === email;
+    //     })
+    // }
 
     function validate(input){
         let error = {};
@@ -97,7 +96,7 @@ export default function EditUserInfo(){
             error.name = 'Debe ingresar su nombre y apellido'
         } else if(!/^[a-zA-Z ,.'-]+$/u.test(input.name)){
             error.name = 'El nombre no es válido'
-        } else if(input.name.length < 3){
+        } else if(input.name.length < 8){
             error.name = 'El nombre completo debe tener un minimo de 8 letras'
         }
 
@@ -127,13 +126,13 @@ export default function EditUserInfo(){
             // error.document = 'Ya hay un usuario registrado con ese número de documento'
         //}
 
-        if(!input.email){
-            error.email = 'Debe ingresar su email'
-        } else if(!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(input.email)){
-            error.email = 'El email no es válido'
-        }  else if(validateEmail(input.email)){
-            error.email = 'El email ya esta registrado'
-        }
+        // if(!input.email){
+        //     error.email = 'Debe ingresar su email'
+        // } else if(!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(input.email)){
+        //     error.email = 'El email no es válido'
+        // }  else if(validateEmail(input.email)){
+        //     error.email = 'El email ya esta registrado'
+        // }
         
         // if(!input.password){
         //     error.password = 'Debe ingresar su contraseña'
@@ -143,12 +142,15 @@ export default function EditUserInfo(){
         //     error.password = 'La contraseña debe tener entre 8 y 16 caracteres'
         // }
 
-        // if(input.phone){
-        //     if(!/^[0-9+ -]+$/u.test(input.phone)){
-        //         error.phone = 'Formato no válido'
-        //     }
-
+        if(input.phone){
+            if(!/^[0-9+ -]+$/u.test(input.phone)){
+                error.phone = 'Formato no válido'
+            } else if(input.phone.length > 14){
+                error.phone = 'El número debe tener como maximo de 14 digitos'
+            }
+        }
         return error;
+        
     }
 
     function handleInput(e){
@@ -169,13 +171,13 @@ export default function EditUserInfo(){
             ...data,
             name: input.name,
             nickname: input.nickname,
-            email: input.email
+            phone: input.phone
         };
         axios.put(`${REACT_APP_SERVER}/users/${currentUser._id}`, data, { headers })
         setInput({
             name:'',
             nickname:'',
-            email:'',
+            phone:'',
         });
         setOpenSuccess(true);
         // setOpenError(true);
@@ -186,19 +188,21 @@ export default function EditUserInfo(){
         setInput({
             name:'',
             nickname:'',
-            email:'',
+            phone:'',
         });
         history.push('/userprofile');
     }
 
-    function handleVisibilityPassword(){
-        setInput({
-            ...input,
-            showPassword: !input.showPassword
-        })
-    }
+    // function handleVisibilityPassword(){
+    //     setInput({
+    //         ...input,
+    //         showPassword: !input.showPassword
+    //     })
+    // }
 
     return (
+        <>
+        <Nav/>
     <Grid container component="main" direction="row" className={classes.gridContainer}>
         <Container component={Paper} elevation={24} style={{ padding: '2vh', maxWidth: '26vw' }}>
             <Typography align='center' variant='h6' color='primary' style={{ marginBottom: '1vh' }}>Editar info básica</Typography>
@@ -227,12 +231,12 @@ export default function EditUserInfo(){
                     />
 
 
-                        <label htmlFor="contained-button-file">
+                        {/* <label htmlFor="contained-button-file">
                             <Input accept="image/*" id="contained-button-file" type="file" onChange={subirImage}/>
                             <Button variant="contained" component="span">
                                 Subir imagen
                             </Button>
-                        </label>
+                        </label> */}
 
 
                 {/* <TextField
@@ -257,16 +261,15 @@ export default function EditUserInfo(){
                     helperText={error.document}
                 /> */}
 
-                {/* <TextField
+                <TextField
                     className={classes.textField}
-                    required
                     name="phone"
                     value={input.phone}
                     label="N° de teléfono"
                     variant="outlined"
                     onChange={handleInput}
                     helperText={error.phone}
-                /> */}
+                />
 
                 {/* <TextField
                     className={classes.textField}
@@ -302,7 +305,7 @@ export default function EditUserInfo(){
                 </FormControl> */}
 
                 <Grid container direction="row" justifyContent="center" alignItems="center">
-                    {!error.name && !error.nickname && 
+                    {!error.name && !error.nickname && !error.phone &&
                         <Button type="submit" variant="contained" color="primary" endIcon={<Check />}>
                             Editar
                         </Button>
@@ -324,5 +327,6 @@ export default function EditUserInfo(){
             </form>
         </Container>
     </Grid>
+    </>
     )
 }

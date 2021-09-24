@@ -4,7 +4,11 @@ import {
   Button,
   Card,
   CardActionArea,
+  CardContent,
   CardMedia,
+  Container,
+  Divider,
+  Grid,
   IconButton,
   Typography,
 } from "@material-ui/core";
@@ -23,26 +27,14 @@ const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    flexDirection: "row-reverse",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    marginBottom: 20,
-    flexGrow: 1,
-    backgroundColor: "#E2DBDB",
+    marginBottom: "8px",
+    display: "flow-root",
   },
-
-  card: {
-    marginRight: 5,
-    maxWidth: 100,
-    maxHeight: 100,
-  },
-
   mediaimg: {
+    maxWidth: "max-content",
     height: "100px",
-    width: "100px",
-    backgroundPosition: "center",
-    backgroundSize: "contain",
+    margin: "0 - 100%",
+    objectFit: "contain",
   },
 }));
 
@@ -94,59 +86,90 @@ const ShoppingCartItem = ({
   };
 
   return (
-    <div className={classes.root}>
-      <Box>
-        <IconButton onClick={handleDelete}>
-          <Cancel />
-        </IconButton>
-      </Box>
-      <Box marginRight={7}>
-        <Typography variant="body1">
-          $ {numberWithCommas(totalValue * counter)}
-        </Typography>
-      </Box>
-
-      <Box mr={5}>
-        <Box border={1} color="gray" width="fit-content">
-          <IconButton
-            aria-label="remove"
-            onClick={decrement}
-            disabled={counter === 1 || counter === 0}
+    <Container className={classes.root}>
+      <Grid>
+        <Card
+          style={{
+            display: "flex",
+            alignItems: "center",
+            background: "#E5DFDF",
+          }}
+        >
+          <Box
+            style={{
+              overflow: "hidden",
+              Width: "100px",
+              height: "100px",
+              textAlign: "center",
+              overflow: "hidden",
+            }}
+            width="100px"
           >
-            <RemoveIcon />
-          </IconButton>
-          {counter}
-          <IconButton
-            aria-label="add"
-            onClick={increment}
-            disabled={counter === stock}
-          >
-            <AddIcon />
-          </IconButton>
-        </Box>
-
-        <Box>
-          <Typography variant="subtitle2" align="center">
-            {stock} unidades
-          </Typography>
-        </Box>
-      </Box>
-
-      <Box flexGrow={1} marginLeft={3}>
-        <Typography variant="h6">{name}</Typography>
-      </Box>
-
-      <Box>
-        <Card variant="outlined" className={classes.card}>
-          <CardMedia
-            className={classes.mediaimg}
-            height="80%"
-            image={`${REACT_APP_SERVER}/products/images/${image}`}
-            // title="Contemplative Reptile"
-          />
+            <CardMedia
+              className={classes.mediaimg}
+              component="img"
+              alt="img"
+              image={image}
+            />
+          </Box>
+          <Container>
+            <Box
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography
+                variant="h6"
+                style={{
+                  width: "500px",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {name}
+              </Typography>
+              <Box style={{ display: "flex", alignItems: "center" }}>
+                <Box style={{border: '2px solid #B7B9C0', borderRadius:'20px', color:'black', width: 'max-content', marginRight: '90px' }}>
+                  <IconButton
+                    aria-label="remove"
+                    onClick={decrement}
+                    disabled={counter === 1 || counter === 0}
+                  >
+                    <RemoveIcon />
+                  </IconButton>
+                  {counter}
+                  <IconButton
+                    aria-label="add"
+                    onClick={increment}
+                    disabled={counter === stock}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" align="center">
+                    {stock} unidades
+                  </Typography>
+                </Box>
+                <Box marginRight={7} ml={7} style={{ width: "max-content" }}>
+                  <Typography variant="body1" style={{fontWeight: 'bold'}}>
+                    $ {numberWithCommas(totalValue * counter)}
+                  </Typography>
+                </Box>
+                <Box>
+                  <IconButton onClick={handleDelete}>
+                    <Cancel />
+                  </IconButton>
+                </Box>
+              </Box>
+            </Box>
+          </Container>
         </Card>
-      </Box>
-    </div>
+      </Grid>
+    </Container>
   );
 };
 
