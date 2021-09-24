@@ -93,7 +93,7 @@ export default function ShoppingHistory() {
                         <div style={{ display: "flex", alignItems: "center" }}>
                           <Link to={`detail/${product._id}`}>
                             <CardMedia
-                              image={product.image}
+                              image={`${REACT_APP_SERVER}/products/images/${product.image}`}
                               className={classes.img}
                             />
                           </Link>
