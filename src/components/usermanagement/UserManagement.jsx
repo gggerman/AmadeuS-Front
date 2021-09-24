@@ -70,6 +70,14 @@ export default function UserManagement(){
         setOpen(false);
     };
 
+    const handleBlock = (sub) => {
+        axios.get(`${REACT_APP_SERVER}/users/block/${sub}`, {headers})
+    };
+
+    const handleDesblock = (sub) => {
+        axios.get(`${REACT_APP_SERVER}/users/desblock/${sub}`, {headers})
+    };
+
     // function handleOpenModal(){
     //     setOpenModal(true);
     // }
@@ -117,6 +125,14 @@ export default function UserManagement(){
                                     <TableCell className={classes.tableCell} align="center">
                                         <Button variant="contained" className={classes.button} onClick={() => handleDelete(user._id)}>
                                             Eliminar
+                                        </Button>
+
+                                        <Button variant="contained" className={classes.button} onClick={() => handleBlock(user.sub)}>
+                                            Bloquear
+                                        </Button>
+                                        
+                                        <Button variant="contained" color="primary" onClick={() => handleDesblock(user.sub)}>
+                                            Desbloquear
                                         </Button>
                                         {/* <Modal
                                         open={openModal}
