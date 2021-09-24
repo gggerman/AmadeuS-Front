@@ -11,8 +11,8 @@ import { UserContext } from "../shoppingcart/UserContext";
 import { useDispatch, useSelector } from "react-redux";
 import addToCart from "../../redux/actions/addToCart";
 import getDetails from "../../redux/actions/getDetails";
-import Review from '../review/Review';
-
+import Review from "../review/Review";
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -28,11 +28,9 @@ const useStyles = makeStyles((theme) => ({
     width: "80vh",
     margin: "5vh",
   },
-  price:{
+  price: {
     width: "80vh",
     margin: "5vh",
-    
-
   },
   mp: {
     maxWidth: "8vh",
@@ -52,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "4vh",
   },
   disp: {
-    color: theme.palette.primary.dark
-  }  
+    color: theme.palette.primary.dark,
+  },
 }));
 
 export default function ProductDetail() {
@@ -61,10 +59,10 @@ export default function ProductDetail() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { data, success, loading } = useSelector(({ app }) => app.detail);
-  const shoppingCartProducts = useSelector(state => state.cart.cart)
+  const shoppingCartProducts = useSelector((state) => state.cart.cart);
   const { shoppingCart, setShoppingCart } = useContext(UserContext);
-  const { cartQuantity} = shoppingCart; 
-  
+  const { cartQuantity } = shoppingCart;
+
   const handleAdd = (e) => {
     setShoppingCart((value) => ({
       ...value,
@@ -73,9 +71,8 @@ export default function ProductDetail() {
     dispatch(addToCart(id));
     // window.localStorage.setItem('cartItems', JSON.stringify(shoppingCartProducts) )
   };
-  
 
-
+  console.log("detalle", data);
 
   useEffect(() => {
     dispatch(getDetails(id));
@@ -83,102 +80,105 @@ export default function ProductDetail() {
 
   return (
     <div>
-        {loading && (
-          <div className="loading">
-            <CircularProgress />
-          </div>
-        )}
-        {!loading && success && (
-          <Grid container style={{ marginTop: "-3vh" }}>
-            <Grid item xs={6}>
-              <CardMedia className={classes.media} image={data.image} />
-            </Grid>
-            <Grid item xs={6}>
-              <Typography
-                component="h1"
-                variant="h4"
-                className={classes.container}
-              >
-                {data.name}
-                <Divider variant="middle" light />
-              </Typography>
-              <Typography
-                variant="h3"
-                component="h2"
-                className={classes.price}
-              >
-                ${numberWithCommas(data.price)}
-                <Divider variant="fullwidth" />
-              </Typography>
-              <Typography
-                component="p"
-                variant="body2"
-                className={classes.container}
-              >
-                {data.description}
-              </Typography>
-              <Grid
-                style={{
-                  width: "600px",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Box>
-                  {" "}
-                  <img
-                    src={"https://img.icons8.com/color/480/mercado-pago.png"}
-                    className={classes.mp}
-                  />
-                </Box>
+      {loading && (
+        <div className="loading">
+          <CircularProgress />
+        </div>
+      )}
+      {!loading && success && (
+        <Grid container style={{ marginTop: "-3vh" }}>
+          <Grid item xs={6}>
+            <CardMedia
+              className={classes.media}
+              image={`${REACT_APP_SERVER}/products/images/${data.image}`}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography
+              component="h1"
+              variant="h4"
+              className={classes.container}
+            >
+              {data.name}
+              <Divider variant="middle" light />
+            </Typography>
+            <Typography variant="h3" component="h2" className={classes.price}>
+              ${numberWithCommas(data.price)}
+              <Divider variant="fullwidth" />
+            </Typography>
+            <Typography
+              component="p"
+              variant="body2"
+              className={classes.container}
+            >
+              {data.description}
+            </Typography>
+            <Grid
+              style={{
+                width: "600px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Box>
+                {" "}
+                <img
+                  src={"https://img.icons8.com/color/480/mercado-pago.png"}
+                  className={classes.mp}
+                />
+              </Box>
 
-                <Button
-                  variant="contained"
-                  className={classes.button}
-                  onClick={handleAdd}
-                  endIcon = {<ShoppingCartIcon />}
-                >
-                  Agregar
-                </Button>
+              <Button
+                variant="contained"
+                className={classes.button}
+                onClick={handleAdd}
+                endIcon={<ShoppingCartIcon />}
+              >
+                Agregar
+              </Button>
+              {data.stock >= 1 && (
                 <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
                   <Button variant="contained" className={classes.button}>
                     Comprar
                   </Button>
                 </Link>
-              </Grid>
-                <Box className = {classes.box}>
-                {data.stock === 0 ? (
-                  <Typography
-                    variant="body2"
-                    color="error"
-                    component="h3"
-                    className={classes.container}
-                  >
-                    Sin stock
-                  </Typography>
-                ) : (
-                  <Typography
-                    variant="body1"
-                    component="h2"
-                    style={{display: 'flex', justifyContent: 'center', color: 'green'}}
-                  >
-                   Hay unidades disponibles!
-                  </Typography>
-                )}
-                </Box>
-              {/* <Typography
+              )}
+            </Grid>
+            <Box className={classes.box}>
+              {data.stock === 0 ? (
+                <Typography
+                  variant="body2"
+                  color="error"
+                  component="h3"
+                  className={classes.container}
+                >
+                  Sin stock
+                </Typography>
+              ) : (
+                <Typography
+                  variant="body1"
+                  component="h2"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    color: "green",
+                  }}
+                >
+                  Hay unidades disponibles!
+                </Typography>
+              )}
+            </Box>
+            {/* <Typography
                 variant="body2"
                 component="h3"
                 className={classes.container}
               >
                 {data.brand}
               </Typography> */}
-
-
-            </Grid>
-            <Review product={data}/>
           </Grid>
-        )}
-      </div>
+          <Review product={data} />
+        </Grid>
+      )}
+    </div>
   );
 }

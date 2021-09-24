@@ -67,7 +67,7 @@ export default function AdminPanel() {
         alignItems="center"
         justifyContent="center"
         spacing={0}
-        style={{ minHeight: "55vh" }}
+        style={{ minHeight: "65vh", marginTop: '10vh' }}
       >
         <Link to="/stock" className={classes.link}>
           <Card className={classes.root}>
