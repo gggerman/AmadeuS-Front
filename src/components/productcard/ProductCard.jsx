@@ -216,6 +216,7 @@ export default function ProductCard(product) {
 
 
         <Button 
+            disabled={stock === 0}
             variant="contained" 
             className={classes.button}
             onClick={ agregar }

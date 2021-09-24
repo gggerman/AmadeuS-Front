@@ -48,10 +48,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Catalogue() {
-    const {shoppingCart, setShoppingCart} = useContext( UserContext )
-    const {cartQuantity, userItems, cantItemsDbToCart} = shoppingCart    
-    const { data, loading, success } = useSelector(
-      ({ app }) => app.productsLoaded
+  const {shoppingCart, setShoppingCart} = useContext( UserContext )
+  const {cartQuantity, userItems, cantItemsDbToCart} = shoppingCart    
+  const { data, loading, success } = useSelector(
+    ({ app }) => app.productsLoaded
   );
   const categories = useSelector(({ app }) => app.categoriesLoaded);
   const search = useSelector(({ app }) => app.searchBar);
@@ -70,7 +70,6 @@ export default function Catalogue() {
         if( !user ){
           window.localStorage.setItem('cartItems', alStorage )
         } else {      
-          console.log('cambiostate')
             const { cart } = JSON.parse(alStorage)
             const userCart = {
                   user,

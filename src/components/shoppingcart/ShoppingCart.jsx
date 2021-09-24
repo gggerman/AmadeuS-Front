@@ -20,137 +20,141 @@ import { linkUserCart } from "../../redux/actions/linkUserCart";
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
-      alignItems: "center",
-    },
-    icon: {
-      width: "8vh",
-      backgroundSize: "contain",
-      margin: "auto",
-      offset: theme.mixins.toolbar,
-    },
-  }));
+  root: {
+    display: "flex",
+    alignItems: "center",
+  },
+  icon: {
+    width: "8vh",
+    backgroundSize: "contain",
+    margin: "auto",
+    offset: theme.mixins.toolbar,
+  },
+}));
 
 const ShoppingCart = () => {
+  const classes = useStyles();
+  const shoppingCartProducts = useSelector((state) => state.cart.cart);
+  const user = useSelector((state) => state.app.user);
+  const { shoppingCart, setShoppingCart } = useContext(UserContext);
+  const { cartQuantity, cartItems, userItems, cantItemsDbToCart } =
+    shoppingCart;
+  const dispatch = useDispatch();
+  const [idOrder, setIdOrder] = useState();
 
-const classes = useStyles()
-const shoppingCartProducts = useSelector(state => state.cart.cart)
-const user = useSelector((state) => state.app.user);
-const {shoppingCart, setShoppingCart} = useContext( UserContext )
-const {cartQuantity, cartItems, userItems, cantItemsDbToCart} = shoppingCart
-const dispatch = useDispatch()
-const [idOrder, setIdOrder] = useState()
-
-const handleDeleteAll = () => { 
+  const handleDeleteAll = () => {
     dispatch(cleanCart());
     setShoppingCart((value) => ({
       ...value,
       cartQuantity: 0,
-      cantItemsDbToCart: 0
+      cantItemsDbToCart: 0,
     }));
-    window.localStorage.setItem('cartItems', JSON.stringify(shoppingCartProducts) )
-    if(user){
-      console.log('existe')
-      let obj = { 
+    window.localStorage.setItem(
+      "cartItems",
+      JSON.stringify(shoppingCartProducts)
+    );
+    if (user) {
+      console.log("existe");
+      let obj = {
         user,
-        cart: []
-      }
-      user.cart = []
-      dispatch(linkUserCart( obj ))
+        cart: [],
+      };
+      user.cart = [];
+      dispatch(linkUserCart(obj));
     }
   };
-  
+
   useEffect(() => {
-    if(user){
-      console.log('existe')
-      let obj = { 
+    if (user) {
+      console.log("existe");
+      let obj = {
         user,
-        cart: shoppingCartProducts
-      }
-      dispatch(linkUserCart( obj ))
-      user.cart = shoppingCart
-    }    
-  }, [shoppingCart])
+        cart: shoppingCartProducts,
+      };
+      dispatch(linkUserCart(obj));
+      user.cart = shoppingCart;
+    }
+  }, [shoppingCart]);
 
   useEffect(() => {
-    window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
-    window.localStorage.setItem('cartItems', JSON.stringify(shoppingCartProducts) )
-      return () =>{
-        window.localStorage.setItem('cant', JSON.stringify(cartQuantity) )
-        window.localStorage.setItem('cartItems', JSON.stringify(shoppingCartProducts) )
-      }
-  }, [cartQuantity])
+    window.localStorage.setItem("cant", JSON.stringify(cartQuantity));
+    window.localStorage.setItem(
+      "cartItems",
+      JSON.stringify(shoppingCartProducts)
+    );
+    return () => {
+      window.localStorage.setItem("cant", JSON.stringify(cartQuantity));
+      window.localStorage.setItem(
+        "cartItems",
+        JSON.stringify(shoppingCartProducts)
+      );
+    };
+  }, [cartQuantity]);
 
-    return (
-        <div> 
-            <CssBaseline />
-                <AppBar
-                    style={{
-                    backgroundColor: "rgb(0, 23, 20)",
-                    height: "10%",
-                    position: "sticky",
-                    }}
-                >
-                    <Link to="/" style={{ margin: "auto" }}>
-                    <img src={logo} className={classes.icon} />
-                    </Link>
-                </AppBar>
-                <Container
-                    maxWidth="xl"
-                    style={{
-                    backgroundColor: "#EEEBEB",
-                    height: "150vh",
-                    border: "1px solid #E7E4E4",
-                    }}
-                >
-                <div className={classes.root}>
-                    <Box flexGrow={1} marginLeft={5}>
-                        <Typography variant="h2">carrito</Typography>
-                    </Box>
-                    <Box>
-                        <Button
-                        variant="contained"
-                        color="primary"
-                        endIcon={<DeleteForeverRoundedIcon />}
-                        onClick={handleDeleteAll}
-                        >
-                        vaciar Carrito
-                        </Button>
-                    </Box>
-                </div>
-                    {shoppingCartProducts?.map((elem) => (
-                    <ShoppingCartItem key={elem._id} {...elem} />
-                    ))}          
-                      
-                    <Divider />
-                    <Box>
-                        <Typography variant='h4'>
-                        Total de la compra: 
-                        {
-                        shoppingCartProducts.reduce((acc, item) => {
-                            return (
-                             acc += item.price * item.quantity
-                            )
-                        }, 0
-                        )}
-                        </Typography>
-                        
-                    </Box>
+  return (
+    <div>
+      <CssBaseline />
+      <AppBar
+        style={{
+          backgroundColor: "rgb(0, 23, 20)",
+          height: "10%",
+          position: "sticky",
+        }}
+      >
+        <Link to="/" style={{ margin: "auto" }}>
+          <img src={logo} className={classes.icon} />
+        </Link>
+      </AppBar>
+      <Container
+        maxWidth="xl"
+        style={{
+          backgroundColor: "#B7B9C0",
+          height: "150vh",
+          border: "1px solid #E7E4E4",
+        }}
+      >
+        <div className={classes.root}>
+          <Box flexGrow={1} marginLeft={5}>
+            <Typography variant="h2">carrito</Typography>
+          </Box>
+          <Box>
+            <Button
+              variant="contained"
+              color="primary"
+              endIcon={<DeleteForeverRoundedIcon />}
+              onClick={handleDeleteAll}
+            >
+              vaciar Carrito
+            </Button>
+          </Box>
+        </div>
+        {shoppingCartProducts?.map((elem) => (
+          <ShoppingCartItem key={elem._id} {...elem} />
+        ))}
 
-                    <Divider />
+        <Divider />
+        <Box style={{ marginTop: "9px", marginBottom: "9px" }}>
+          <Typography variant="h4">
+            Total de la compra: $
+            {shoppingCartProducts.reduce((acc, item) => {
+              return (acc += item.price * item.quantity);
+            }, 0)}
+          </Typography>
+        </Box>
 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        disabled={shoppingCartProducts.length === 0}
-                        component={Link} to={`/ordercart`}
-                    >
-                        Comprar
-                    </Button>
-                    
-                </Container>           
-         </div>
+        <Divider style={{ marginBottom: "9px" }} />
+
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={shoppingCartProducts.length === 0}
+          component={Link}
+          to={`/ordercart`}
+        >
+          Comprar
+        </Button>
+      </Container>
+    </div>
   );
 };
 

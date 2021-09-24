@@ -9,13 +9,13 @@ export default function LoginLogout() {
   const { isAuthenticated, loginWithRedirect, loginWithPopup, logout, user } =
     useAuth0();
   const userDB = useSelector((state) => state.app.user);
-  const shoppingCart = useSelector(state => state.cart.cart)
+  // const shoppingCart = useSelector(state => state.cart.cart)
   const dispatch = useDispatch();
   const handleChangeLogout = () => {
     logout();
     const userCartToDb = {
       user: userDB._id,
-      cart: shoppingCart
+      // cart: shoppingCart
     }
     dispatch( linkUserCart( userCartToDb ))
     dispatch(cleanUser());
