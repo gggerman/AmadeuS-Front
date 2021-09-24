@@ -91,14 +91,14 @@ export default function Review({product}) {
         setOpinion('');
         setPunctuation(0);
         setEdit(false);
-        await axios.put(`${REACT_APP_SERVER}/reviews/${review._id}`, reviewEdit);
+        await axios.put(`${REACT_APP_SERVER}/reviews/${review?._id}`, reviewEdit);
         dispatch(getAllReviews());
     }
 
     return (
         <>
             {reviews?.forEach(review => {
-                if(review.product._id === product._id){
+                if(review?.product?._id === product._id){
                     suma += review.punctuation;
                     cant++;
                 }
@@ -153,7 +153,7 @@ export default function Review({product}) {
                 }
                 {Array.isArray(reviews) && reviews.length > 0 ?
                     (reviews?.map(review => {
-                        return review.product._id === product._id ?
+                        return review?.product?._id === product._id ?
                             <Box key={review._id} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
                                 <Typography component="legend">{review.date}</Typography>
                                 <Grid container justifyContent="space-between">

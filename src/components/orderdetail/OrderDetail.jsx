@@ -123,7 +123,7 @@ export default function OrderDetail() {
       // user?.cart = [];
       dispatch(linkUserCart(obj));
       dispatch(cleanCart())
-
+    }
   }, [status])
 
  
