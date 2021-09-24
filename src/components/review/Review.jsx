@@ -29,13 +29,36 @@ export default function Review({product}) {
     const [punctuation, setPunctuation] = useState(0);
     const [edit, setEdit] = useState(false);
     const [review, setReview] = useState({});
+    const [userDb, setUserDb] = useState({});
 
     let suma = 0;
     let cant = 0;
+    let flag = false;
+    let repeat = false;
+
+
+    const getUserById = async () => {
+        try {
+            const response = await axios.get(
+                `${REACT_APP_SERVER}/users/${currentUser?._id}`
+            );
+            setUserDb(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
-        dispatch(getAllReviews());
-    }, [dispatch]);
+        getUserById(currentUser?._id);
+    }, [currentUser]);
+
+    // useEffect(async () => {
+    //     dispatch(getAllReviews());
+    //     if (user) {
+    //         let response = await axios.get(`${REACT_APP_SERVER}/users/${currentUser?._id}`);
+    //         setUserDb(response.data);
+    //     }
+    // }, [dispatch]);
 
     const handleInputChange = (e) => {
         setOpinion(e.target.value);
@@ -56,7 +79,7 @@ export default function Review({product}) {
                 picture: user.picture,
             },
         };
-        await axios.post(`${REACT_APP_SERVER}/reviews/${product._id}`, review);
+        await axios.post(`${REACT_APP_SERVER}/reviews/${product?._id}`, review);
         setOpinion('');
         setPunctuation(0);
         dispatch(getAllReviews());
@@ -98,9 +121,12 @@ export default function Review({product}) {
     return (
         <>
             {reviews?.forEach(review => {
-                if(review?.product?._id === product._id){
-                    suma += review.punctuation;
+                if(review?.product?._id === product?._id){
+                    suma += review?.punctuation;
                     cant++;
+                    if(review?.user?._id === currentUser?._id){
+                        repeat = true;
+                    }
                 }
             })}
             <Grid container component="main" direction="column" alignItems="center">
@@ -113,12 +139,23 @@ export default function Review({product}) {
                         <Rating value={suma / cant} precision={0.1} size="large" readOnly />
                     </Grid>
                     {suma / cant >= 0 &&
-                        <Typography align="center">Promedio de {cant} opiniones</Typography>
+                        <Typography align="center">Promedio de {cant} {cant > 1 ? 'opiniones' : 'opinión'}</Typography>
+                    }
+                    {cant < 1 &&
+                        <Typography align="center">Este producto aún no tiene calificaciones</Typography>
                     }
                 </Box>
-                {user &&
+                {console.log('userDb reviews ', userDb)}
+                {user && userDb?.orders?.forEach((order) => {
+                    order?.products?.forEach((p) => {
+                        if(p?._id === product?._id)  flag = true;
+                    })
+                })
+                }
+                { ((flag && repeat === false ) || edit === true) &&
+
                     <Box component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
-                        <Typography component="legend">Dejanos tu valoración del producto</Typography>
+                        <Typography component="legend">Califica el producto que compraste</Typography>
                         <Grid container justifyContent="space-around" style={{marginTop:'1vh'}}>
                             <Typography component="legend">Puntuación</Typography>
                             <Rating
@@ -140,7 +177,8 @@ export default function Review({product}) {
                             className={classes.textarea}
                             onChange={handleInputChange}
                         />
-                        {!edit ?
+                        <Typography align="center" component="legend">Dejanos tu puntuación y un breve comentario</Typography>
+                        { !edit ?
                             <Button variant="contained" color="primary" disabled={!opinion || !punctuation} onClick={handleSubmit} className={classes.button}>
                                 Enviar
                             </Button>
@@ -151,22 +189,22 @@ export default function Review({product}) {
                         }
                     </Box>
                 }
-                {Array.isArray(reviews) && reviews.length > 0 ?
+                {Array.isArray(reviews) && reviews?.length > 0 ?
                     (reviews?.map(review => {
-                        return review?.product?._id === product._id ?
-                            <Box key={review._id} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
-                                <Typography component="legend">{review.date}</Typography>
+                        return review?.product?._id === product?._id ?
+                            <Box key={review?._id} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
+                                <Typography component="legend">{review?.date}</Typography>
                                 <Grid container justifyContent="space-between">
-                                    <Avatar alt={review.user?.name} src={review.user?.picture} />
-                                    <Typography component="legend" style={{ marginTop: '1.5vh' }}>{review.user?.name}</Typography>
-                                    <Rating value={review.punctuation} readOnly style={{ marginTop: '1.5vh' }} />
+                                    <Avatar alt={review?.user?.name} src={review?.user?.picture} />
+                                    <Typography component="legend" style={{ marginTop: '1.5vh' }}>{review?.user?.name}</Typography>
+                                    <Rating value={review?.punctuation} readOnly style={{ marginTop: '1.5vh' }} />
                                 </Grid>
                                 <Typography component="legend" style={{ marginTop: '3vh' }}>{review.opinion}</Typography>
                                 <Grid container direction="row" justifyContent="flex-end">
-                                    {review.modified &&
-                                        <Typography component="legend" style={{ marginTop: '3.5vh' }}>Editado {review.modified}</Typography>
+                                    {review?.modified &&
+                                        <Typography component="legend" style={{ marginTop: '3.5vh' }}>Editado {review?.modified}</Typography>
                                     }
-                                    {currentUser?._id === review.user?._id &&
+                                    {user && currentUser?._id === review?.user?._id &&
                                         <>
                                             <Button variant="contained" color="primary" size="small" style={{ marginTop: '3vh', marginRight: '2vh', marginLeft: '5vh' }} onClick={() => handleDelete(review._id, reviews.length)}>
                                                 Eliminar

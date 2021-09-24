@@ -63,8 +63,8 @@ export default function ShoppingHistory() {
   };
 
   useEffect(() => {
-    getUserById(userRedux._id);
-  }, []);
+    getUserById(userRedux?._id);
+  }, [userRedux]);
 
   return (
     <>

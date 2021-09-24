@@ -163,8 +163,6 @@ export default function Nav() {
   const { cartQuantity } = shoppingCart;
   const menuId = "primary-search-account-menu";
 
- 
-
   const adminAuth = function () {
     let usersAdmin = [];
     if (!isLoading) {
@@ -209,7 +207,7 @@ export default function Nav() {
       onClose={handleMenuClose}
     >
       <LoginLogout />
-      {adminAuth() && (
+      {userDb && userDb.isAdmin && (
         <Link to="/adminpanel" className={classes.link}>
           <MenuItem>Administrar</MenuItem>
         </Link>
