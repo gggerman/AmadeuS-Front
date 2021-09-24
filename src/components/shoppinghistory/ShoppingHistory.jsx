@@ -90,7 +90,7 @@ export default function ShoppingHistory() {
                       order.products.map((product) => (
                         <div style={{ display: "flex", alignItems: "center" }}>
                           <CardMedia
-                            image={product.image}
+                            image={`${REACT_APP_SERVER}/products/images/${product.image}`}
                             className={classes.img}
                           />
                           <Typography>

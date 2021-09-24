@@ -186,7 +186,7 @@ export default function OrderDetail() {
                     </Typography>
                   </Box>
                   <CardMedia style={{display:'flex', justifyContent:'flex-end'}} 
-                    image={product.image} 
+                    image={`${REACT_APP_SERVER}/products/images/${product.image}`} 
                     className = {classes.img2}>
                 
                   </CardMedia>

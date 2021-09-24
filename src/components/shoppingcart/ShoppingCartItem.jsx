@@ -109,7 +109,7 @@ const ShoppingCartItem = ({
               className={classes.mediaimg}
               component="img"
               alt="img"
-              image={image}
+              image={`${REACT_APP_SERVER}/products/images/${image}`}
             />
           </Box>
           <Container>
