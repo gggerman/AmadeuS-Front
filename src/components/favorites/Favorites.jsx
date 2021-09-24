@@ -183,7 +183,7 @@ export default function Favorites() {
                         </>
                         :
                         <Grid container direction="row" justifyContent="center" lignItems="center">
-                            <Typography variant='h6'>No tenes Favoritos!</Typography>
+                            <Typography variant='h6'>No tienes Favoritos!</Typography>
                         </Grid>
                     }
                 </>

@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import addOrder from '../../redux/actions/addOrder';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavSecondary from '../navsecondary/NavSecondary';
-
+import { headers } from "../../utils/GetHeaders"
 
 
 const { REACT_APP_SERVER } = process.env;
@@ -232,7 +232,7 @@ const useStyles = makeStyles((theme) => ({
     
     const getUserById = async () => {
       try{
-         const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`)
+         const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`, { headers })
           setUserDb(response.data)
           setShippingAddress(response.data.shipping[0])
       }
@@ -268,8 +268,9 @@ const useStyles = makeStyles((theme) => ({
     console.log(shippingAddress)
 
     const handleCheckout = () => {
+      
       //en shipping pasarle o direccion nueva en caso de haber o la que ya tiene el usuario
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name, user: user, shipping:  shippingAddress })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: [{...detail, quantity: 1}], user: user, shipping: shippingAddress }, { headers })
       .then((response) => setIdOrder(response.data)) 
       .catch((err) => console.log(err))
       
@@ -304,7 +305,7 @@ const useStyles = makeStyles((theme) => ({
 
     const handleSave = (e) => {
       e.preventDefault()
-      axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input } )
+      axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input }, { headers })
       .then(() => setShippingAddress(input))
       .catch((err) => console.log(err) )
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db

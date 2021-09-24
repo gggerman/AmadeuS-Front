@@ -63,7 +63,7 @@ const shoppingCartReducer = ( state = initialState, action ) => {
                 })
                 return {
                     ...state,
-                    cart: itemsFromDb
+                    cart: itemsFromDb/* .concat(state.cart) */
                 }
             }
         
