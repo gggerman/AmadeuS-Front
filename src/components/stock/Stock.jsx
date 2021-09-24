@@ -234,7 +234,7 @@ function Stock() {
                       <div style={{ height: "220px", width: "240px" }}>
                         <CardMedia
                           className={classes.media}
-                          image={product.image}
+                          image={`${REACT_APP_SERVER}/products/images/${product.image}`}
                         />
                       </div>
                       <div style={{ display: "flex", alignItems: "center" }}>

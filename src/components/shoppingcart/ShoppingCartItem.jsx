@@ -19,6 +19,7 @@ import React from "react";
 import addToCart from "../../redux/actions/addToCart";
 import { numberWithCommas } from "../../utils";
 import { decrementQuantityCart } from "../../redux/actions/decrementQuantityCart";
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -140,7 +141,7 @@ const ShoppingCartItem = ({
           <CardMedia
             className={classes.mediaimg}
             height="80%"
-            image={image}
+            image={`${REACT_APP_SERVER}/products/images/${image}`}
             // title="Contemplative Reptile"
           />
         </Card>
