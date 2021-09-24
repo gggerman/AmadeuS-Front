@@ -171,7 +171,7 @@ export default function ProductDetail() {
                 {data.brand}
               </Typography> */}
           </Grid>
-          {/* {data.reviews && <Review product={data} />} */}
+          <Review product={data} />
         </Grid>
       )}
     </div>
