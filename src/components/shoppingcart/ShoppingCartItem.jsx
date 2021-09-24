@@ -23,7 +23,7 @@ import React from "react";
 import addToCart from "../../redux/actions/addToCart";
 import { numberWithCommas } from "../../utils";
 import { decrementQuantityCart } from "../../redux/actions/decrementQuantityCart";
-// import {TableContainer, Table, TableHead, TableBody, TableRow, TableCell} from '@material-ui/core';
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   root: {
