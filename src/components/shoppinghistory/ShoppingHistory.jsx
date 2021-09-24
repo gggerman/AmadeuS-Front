@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import {
   Typography,
@@ -69,8 +70,9 @@ export default function ShoppingHistory() {
   return (
     <>
       <NavSecondary />
-      <Grid container style={{ marginTop: "15vh" }}>
-        <Table style={{ marginLeft: "45vh" }}>
+      {/* <Typography align="center" style={{ marginTop: "12vh" }}>Hace click en el producto comprado y dejanos tu valoración</Typography> */}
+      <Grid container style={{ marginTop: "12vh" }}>
+        <Table style={{ marginLeft: "8vh" }}>
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableCell}> Factura </TableCell>
@@ -89,10 +91,12 @@ export default function ShoppingHistory() {
                     {order.products &&
                       order.products.map((product) => (
                         <div style={{ display: "flex", alignItems: "center" }}>
-                          <CardMedia
-                            image={`${REACT_APP_SERVER}/products/images/${product.image}`}
-                            className={classes.img}
-                          />
+                          <Link to={`detail/${product._id}`}>
+                            <CardMedia
+                              image={product.image}
+                              className={classes.img}
+                            />
+                          </Link>
                           <Typography>
                             ${numberWithCommas(product.price)}
                           </Typography>
