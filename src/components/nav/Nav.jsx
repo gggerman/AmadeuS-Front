@@ -294,7 +294,7 @@ export default function Nav() {
                 variant="body2"
                 className={classes.welcome}
               >
-                Bienvenido {userDb.name}
+                Bienvenido {userDb.nickname}
               </Typography>
             </Container>
           )}
