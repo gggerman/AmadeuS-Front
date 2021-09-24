@@ -25,6 +25,7 @@ import { linkUserCart } from "../../redux/actions/linkUserCart";
 import { getCart } from "../../utils";
 import {getAllUsers} from '../../redux/actions/users'
 import { itemsDbToCart } from "../../redux/actions/itemsDbToCart";
+const {REACT_APP_SERVER} = process.env
 
 
 const useStyles = makeStyles((theme) => ({
@@ -230,7 +231,7 @@ export default function Catalogue() {
                   id={product._id}
                   name={product.name}
                   description={product.description}
-                  image={product.image}
+                  image={`${REACT_APP_SERVER}/products/images/${product.image}`}
                   price={product.price}
                   stock={product.stock}
                 />

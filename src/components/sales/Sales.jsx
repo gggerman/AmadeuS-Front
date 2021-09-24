@@ -80,7 +80,7 @@ export default function Sales(){
                                 {order.products && order.products.map((product) => <img src = {product.image} className={classes.img}  /> )} 
                                 </TableCell>
                                 <TableCell> $
-                                { numberWithCommas(order.products.reduce((acc, item) => {
+                                {order.products && numberWithCommas(order?.products?.reduce((acc, item) => {
                                          return (
                                             acc += item.price
                                                     

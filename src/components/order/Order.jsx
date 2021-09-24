@@ -243,8 +243,8 @@ const useStyles = makeStyles((theme) => ({
     
     
     useEffect(() => {
-      getUserById(userRedux._id) 
-    }, [])
+      getUserById(userRedux?._id) 
+    }, [userRedux])
     
     const getProductById = async () => {
       try{

@@ -35,7 +35,7 @@ export function saveUser(user) {
   return async (dispatch) => {
     try {
       const userDB = await axios.post(`${REACT_APP_SERVER}/users`, { user });
-      console.log("actions userDB", userDB);
+      console.log("actions userDB", userDB.data);
       return dispatch({
         type: SAVE_USER,
         payload: userDB.data,

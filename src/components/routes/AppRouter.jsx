@@ -20,24 +20,23 @@ import ShoppingCart from "../shoppingcart/ShoppingCart";
 import { UserContext } from "../shoppingcart/UserContext";
 import "../../App.css";
 import Detail from "../detail/Detail";
-import Test from '../sales/Test';
+import Test from "../sales/Test";
 import { useDispatch, useSelector } from "react-redux";
 import { linkUserCart } from "../../redux/actions/linkUserCart";
-
 
 // import Account from "../account/Account";
 // import Profile from "../account/Profile";
 import { useHistory } from "react-router";
 import UserProfile from "../userprofile/UserProfile";
 import ShoppingHistory from "../shoppinghistory/ShoppingHistory";
-import Favorites from '../favorites/Favorites';
+import Favorites from "../favorites/Favorites";
 
 const AppRouter = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const history = useHistory();
+  const userDB = useSelector(({ app }) => app.user);
 
-  // console.log("admin", user);
-
+  console.log("admin", userDB);
 
   const adminAuth = function (component) {
     if (user) {
@@ -57,7 +56,7 @@ const AppRouter = () => {
     cartQuantity: JSON.parse(window.localStorage.getItem("cant")),
     cartItems: [],
     userItems: 0,
-    cantItemsDbToCart: 0
+    cantItemsDbToCart: 0,
   };
 
   const [shoppingCart, setShoppingCart] = useState(initialState);
@@ -72,28 +71,52 @@ const AppRouter = () => {
               {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
 
-            <Route exact path="/" component={Home} />
-            <Route path="/detail/:id" component={Detail} />
-            <Route path="/stock" component={adminAuth(Stock)} />
-            <Route path="/adminpanel" component={adminAuth(AdminPanel)} />
-            <Route path="/addcategory" component={adminAuth(AddCategory)} />
-            <Route path="/addproduct" component={adminAuth(AddProduct)} />
-            <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
-            <Route path='/cart' component={ ShoppingCart } />        
-            <Route path="/order/:id" component={withAuthenticationRequired(Order)} />
-            <Route path ="/ordercart" component = {withAuthenticationRequired(OrderCart)} />
-            <Route path="/orderdetail" component = {OrderDetail} />
-            <Route path="/usermanagement" component={adminAuth(UserManagement)} />
-            <Route path="/edituserinfo" component={EditUserInfo} />
-            <Route path ="/sales" component={adminAuth(Sales)} />
-            <Route path ="/test" component={Test} />
-            <Route path ="/shoppinghistory" component={ShoppingHistory} />
-            {/* <Route path ="/account" component={Account} />
+              <Route exact path="/" component={Home} />
+              <Route path="/detail/:id" component={Detail} />
+              {userDB && userDB.isAdmin && (
+                <Route path="/stock" component={Stock} />
+              )}
+              {userDB && userDB.isAdmin && (
+                <Route path="/adminpanel" component={AdminPanel} />
+              )}
+              {userDB && userDB.isAdmin && (
+                <Route path="/addcategory" component={AddCategory} />
+              )}
+              {userDB && userDB && userDB.isAdmin && (
+                <Route path="/addproduct" component={AddProduct} />
+              )}
+              {userDB && userDB.isAdmin && (
+                <Route path="/editproduct/:id" component={AddProduct} />
+              )}
+              <Route path="/cart" component={ShoppingCart} />
+              <Route
+                path="/order/:id"
+                component={withAuthenticationRequired(Order)}
+              />
+              <Route
+                path="/ordercart"
+                component={withAuthenticationRequired(OrderCart)}
+              />
+              <Route path="/orderdetail" component={OrderDetail} />
+              {userDB && userDB.isAdmin && (
+                <Route
+                  path="/usermanagement"
+                  component={adminAuth(UserManagement)}
+                />
+              )}
+              <Route path="/edituserinfo" component={EditUserInfo} />
+              {userDB && userDB.isAdmin && (
+                <Route path="/sales" component={Sales} />
+              )}
+              <Route path="/test" component={Test} />
+              <Route path="/shoppinghistory" component={ShoppingHistory} />
+              {/* <Route path ="/account" component={Account} />
             <Route path ="/profile" component={Profile} /> */}
-            <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />
-            <Route path ="/favorites" component={Favorites} />
-
-
+              <Route
+                path="/userprofile"
+                component={withAuthenticationRequired(UserProfile)}
+              />
+              <Route path="/favorites" component={Favorites} />
             </UserContext.Provider>
             <Redirect to="/" />
           </Switch>

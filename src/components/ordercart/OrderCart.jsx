@@ -230,8 +230,8 @@ const useStyles = makeStyles((theme) => ({
     
     
     useEffect(() => {
-      getUserById(userRedux._id) 
-    }, [])
+      getUserById(userRedux?._id) 
+    }, [userRedux])
 
 
     useEffect(() => {            
