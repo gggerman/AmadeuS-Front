@@ -9,6 +9,7 @@ import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import LocalShippingIcon from '@material-ui/icons//LocalShipping';
 import zonas from './zonas.png';
 import axios from 'axios';
+import ProcesoEnvios from './ProcesoEnvio.png';
 import { numberWithCommas } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import addOrder from '../../redux/actions/addOrder';
@@ -16,7 +17,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import NavSecondary from '../navsecondary/NavSecondary';
 import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
-
 
 const useStyles = makeStyles((theme) => ({
     
@@ -54,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
       padding: '3vh',
       borderRadius: '3%',
       backgroundColor: 'white'
-
     },
     rootProduct: {      
       display: 'flex',
@@ -66,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
       borderRadius: '3%',
       backgroundColor: 'white'
-
     },
     map: {
       display: 'flex',
@@ -163,7 +161,6 @@ const useStyles = makeStyles((theme) => ({
     msg: {
       fontStyle: 'italic'
     },
-
     text: {
       fontSize: 12,
       color: theme.palette.primary.dark
@@ -187,17 +184,26 @@ const useStyles = makeStyles((theme) => ({
     const dispatch = useDispatch()
     const cartProducts = useSelector(state => state.cart.cart)
     const userRedux = useSelector((state) => state.app.user);
-
     const [quantity, setQuantity] = useState(1)
     const [idOrder, setIdOrder] = useState()
     const [selectedValue, setSelectedValue] = useState('');
     const [zones, setZones] = useState(false)
     const handleZones = () => setZones(true)
-    const handleClose = () => setZones(false)
+    
+    const [policy, setPolicy] = useState(false)
+    const handlePolicy = () => setPolicy(true)
+    const handleClose = () =>{
+      setZones(false)
+      setPolicy(false)
+    }
     const [shipping, setShipping] = useState(0)
+    const [ next, setNext ] = useState(false)
+
     const [open, setOpen] = useState(false);
     const [address, setAddress] = useState(false)
     const [userDb, setUserDb] = useState({})
+
+    
 
      //------ESTADO PARA AGREGAR DATOS DE ENVIO --------------//
     const initialInput = {
@@ -212,7 +218,6 @@ const useStyles = makeStyles((theme) => ({
     const [input, setInput] = useState(initialInput);
     const [shippingAddress, setShippingAddress] = useState({})
     //------ESTADO PARA AGREGAR DATOS DE ENVIO --------------//
-
     const getUserById = async () => {
       try{
          const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`, { headers })
@@ -224,18 +229,27 @@ const useStyles = makeStyles((theme) => ({
       }
     }
     
+
     useEffect(() => {
       getUserById(userRedux?._id) 
     }, [userRedux])
 
+
+    useEffect(() => {            
+      dispatch(addOrder(idOrder))
+    },[idOrder])
+
+
     const handleCheckout = () => {
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts , user: user, shipping:  shippingAddress, cost: shipping }, { headers })
-      .then(response => dispatch(addOrder(response.data))) 
-      .catch(err => console.log(err))
+     
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts, user: user, shipping:  shippingAddress, cost: shipping   })
+      .then((response) => setIdOrder(response.data)) 
+  
+      .catch((err) => console.log(err))
       
-      axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts}, { headers })
-      .then(response => window.location = response.data )
-      .catch(err => console.log(err))
+      axios.post(`${REACT_APP_SERVER}/mercadopago/cart`, {cartProducts, shipping: shipping})
+      .then((response) => window.location = response.data )
+      .catch((err) => console.log(err))
     }
   
     const handleShipping = (e) => {
@@ -248,7 +262,6 @@ const useStyles = makeStyles((theme) => ({
     const handleAddress = () => {
       setAddress(!address)
     }
-
     const handleChange = (event) => {
       setSelectedValue(event.target.value);
       if(event.target.value === 'tienda') setShipping(0)
@@ -256,38 +269,36 @@ const useStyles = makeStyles((theme) => ({
       setOpen(false)
     };
     const handleToggle = () => setOpen(!open);
-
     const handleInputChange = (e) => {
       setInput({
         ...input,
         [e.target.name]: e.target.value,
       });
     }
-
     const handleSave = (e) => {
       e.preventDefault()
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
       axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input }, { headers } )
+      // .then((response) => dispatch(addOrder(response.data)))
       .then(() => setShippingAddress(input))
+      .then(() => setNext(true))
       .catch((err) => console.log(err) )
       setInput(initialInput)
     }
-
     const handleQuantity = (e) =>{
       setQuantity(e.target.value)
     }
+
+   
   
     return (
       <div>
         <CssBaseline>
-         <NavSecondary style={{marginBottom: '5vh'}} shipping = {shippingAddress}  />
-
+         <NavSecondary style={{marginBottom: '5vh'}} shipping = {userDb?.shipping}  />
          <Container className={classes.container}>
-
           
           <Container className={classes.containerIzq}>
            <Box>
-
             <Typography component ="h3" variant= "h5" style = {{marginTop: '-2vh', marginBottom: '5vh'}}>
               ¿Como queres recibir o retirar tu compra?
             </Typography>
@@ -317,11 +328,8 @@ const useStyles = makeStyles((theme) => ({
                       <img src={zonas} className={classes.zones} />          
                    </Container>
                 </Modal>
-
            </Box>
-
            <Container className={classes.root}>
-
               <Typography component ="h1" variant = "body1">
                   <Radio 
                     checked={selectedValue === 'domicilio'}
@@ -331,25 +339,25 @@ const useStyles = makeStyles((theme) => ({
                     Recibe tu Compra en tu domicilio
                 </Typography>
                 
-                <InputLabel style ={{marginTop:'1.7vh'}}>Elige tu zona</InputLabel>
+                
+                <InputLabel style ={{marginTop:'1.7vh', fontSize: '90%'}}>Elige tu zona</InputLabel>
                  <ArrowRightAltIcon style={{marginTop:'1vh', marginLeft: '-3vh',color:'blue'}}/>
                 <TextField type="number"  defaultValue="1" inputProps={ {min :"1", max :"3"}} size= 'small'   onChange={handleShipping} style={{marginLeft: '-2vh'}} />
-
+               
                {
                  selectedValue === 'domicilio'&& 
                  <Box style={{marginTop:'-1vh'}}>
                  { shippingAddress ?
                     <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
-                    { `${shippingAddress.street} ${shippingAddress.number}, ${shippingAddress.state}` }
+                    { (`${shippingAddress.street} ${shippingAddress.number}, ${shippingAddress.state}`).substring(0,30) }
                     </InputLabel>
                     :
                     <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
                     { userDb.shipping[0] ?  `${userDb.shipping[0].street} ${userDb.shipping[0].number}, ${userDb.shipping[0].state}` : null }
                     </InputLabel>
-
                  }  
                   {
-                        userDb.shipping[0] ?
+                        userDb?.shipping[0] ?
                         <Button variant = "contained" className={classes.edit}  endIcon={<EditIcon  />}onClick ={handleAddress} style={{marginLeft: '9vh'}}>
                         Modificar
                       </Button>
@@ -358,15 +366,10 @@ const useStyles = makeStyles((theme) => ({
                         Agregar
                       </Button>
                       }
-
-
-
                     </Box>
                } 
                
-
            </Container> 
-
            <Container className={classes.root}> 
                  <Box>
                    <Typography component="h1" variant = "body1">
@@ -375,9 +378,7 @@ const useStyles = makeStyles((theme) => ({
                       onChange={handleChange}
                       value="tienda"
                       name="radio-buttons" />
-
                     Retirar Compra en la tienda
-
                    </Typography>
                  </Box>
                  <Box>
@@ -393,7 +394,6 @@ const useStyles = makeStyles((theme) => ({
            </Container> 
            {
              selectedValue === 'tienda' && open ?  <Container className={classes.map}>
-
                       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d535.8165387237323!2d-58.385068209148855!3d-34.60563648100992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccac5a682a5db%3A0xf4c875597214559d!2sDowntown%20Music!5e0!3m2!1ses-419!2sar!4v1631805346279!5m2!1ses-419!2sar" style={{width: '100%', border:'0', height: '30vh'}} allowFullScreen="" loading ='lazy' ></iframe>
              
                    </Container> 
@@ -431,15 +431,27 @@ const useStyles = makeStyles((theme) => ({
                   <ArrowRightAltIcon style={{marginTop:'-0.5vh', color: 'blue', marginLeft: '1vh'}} />     
             </InputLabel>
             <Button className={classes.truck} style={{marginTop: '8.5vh', marginLeft: '0vh'}}>
-                <LocalShippingIcon />
-             </Button>
+                <LocalShippingIcon onClick={handlePolicy}/>
+             </Button>  
           </Box>
+          <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={policy}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500,
+                    }}
+                >
+                    <Container className={classes.paper}>
+                      <img src={ProcesoEnvios} className={classes.zones} />          
+                   </Container>
+                </Modal>
           
           </Container>
-
-
-
-
           <Container className={classes.containerDer}>
             <Typography component ="h4" variant= "p" style = {{marginTop: '-4vh', alignSelf:'flex-start', marginLeft: '4vh'}}>
               Tus Productos:
@@ -465,7 +477,6 @@ const useStyles = makeStyles((theme) => ({
                   
                   
                 
-
                 </Container> 
                 )
               }) 
@@ -475,7 +486,6 @@ const useStyles = makeStyles((theme) => ({
                 </Button>
                
             </Container>
-
             <Table style={{marginTop:'-10vh'}}>
                <TableHead>
                  <TableRow>
@@ -497,7 +507,6 @@ const useStyles = makeStyles((theme) => ({
                    <TableRow>
                       <TableCell>
                       <Typography variant = 'body1'>
-
                             {
                               cartProducts[0]?.price && <Typography variant ='body1' >
                             $ {numberWithCommas(cartProducts.reduce((acc, item) => {
@@ -507,7 +516,6 @@ const useStyles = makeStyles((theme) => ({
                             }, 0
                             ))
                             }
-
                             </Typography> }
                             </Typography>
                         </TableCell>
@@ -519,32 +527,29 @@ const useStyles = makeStyles((theme) => ({
                         </TableCell>
                       <TableCell>
                         <Typography variant = 'body1'>
-
                           {
                             cartProducts[0].price && <Typography variant ='body1' >
                           $ {numberWithCommas(cartProducts.reduce((acc, item) => {
                             return (
-                             acc += item.price * item.quantity + shipping
+                             acc += item.price * item.quantity 
                             )
                         }, 0
-                        ))
+                        ) + shipping )
                           }
-
                           </Typography> }
                         </Typography>
-
                       </TableCell>
                    </TableRow>
                  </TableBody>
             </Table>
-            {  selectedValue === '' && 
+            {  selectedValue === '' && !next && 
                 <Typography variant='error' style={{color:'red'}}>
                   *Debes seleccionar envio o retiro
                 </Typography>
              
              }              
           
-          {   selectedValue !== ''&&
+          {   selectedValue !== '' &&         shippingAddress && 
               <Button variant="contained" className={classes.button} onClick ={handleCheckout}>
                     Continuar
              </Button>
