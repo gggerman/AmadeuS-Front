@@ -89,12 +89,12 @@ export default function UserManagement(){
 
     return (
         <>
-            {/* <NavSecondary /> */}
-            <Grid container component="main">
-                <Container component={Paper} style={{ maxWidth: '80vw', minWidth: '50vw' }}>
-                    <Grid container justifyContent="center">
+            <NavSecondary />
+            <Grid container component="main" style={{marginTop:'12vh'}}>
+                <Container component={Paper} style={{ maxWidth: '90vw', minWidth: '60vw' }}>
+                    {/* <Grid container justifyContent="center">
                         <Button onClick={() => (history.push('/'))}>Home</Button>
-                    </Grid>
+                    </Grid> */}
                     <Table>
                         <TableHead>
                             <TableRow>
