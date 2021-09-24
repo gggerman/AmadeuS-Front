@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import {makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia, Table, TableHead, TableRow, TableCell, TableBody, InputLabel} from '@material-ui/core';
+import MailIcon from "@material-ui/icons/Mail";
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { numberWithCommas } from '../../utils';
 import NavSecondary from '../navsecondary/NavSecondary';
 import { headers } from "../../utils/GetHeaders"
 import { InfoRounded } from '@material-ui/icons';
+import Order from '../order/Order';
 import cleanCart from "../../redux/actions/cleanCart";
 import { linkUserCart } from "../../redux/actions/linkUserCart";
 import { UserContext } from '../shoppingcart/UserContext';
-
 
 const { REACT_APP_SERVER } = process.env;
 
@@ -66,30 +68,53 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
-    width: "50%",
-    height: '80vh',
-    backgroundColor: 'RGB(245, 245, 244)',
+    width: "60%",
+    height: '80%',
+    backgroundColor:'RGB(245, 245, 244)',
     borderRadius: '5px',
+    padding:'5vh',
+    marginTop: '5vh'
+  },
+  text:{
+    color: theme.palette.primary.light
+  },
+  link: {
+    color: theme.palette.primary.dark,
+    textDecoration: 'none',
+    "&:focus": {
+      color: theme.palette.primary.light
+    }
   },
 }));
 
 export default function OrderDetail() {
   const classes = useStyles();
-  const order = useSelector((state) => state.app.order);
+
+  const order = useSelector((state) => state.app.order); //me traigo el orderId generado en Order
   const user = useSelector((state) => state.app.user);
-  //me traigo el orderId generado en Order
+
+  const [infoOrder, setInfoOrder] = useState({});
+  const [orderUpdated, setOrderUpdated] = useState({})
+ 
+ 
+
+  console.log(order);
+  console.log(orderUpdated)
+
+  
   const dispatch = useDispatch()
   const { shoppingCart, setShoppingCart } = useContext(UserContext);
   const { cartQuantity } = shoppingCart;
+
   
   const query = new URLSearchParams(useLocation().search);
   const status = query.get("status");
- 
+
   useEffect(() => {
-    axios.put(`${REACT_APP_SERVER}/orders/stock/${order._id}`, { status: status })
+    axios.put(`${REACT_APP_SERVER}/orders/stock/${order?._id}`, { status: status })
     .then(response => axios.post(`${REACT_APP_SERVER}/users/${order.buyer?._id}/purchaseEmail`, response.data, {headers}))
     .catch(error => console.log(error))
-    
+
     if(status==='approved'){
       let obj = {
         user,
@@ -101,83 +126,125 @@ export default function OrderDetail() {
     }
   }, [status])
 
-  return (
-    <div>
-      <CssBaseline>
-        <NavSecondary shipping={order.shipping} />
+ 
+
+    return (
+        <div>
+         <CssBaseline>
+         <NavSecondary shipping ={order?.shipping} success={orderUpdated.status} />
 
         <Container className={classes.containerDer} >
-          <Box>
-            <Typography component="h2" variant="body" style={{ marginTop: '-1vh', alignSelf: 'flex-center', marginLeft: '4vh' }}>
-              Tu Compra:
+        {
+          status === "approved" ? 
+
+          <Container style={{marginBottom:'13vh', marginTop: '3vh'}} >
+            <Typography component ="h2" variant= "body" >
+              Tu compra fue un exito!
             </Typography>
-          </Box>
+            <InputLabel component = 'h3'>
+                  Entre 24 y 48hs va estar arribando a tu domicilio: 
+                  {/* <ArrowRightAltIcon style={{marginBottom: '-1vh', color: 'blue', marginLeft: '1vh'}} /> */}
+                  <Box style={{display: 'flex' , justifyContent:'row'}}>
+                  <LocationOnIcon className={classes.text} /> 
+                  <Typography className={classes.text} style={{fontSize:'0.8em', marginTop: '1vh',marginLeft: '1vh'}}>
+                    {order?.shipping?.street && `${order?.shipping?.street} ${order?.shipping?.number}, ${order?.shipping?.state}`}
+                  </Typography>
+                  </Box>
+             </InputLabel>
+             <InputLabel component = 'h3'>
+               Te enviamos un mail con toda la informacion del envio a: 
+               
+               <Box style={{display: 'flex' , justifyContent:'row'}}>
+               <MailIcon className={classes.text} /> 
+               <Typography className={classes.text} style={{fontSize:'0.8em', marginTop: '1vh',marginLeft: '1vh'}}>
+                 {order?.buyer.email}
+               </Typography>
+               </Box>
+              </InputLabel>
 
-          <Container style={{ marginTop: '-15vh' }}>
-            {
-              status === 'approved' &&
-              order.products.map((product) => {
+
+          </Container>  
+          
+          :
+          null
+       
+        }
+       
+            <Container style={{marginTop:'-15vh'}}>
+  
+        {    
+             order?.products &&
+
+              order?.products?.map((product) => {
                 return (
-
-                  <Container className={classes.rootProduct}>
-                    <Box >
-                      <Typography variant="p" color="primary">
+               
+                <Link to={`/detail/${product._id}`}  className ={classes.link}> 
+                <Container className={classes.rootProduct}>
+                  <Box >
+                    <Typography variant="p" color ="primary">
                         {product.name}
-                      </Typography>
-                    </Box>
-                    <CardMedia style={{ display: 'flex', justifyContent: 'flex-end' }}
-                      image={product.image}
-                      className={classes.img2}>
+                    </Typography>
+                  </Box>
+                  <CardMedia style={{display:'flex', justifyContent:'flex-end'}} 
+                    image={product.image} 
+                    className = {classes.img2}>
+                
+                  </CardMedia>
 
-                    </CardMedia>
-
-                  </Container>
+                </Container> 
+                </Link>
                 )
               })
 
-            }
-            <Table>
+        }
+              <Container>
+              <Table>
 
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Typography variant="overline" style={{ textDecoration: 'underline', fontSize: '1.1em' }}>Precio
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" style={{ textDecoration: 'underline', fontSize: '1.1em' }}>Envio
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Envio
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Total Compra
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                   <TableRow>
+                    <TableCell>
+                          <Typography variant ="body1">
+                              $ {order?.cost}
+                          </Typography>
+                        </TableCell>
 
-                    {/* {   orderUpdated && 
+                      <TableCell>
+                        
+                          {   order?.products && 
                             <Typography variant ="body1">
-                            $ {numberWithCommas(orderUpdated.products.reduce((acc, item) => {
+                            $ {numberWithCommas( order?.products?.reduce((acc, item) => {
+                              const quant = order.quantity ? order.quantity : item.quantity
                               return (
-                              acc += item.price //aca hay que agregarle * quantity
+                              acc += item.price * quant //aca hay que agregarle * quantity
                               )
                             }, 0
-                            ))
+                            ) + order?.cost )
                             }
                               </Typography>
                          
-                          } */}
+                          } 
+                        
+                      </TableCell> 
+                      
+                   </TableRow>
+                </TableBody>             
+                </Table>
+              </Container>
 
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1">
-                      Entrega a domicilio
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Container>
-
+              </Container>
+              
 
         </Container>
 

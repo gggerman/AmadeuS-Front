@@ -9,6 +9,7 @@ import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import LocalShippingIcon from '@material-ui/icons//LocalShipping';
 import { makeStyles } from '@material-ui/core';
 import zonas from './zonas.png'
+import ProcesoEnvios from './ProcesoEnvio.png';
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
 import { useDispatch, useSelector } from 'react-redux';
@@ -107,8 +108,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light,
       color: theme.palette.primary.contrastText,
       height: '6vh',
-      width: '20vh',
-      fontSize: '80%',
+      width: '17vh',
+      fontSize: '75%',
       "&:hover": {
         backgroundColor: 'rgb(0, 139, 183)'
       },
@@ -189,6 +190,7 @@ const useStyles = makeStyles((theme) => ({
     const { id } = useParams()
     
     const [detail, setDetail] = useState({})
+    console.log(userRedux)
     const [quantity, setQuantity] = useState(1)
 
     const [open, setOpen] = useState(false);
@@ -198,20 +200,30 @@ const useStyles = makeStyles((theme) => ({
 
     const [shipping, setShipping] = useState(0)
    
-    
+    const [ next, setNext ] = useState(false)
+
     const [address, setAddress] = useState(false)
     const handleAddress = () => {
       setAddress(!address)
     }
     
     const [userDb, setUserDb] = useState({})
-    console.log(userDb, 'userDbshipping')
+    
 
     const [map, setMap] = useState(false)
     const handleMap = () => setMap(!map)
+
     const [zones, setZones] = useState(false)
     const handleZones = () => setZones(true)
-    const handleClose = () => setZones(false)
+
+    const [policy, setPolicy] = useState(false)
+    const handlePolicy = () => setPolicy(true)
+
+    const handleClose = () =>{
+      setZones(false)
+      setPolicy(false)
+    }
+      
 
     const [idOrder, setIdOrder] = useState()
     
@@ -227,7 +239,7 @@ const useStyles = makeStyles((theme) => ({
     };
     const [input, setInput] = useState(initialInput);
     const [shippingAddress, setShippingAddress] = useState({})
-    console.log('shippingAddress',shippingAddress)  
+    
     //------ESTADO PARA AGREGAR DATOS DE ENVIO --------------//
     
     const getUserById = async () => {
@@ -265,16 +277,16 @@ const useStyles = makeStyles((theme) => ({
       dispatch(addOrder(idOrder))
     },[idOrder])
 
-    console.log(shippingAddress)
+   
 
     const handleCheckout = () => {
       
       //en shipping pasarle o direccion nueva en caso de haber o la que ya tiene el usuario
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: [{...detail, quantity: 1}], user: user, shipping: shippingAddress }, { headers })
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail, user: user, shipping:  shippingAddress, cost: shipping, quantity: quantity }, { headers })
       .then((response) => setIdOrder(response.data)) 
       .catch((err) => console.log(err))
       
-      axios.post(`${REACT_APP_SERVER}/mercadopago/checkout`, { name: detail.name, price: detail.price + shipping, quantity: quantity})
+      axios.post(`${REACT_APP_SERVER}/mercadopago/checkout`, { name: detail.name, price: detail.price , shipping: shipping, quantity: quantity})
       .then((response) => window.location = response.data )
       .catch((err) => console.log(err))
     }
@@ -305,8 +317,10 @@ const useStyles = makeStyles((theme) => ({
 
     const handleSave = (e) => {
       e.preventDefault()
-      axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input }, { headers })
+      axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input }, { headers } )
+      // .then((response) => dispatch(addOrder(response.data)))
       .then(() => setShippingAddress(input))
+      .then(() => setNext(true))
       .catch((err) => console.log(err) )
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
       setInput(initialInput)
@@ -316,7 +330,7 @@ const useStyles = makeStyles((theme) => ({
     return (
       <div>
         <CssBaseline>
-        <NavSecondary style={{marginBottom: '5vh'}} shipping = {shippingAddress} />
+        <NavSecondary style={{marginBottom: '5vh'}} shipping = {userDb?.shipping} />
 
          <Container className={classes.container}>
           
@@ -367,7 +381,7 @@ const useStyles = makeStyles((theme) => ({
                     Recibe tu Compra en tu domicilio
                 </Typography>
                 
-                <InputLabel style ={{marginTop:'1.7vh'}}>Elige tu zona</InputLabel>
+                <InputLabel style ={{marginTop:'1.7vh',fontSize: '90%'}}>Elige tu zona</InputLabel>
                  <ArrowRightAltIcon style={{marginTop:'1vh', marginLeft: '-3vh',color:'blue'}}/>
                 <TextField type="number"  defaultValue="1" inputProps={ {min :"1", max :"3"}} size= 'small'   onChange={handleShipping} style={{marginLeft: '-2vh'}} />
                 
@@ -376,7 +390,7 @@ const useStyles = makeStyles((theme) => ({
                     <Box style={{marginTop:'-1vh'}}>
                       { shippingAddress ?
                          <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
-                         { `${shippingAddress.street} ${shippingAddress.number}, ${shippingAddress.state}` }
+                         { (`${shippingAddress.street} ${shippingAddress.number}, ${shippingAddress.state}`).substring(0,30) }
                          </InputLabel>
                          :
                          <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
@@ -386,7 +400,7 @@ const useStyles = makeStyles((theme) => ({
                       }
 
                       {
-                        userDb.shipping[0] ?
+                        shippingAddress ?
                         <Button variant = "contained" className={classes.edit}  endIcon={<EditIcon  />}onClick ={handleAddress} style={{marginLeft: '9vh'}}>
                         Modificar
                       </Button>
@@ -463,16 +477,35 @@ const useStyles = makeStyles((theme) => ({
           }              
           
           <Box style ={{display: 'flex', justifyContent: 'center'}}>
-          <InputLabel 
-            component = 'h3' 
-            style = {{  display:'flex',   justifyContent: 'center', marginTop:'10vh'}}>
-                  Algunda duda sobre tu envio? 
-                  <ArrowRightAltIcon style={{marginTop:'-0.5vh', color: 'blue', marginLeft: '1vh'}} />     
-            </InputLabel>
-            <Button className={classes.truck} style={{marginTop: '8.5vh', marginLeft: '0vh'}}>
-                <LocalShippingIcon />
-             </Button>
+
+            <InputLabel 
+              component = 'h3' 
+              style = {{  display:'flex',   justifyContent: 'center', marginTop:'10vh'}}>
+                    Algunda duda sobre tu envio? 
+                    <ArrowRightAltIcon style={{marginTop:'-0.5vh', color: 'blue', marginLeft: '1vh'}} />     
+              </InputLabel>
+
+              <Button className={classes.truck} style={{marginTop: '8.5vh', marginLeft: '0vh'} }>
+                  <LocalShippingIcon onClick={handlePolicy} />
+              </Button>
           </Box>
+              <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={policy}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500,
+                    }}
+                >
+                    <Container className={classes.paper}>
+                      <img src={ProcesoEnvios} className={classes.zones} />          
+                   </Container>
+                </Modal>
+
           </Container>
           
           
@@ -539,13 +572,13 @@ const useStyles = makeStyles((theme) => ({
             </Box>
                   
              <Divider variant = "middle" style ={{width: '100%', marginTop: '-2vh', marginBottom: '-4vh'}}/>                 
-             {  selectedValue === '' && 
+             {  selectedValue === '' && !next && 
                 <Typography variant='error' style={{color:'red'}}>
                   *Debes seleccionar envio o retiro
                 </Typography>
              
              }  
-          {   selectedValue !== ''&&
+          {   selectedValue !== '' && shippingAddress && 
               <Button variant="contained" className={classes.button} onClick ={handleCheckout}>
                     Continuar
              </Button>

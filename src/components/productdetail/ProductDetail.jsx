@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import addToCart from "../../redux/actions/addToCart";
 import getDetails from "../../redux/actions/getDetails";
 import Review from "../review/Review";
-const {REACT_APP_SERVER} = process.env
+const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -88,7 +88,10 @@ export default function ProductDetail() {
       {!loading && success && (
         <Grid container style={{ marginTop: "-3vh" }}>
           <Grid item xs={6}>
-            <CardMedia className={classes.media} image={`${REACT_APP_SERVER}/products/images/${data.image}`} />
+            <CardMedia
+              className={classes.media}
+              image={`${REACT_APP_SERVER}/products/images/${data.image}`}
+            />
           </Grid>
           <Grid item xs={6}>
             <Typography
@@ -133,11 +136,13 @@ export default function ProductDetail() {
               >
                 Agregar
               </Button>
-              <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
-                <Button variant="contained" className={classes.button}>
-                  Comprar
-                </Button>
-              </Link>
+              {data.stock >= 1 && (
+                <Link to={`/order/${id}`} style={{ textDecoration: "none" }}>
+                  <Button variant="contained" className={classes.button}>
+                    Comprar
+                  </Button>
+                </Link>
+              )}
             </Grid>
             <Box className={classes.box}>
               {data.stock === 0 ? (

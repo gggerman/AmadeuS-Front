@@ -26,8 +26,8 @@ import { getCart } from "../../utils";
 import {getAllUsers} from '../../redux/actions/users'
 import { itemsDbToCart } from "../../redux/actions/itemsDbToCart";
 import { getAllFavorites } from "../../redux/actions/favorites";
-
-const {REACT_APP_SERVER} = process.env
+const { REACT_APP_SERVER } = process.env;
+  
 
 const useStyles = makeStyles((theme) => ({
   formControl: {

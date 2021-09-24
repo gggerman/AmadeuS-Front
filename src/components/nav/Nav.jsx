@@ -170,13 +170,13 @@ export default function Nav() {
         users.forEach((u) => {
           u.isAdmin === true && usersAdmin.push(u.email);
         });
-        return user.email && usersAdmin.includes(user.email) ? true : false;
-        // return (user.email && user.email === "crismaxbar@gmail.com") ||
-        //   user.email === "heisjuanpablo@gmail.com" ||
-        //   user.email === "leandrobuzeta@gmail.com" ||
-        //   user.email === "juanmhdz99@gmail.com"
-        //   ? true
-        //   : false;
+        // return user.email && usersAdmin.includes(user.email) ? true : false;
+        return (user.email && user.email === "crismaxbar@gmail.com") ||
+          user.email === "heisjuanpablo@gmail.com" ||
+          user.email === "leandrobuzeta@gmail.com" ||
+          user.email === "juanmhdz99@gmail.com"
+          ? true
+          : false;
       }
     }
   };
@@ -276,15 +276,16 @@ export default function Nav() {
         <SearchBar />
 
         <div className={classes.grow} />
-        {userDb && user && (
-          <Container>
-            <Typography className={classes.text} component="p" variant="body2">
-              <LocationOnIcon />
-              {userDb.shipping[0] &&
-                `${userDb.shipping[0].street} ${userDb.shipping[0].number} `}
-            </Typography>
-          </Container>
-        )}
+             {userDb?.shipping[0] && user && 
+                <Container>
+                  
+                  <Typography className={classes.text} component="p" variant="body2">
+                    
+                    <LocationOnIcon  /> 
+                    {userDb.shipping &&  `${userDb?.shipping[0]?.street} ${userDb?.shipping[0]?.number} `}
+                  </Typography>
+                </Container>
+              }
         <div className={classes.sectionDesktop}>
           {userDb && (
             <Container>
