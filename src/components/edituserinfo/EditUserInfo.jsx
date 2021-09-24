@@ -52,6 +52,7 @@ export default function EditUserInfo(){
         name:'',
         nickname:'',
         phone:'',
+        picture: ''
     })
 
     let data = {};
@@ -62,7 +63,8 @@ export default function EditUserInfo(){
         setInput({
             name: data.name,
             nickname: data.nickname,
-            phone: data.phone
+            phone: data.phone,
+            picture: data.picture
         })  
     }
 
@@ -70,9 +72,21 @@ export default function EditUserInfo(){
         getUser();
     },[])
 
-    // function subirImage(e){
-    //     setImage(e.target.files[0]);
-    // }
+    const handleUpload = async (file) => {
+        const formData = new FormData();
+        if (file) {
+            formData.append("file", file, `asd.${file?.type.replace(/(.*)\//g, "")}`);
+            const image = await axios.post(
+                `${REACT_APP_SERVER}/users/images`,
+                formData
+            );
+            console.log('image.data ', image.data)
+            setInput({
+                ...input,
+                picture: `${REACT_APP_SERVER}/users/images/${image.data}`,
+            });
+        }
+    };
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -143,10 +157,10 @@ export default function EditUserInfo(){
         // }
 
         if(input.phone){
-            if(!/^[0-9+ -]+$/u.test(input.phone)){
+            if(!/^[0-9+]+$/u.test(input.phone)){
                 error.phone = 'Formato no válido'
-            } else if(input.phone.length > 14){
-                error.phone = 'El número debe tener como maximo de 14 digitos'
+            } else if(input.phone.length > 13){
+                error.phone = 'El número debe tener como maximo de 13 digitos'
             }
         }
         return error;
@@ -171,13 +185,15 @@ export default function EditUserInfo(){
             ...data,
             name: input.name,
             nickname: input.nickname,
-            phone: input.phone
+            phone: input.phone,
+            picture: input.picture
         };
         axios.put(`${REACT_APP_SERVER}/users/${currentUser._id}`, data, { headers })
         setInput({
             name:'',
             nickname:'',
             phone:'',
+            picture:''
         });
         setOpenSuccess(true);
         // setOpenError(true);
@@ -189,6 +205,7 @@ export default function EditUserInfo(){
             name:'',
             nickname:'',
             phone:'',
+            picture:''
         });
         history.push('/userprofile');
     }
@@ -230,11 +247,20 @@ export default function EditUserInfo(){
                         helperText={error.nickname}
                     />
 
-
-                        {/* <label htmlFor="contained-button-file">
-                            <Input accept="image/*" id="contained-button-file" type="file" onChange={subirImage}/>
+                        <TextField
+                            className={classes.textField}
+                            name="phone"
+                            value={input.phone}
+                            label="N° de teléfono"
+                            variant="outlined"
+                            onChange={handleInput}
+                            helperText={error.phone}
+                        />
+                    
+                    {/* <label htmlFor="contained-button-file">
+                            <Input accept="image/*" id="contained-button-file" type="file" onChange={handleUpload}/>
                             <Button variant="contained" component="span">
-                                Subir imagen
+                                Cambiar foto
                             </Button>
                         </label> */}
 
@@ -260,16 +286,6 @@ export default function EditUserInfo(){
                     onChange={handleInput}
                     helperText={error.document}
                 /> */}
-
-                <TextField
-                    className={classes.textField}
-                    name="phone"
-                    value={input.phone}
-                    label="N° de teléfono"
-                    variant="outlined"
-                    onChange={handleInput}
-                    helperText={error.phone}
-                />
 
                 {/* <TextField
                     className={classes.textField}
