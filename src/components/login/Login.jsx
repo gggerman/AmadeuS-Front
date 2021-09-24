@@ -19,7 +19,7 @@ export default function Login(){
 
     const [error, setError] = useState({});
     const [input, setInput] = useState({
-        mail:'',
+        email:'',
         password:'',
         showPassword: false,
     })
@@ -53,12 +53,12 @@ export default function Login(){
                 <TextField
                     className={classes.textField}
                     required
-                    name="mail"
-                    value={input.mail}
+                    name="email"
+                    value={input.email}
                     label="E-mail"
                     variant="outlined"
                     onChange={handleInput}
-                    helperText={error.mail}
+                    helperText={error.email}
                 />
 
                 <FormControl variant="outlined">

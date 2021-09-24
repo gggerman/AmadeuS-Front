@@ -8,6 +8,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
+import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
 
 
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid black'
     },
     media: {
-        width: "5%",
+        width: "13%",
         backgroundSize: "contain",
       },
 
@@ -60,7 +61,7 @@ export default function Test() {
 
     const getOrders = async () => {      //me traigo las compras
         try{
-           const response = await axios.get(`${REACT_APP_SERVER}/orders`)
+           const response = await axios.get(`${REACT_APP_SERVER}/orders`, { headers })
             setOrders(response.data)
         }
         catch (error){
@@ -96,9 +97,9 @@ export default function Test() {
             )
         }, 0),
         "Status": order.status,
-        // "Cliente": order.buyer.mail,
+        // "Cliente": order.buyer.email,
         "Ubicacion": order.shipping,
-        "Cliente": order.buyer && order.buyer.mail
+        "Cliente": order.buyer && order.buyer.email
 
     }))
     const data = arr

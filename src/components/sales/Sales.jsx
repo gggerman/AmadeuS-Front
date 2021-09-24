@@ -4,6 +4,7 @@ import { Typography, Container, CardMedia, makeStyles, Grid, Paper, Table, Table
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { numberWithCommas } from '../../utils';
 import NavSecondary from './../navsecondary/NavSecondary';
+import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +41,7 @@ export default function Sales(){
 
     const getOrders = async () => {      //me traigo las compras
         try{
-           const response = await axios.get(`${REACT_APP_SERVER}/orders`)
+           const response = await axios.get(`${REACT_APP_SERVER}/orders`, { headers })
             setOrders(response.data)
         }
         catch (error){
@@ -88,7 +89,7 @@ export default function Sales(){
                                                 }, 0))} 
                                 </TableCell>
                                  <TableCell> {order.status === 'approved' && order.status.toUpperCase()} </TableCell>
-                                 <TableCell>{ order.buyer && order.buyer.mail} </TableCell>
+                                 <TableCell>{ order.buyer && order.buyer.email} </TableCell>
                                  {/* <TableCell> {order.shipping && order.shipping}Buenos Aires </TableCell> */}
                             </TableRow>
                         ))
@@ -114,7 +115,7 @@ export default function Sales(){
                                                 }, 0))} 
                             </TableCell>
                             <TableCell> {order.status && order.status.toUpperCase()} </TableCell>
-                            <TableCell>{ order.buyer && order.buyer.mail} </TableCell>
+                            <TableCell>{ order.buyer && order.buyer.email} </TableCell>
                             <TableCell> {order.shipping}Buenos Aires </TableCell>
                             <MoreVertIcon/>
                            

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom';
 import {Modal, Fade, Box, Backdrop, Container, CardMedia, Typography, Divider, Button, CssBaseline, Checkbox, Radio,Table, TableHead, TableRow, TableCell, TableBody, InputLabel, TextField, FormControl} from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit'
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import AddLocationIcon from '@material-ui/icons/AddLocation';
 import PublicIcon from '@material-ui/icons/Public';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import LocalShippingIcon from '@material-ui/icons//LocalShipping';
 import { makeStyles } from '@material-ui/core';
-import {Link} from 'react-router-dom';
 import zonas from './zonas.png'
 import axios from 'axios';
 import { numberWithCommas } from '../../utils';
@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import addOrder from '../../redux/actions/addOrder';
 import { useAuth0 } from '@auth0/auth0-react';
 import NavSecondary from '../navsecondary/NavSecondary';
+import { headers } from "../../utils/GetHeaders"
 
 
 const { REACT_APP_SERVER } = process.env;
@@ -163,13 +164,28 @@ const useStyles = makeStyles((theme) => ({
       fontSize: 12,
       color: theme.palette.primary.dark
     },
+    edit: {
+      backgroundColor: 'rgb(0, 139, 183)',
+      color: theme.palette.primary.contrastText,
+      height: '3.5vh',
+      width: '14vh',
+      fontSize: '65%',
+      "&:hover": {
+        backgroundColor: 'rgb(0, 139, 183)'
+      },
+     
+    }
   }));         
   
   export default function Order() {
     const classes = useStyles()
-    const dispatch = useDispatch()
     const { user } = useAuth0();
-    // console.log('user', user)
+
+    const dispatch = useDispatch()
+    const userRedux = useSelector((state) => state.app.user);
+   
+
+ 
     const { id } = useParams()
     
     const [detail, setDetail] = useState({})
@@ -188,6 +204,8 @@ const useStyles = makeStyles((theme) => ({
       setAddress(!address)
     }
     
+    const [userDb, setUserDb] = useState({})
+    console.log(userDb, 'userDbshipping')
 
     const [map, setMap] = useState(false)
     const handleMap = () => setMap(!map)
@@ -204,13 +222,29 @@ const useStyles = makeStyles((theme) => ({
       number: "",
       floor: "",
       between: "",
-      zip: ""
+      zip: "",
+      cost: ""
     };
     const [input, setInput] = useState(initialInput);
     const [shippingAddress, setShippingAddress] = useState({})
     console.log('shippingAddress',shippingAddress)  
     //------ESTADO PARA AGREGAR DATOS DE ENVIO --------------//
     
+    const getUserById = async () => {
+      try{
+         const response = await axios.get(`${REACT_APP_SERVER}/users/${userRedux._id}`, { headers })
+          setUserDb(response.data)
+          setShippingAddress(response.data.shipping[0])
+      }
+      catch (error){
+          console.log(error)
+      }
+    }
+    
+    
+    useEffect(() => {
+      getUserById(userRedux?._id) 
+    }, [userRedux])
     
     const getProductById = async () => {
       try{
@@ -222,7 +256,6 @@ const useStyles = makeStyles((theme) => ({
       }
     }
     
-    
     useEffect(() => {
       getProductById(id) 
     }, [])
@@ -233,9 +266,11 @@ const useStyles = makeStyles((theme) => ({
     },[idOrder])
 
     console.log(shippingAddress)
+
     const handleCheckout = () => {
       
-      axios.post(`${REACT_APP_SERVER}/orders`, { products: detail.name, user: user, shipping: shippingAddress })
+      //en shipping pasarle o direccion nueva en caso de haber o la que ya tiene el usuario
+      axios.post(`${REACT_APP_SERVER}/orders`, { products: [{...detail, quantity: 1}], user: user, shipping: shippingAddress }, { headers })
       .then((response) => setIdOrder(response.data)) 
       .catch((err) => console.log(err))
       
@@ -270,15 +305,18 @@ const useStyles = makeStyles((theme) => ({
 
     const handleSave = (e) => {
       e.preventDefault()
-      setShippingAddress(input)
+      axios.post(`${REACT_APP_SERVER}/users/${userRedux._id}/shipping`, { shipping: input }, { headers })
+      .then(() => setShippingAddress(input))
+      .catch((err) => console.log(err) )
       //aca deberiamos guardar tambien los datos de envio en User en nuestra db
       setInput(initialInput)
     }
 
+    //habria que guardar el userDb.shipping en shippingAddress, y que si el usuario dedide modificar pise la direccion
     return (
       <div>
         <CssBaseline>
-        <NavSecondary style={{marginBottom: '5vh'}} />
+        <NavSecondary style={{marginBottom: '5vh'}} shipping = {shippingAddress} />
 
          <Container className={classes.container}>
           
@@ -320,7 +358,6 @@ const useStyles = makeStyles((theme) => ({
             
            <Container className={classes.root}>   
            
-              
                 <Typography component ="h1" variant = "body1">
                   <Radio 
                     checked={selectedValue === 'domicilio'}
@@ -333,11 +370,34 @@ const useStyles = makeStyles((theme) => ({
                 <InputLabel style ={{marginTop:'1.7vh'}}>Elige tu zona</InputLabel>
                  <ArrowRightAltIcon style={{marginTop:'1vh', marginLeft: '-3vh',color:'blue'}}/>
                 <TextField type="number"  defaultValue="1" inputProps={ {min :"1", max :"3"}} size= 'small'   onChange={handleShipping} style={{marginLeft: '-2vh'}} />
+                
                {
                  selectedValue === 'domicilio'&& 
-                    <Button variant = "contained" className={classes.address} endIcon={<AddLocationIcon />} onClick ={handleAddress}>
-                      Agregar
-                    </Button>
+                    <Box style={{marginTop:'-1vh'}}>
+                      { shippingAddress ?
+                         <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
+                         { `${shippingAddress.street} ${shippingAddress.number}, ${shippingAddress.state}` }
+                         </InputLabel>
+                         :
+                         <InputLabel  style={{fontSize:'0.95em', margin:'1vh'}} >
+                         { userDb.shipping[0] ? `${userDb.shipping[0].street} ${userDb.shipping[0].number}, ${userDb.shipping[0].state}` : null }
+                         </InputLabel>
+
+                      }
+
+                      {
+                        userDb.shipping[0] ?
+                        <Button variant = "contained" className={classes.edit}  endIcon={<EditIcon  />}onClick ={handleAddress} style={{marginLeft: '9vh'}}>
+                        Modificar
+                      </Button>
+                       : 
+                       <Button variant = "contained" className={classes.address}  endIcon={<AddLocationIcon  />}onClick ={handleAddress} style={{marginLeft: '9vh'}}>
+                        Agregar
+                      </Button>
+                      }
+                      
+                     
+                    </Box>
                }     
               
               
@@ -398,6 +458,7 @@ const useStyles = makeStyles((theme) => ({
             </form>
             </Box>
             : null
+            // al tocar guardar deberiamos guardarlo en base de datos y luego reflejarlo 
             //------------FORMULARIO PARA AGREGAR DATOS DE ENVIO------------------------------//
           }              
           

@@ -35,8 +35,9 @@ const useStyles = makeStyles((theme) => ({
 const ShoppingCart = () => {
   const classes = useStyles();
   const shoppingCartProducts = useSelector((state) => state.cart.cart);
-  const user = useSelector((state) => state.app.user);
   const { shoppingCart, setShoppingCart } = useContext(UserContext);
+
+  const user = useSelector((state) => state.app.user);
   const { cartQuantity, cartItems, userItems, cantItemsDbToCart } =
     shoppingCart;
   const dispatch = useDispatch();
@@ -63,7 +64,6 @@ const ShoppingCart = () => {
       dispatch(linkUserCart(obj));
     }
   };
-
   useEffect(() => {
     if (user) {
       console.log("existe");
@@ -150,6 +150,7 @@ const ShoppingCart = () => {
           disabled={shoppingCartProducts.length === 0}
           component={Link}
           to={`/ordercart`}
+          style={{ marginTop: "2vh" }}
         >
           Comprar
         </Button>

@@ -10,7 +10,7 @@ import Order from "../order/Order";
 import OrderDetail from "../orderdetail/OrderDetail";
 import "../../App.css";
 import Stock from "../stock/Stock";
-import AddUser from "../adduser/AddUser";
+import EditUserInfo from "../edituserinfo/EditUserInfo";
 import UserManagement from "../usermanagement/UserManagement";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import OrderCart from "../ordercart/OrderCart";
@@ -22,13 +22,14 @@ import "../../App.css";
 import Detail from "../detail/Detail";
 import Test from '../sales/Test';
 import { useDispatch, useSelector } from "react-redux";
-import { linkUserCart } from "../../redux/actions/linkUserCart";
-
+import GetHeaders from "../../utils/GetHeaders"
 
 // import Account from "../account/Account";
 // import Profile from "../account/Profile";
 import { useHistory } from "react-router";
 import UserProfile from "../userprofile/UserProfile";
+import ShoppingHistory from "../shoppinghistory/ShoppingHistory";
+import Favorites from '../favorites/Favorites';
 
 const AppRouter = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -64,6 +65,7 @@ const AppRouter = () => {
     <>
       <div className="app">
         <ThemeProvider theme={theme}>
+        <Route path="/" component={GetHeaders} />
           <Switch>
             {/* <UserContext.Provider value={{quantityCart, setQuantityCart}}> */}
             <UserContext.Provider value={{ shoppingCart, setShoppingCart }}>
@@ -77,18 +79,20 @@ const AppRouter = () => {
             <Route path="/addcategory" component={adminAuth(AddCategory)} />
             <Route path="/addproduct" component={adminAuth(AddProduct)} />
             <Route path="/editproduct/:id" component={adminAuth(AddProduct)} />
-            <Route path='/cart' component={ ShoppingCart } />        
+            <Route path='/cart' component={ ShoppingCart } />
             <Route path="/order/:id" component={withAuthenticationRequired(Order)} />
             <Route path ="/ordercart" component = {withAuthenticationRequired(OrderCart)} />
             <Route path="/orderdetail" component = {OrderDetail} />
             <Route path="/usermanagement" component={adminAuth(UserManagement)} />
-            <Route path="/adduser" component={AddUser} />
+            <Route path="/edituserinfo" component={EditUserInfo} />
             <Route path ="/sales" component={adminAuth(Sales)} />
             <Route path ="/test" component={Test} />
+            <Route path ="/shoppinghistory" component={ShoppingHistory} />
             {/* <Route path ="/account" component={Account} />
             <Route path ="/profile" component={Profile} /> */}
             <Route path="/userprofile" component={withAuthenticationRequired(UserProfile)} />
-
+            <Route path ="/favorites" component={Favorites} />
+            
 
             </UserContext.Provider>
             <Redirect to="/" />
