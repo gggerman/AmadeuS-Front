@@ -209,7 +209,7 @@ export default function Nav() {
       onClose={handleMenuClose}
     >
       <LoginLogout />
-      {adminAuth() && (
+      {userDb && userDb.isAdmin && (
         <Link to="/adminpanel" className={classes.link}>
           <MenuItem>Administrar</MenuItem>
         </Link>

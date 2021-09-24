@@ -17,6 +17,7 @@ import Edit from '@material-ui/core/Icon';
 import axios from 'axios';
 import {Add} from './tableIcons'
 import SaveRounded from '@material-ui/icons/SaveRounded'
+import { headers } from '../../utils/GetHeaders'
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',        
       },
       paper: {
-        backgroundColor: '#003E1C',
+        backgroundColor: '#808080',
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
@@ -77,7 +78,7 @@ export const AddCategory = ( { history} ) => {
      title: 'Categoría',
      field: 'name',
      cellStyle: {
-              backgroundColor: '#00C853',
+              backgroundColor: '#78C498',
               color: '#000',
               alignItems: 'center'
             },
@@ -143,7 +144,7 @@ export const AddCategory = ( { history} ) => {
                       setOpenError(true)
                       reject()
                     } else {        
-                      axios.post(`${REACT_APP_SERVER}/categories`, {name} )
+                      axios.post(`${REACT_APP_SERVER}/categories`, {name}, {headers} )
                         .then(response=>{                          
                           const updatedRows= [...data, newRow]
                           setData(updatedRows);
@@ -161,7 +162,7 @@ export const AddCategory = ( { history} ) => {
                   }                            
               }),
               onRowDelete: selectedRow => new Promise( ( resolve, reject) => {
-                axios.delete( `${REACT_APP_SERVER}/categories/${selectedRow._id}` )
+                axios.delete( `${REACT_APP_SERVER}/categories/${selectedRow._id}`, {headers} )
                 .then(response =>{
                   setData(data.filter( (elem) => elem._id !== selectedRow._id ))
                   resolve()
@@ -173,7 +174,7 @@ export const AddCategory = ( { history} ) => {
               }),
               onRowUpdate: ( updatedRow, oldRow ) => new Promise( ( resolve, reject) => {
                 const {name} = updatedRow
-                axios.put( `${REACT_APP_SERVER}/categories/${oldRow._id}`, { name } )
+                axios.put( `${REACT_APP_SERVER}/categories/${oldRow._id}`, { name }, {headers} )
                 .then( response => {
                   let newData = data                
                   newData.map( (elem) => {
@@ -194,7 +195,7 @@ export const AddCategory = ( { history} ) => {
             options={{
               actionsColumnIndex: -1, addRowPosition: 'first',              
               rowStyle: {
-                backgroundColor: '#00C853',
+                backgroundColor: '#78C498',
                 fontSize: '1.5rem',                
               },              
               headerStyle: {
@@ -247,7 +248,8 @@ export const AddCategory = ( { history} ) => {
               >
                 <Fade in={open}>
                     <div className={classes.paper}>
-                        <h2 id="transition-modal-title">Creacion exitosa</h2>            
+                        <h2 id="transition-modal-title">Creacion exitosa</h2>   
+                        <p id="transition-modal-description">Click para cerrar</p>         
                     </div>
                 </Fade>
             </Modal>

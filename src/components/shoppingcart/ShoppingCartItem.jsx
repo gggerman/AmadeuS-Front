@@ -92,7 +92,7 @@ const ShoppingCartItem = ({
           style={{
             display: "flex",
             alignItems: "center",
-            background: "#F9F3F3",
+            background: "#E5DFDF",
           }}
         >
           <Box
@@ -132,7 +132,7 @@ const ShoppingCartItem = ({
                 {name}
               </Typography>
               <Box style={{ display: "flex", alignItems: "center" }}>
-                <Box border={1} color="#B7B9C0" width="max-content" mr={8}>
+                <Box style={{border: '2px solid #B7B9C0', borderRadius:'20px', color:'black', width: 'max-content', marginRight: '90px' }}>
                   <IconButton
                     aria-label="remove"
                     onClick={decrement}
@@ -155,7 +155,7 @@ const ShoppingCartItem = ({
                   </Typography>
                 </Box>
                 <Box marginRight={7} ml={7} style={{ width: "max-content" }}>
-                  <Typography variant="body1">
+                  <Typography variant="body1" style={{fontWeight: 'bold'}}>
                     $ {numberWithCommas(totalValue * counter)}
                   </Typography>
                 </Box>
