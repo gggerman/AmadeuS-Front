@@ -1,28 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import {makeStyles, CssBaseline, AppBar, Container, Typography, Divider, Box, CardMedia, Table, TableHead, TableRow, TableCell, TableBody, InputLabel} from '@material-ui/core';
 import MailIcon from "@material-ui/icons/Mail";
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { numberWithCommas } from '../../utils';
 import NavSecondary from '../navsecondary/NavSecondary';
+import { headers } from "../../utils/GetHeaders"
 import { InfoRounded } from '@material-ui/icons';
 import Order from '../order/Order';
+import cleanCart from "../../redux/actions/cleanCart";
+import { linkUserCart } from "../../redux/actions/linkUserCart";
+import { UserContext } from '../shoppingcart/UserContext';
+
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
-  rootProduct: {      
+  rootProduct: {
     display: 'flex',
-    flexDirection:'row',
-    width: '100%', 
-    height:'12vh',  
-    padding:'2vh', 
-    margin:'2vh',
+    flexDirection: 'row',
+    width: '100%',
+    height: '12vh',
+    padding: '2vh',
+    margin: '2vh',
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
     borderRadius: '3%',
     backgroundColor: 'white',
-    
+
 
   },
   media: {
@@ -40,8 +45,8 @@ const useStyles = makeStyles((theme) => ({
   img2: {
     width: '15%',
     backgroundSize: 'contain',
-    
-},
+
+  },
   container: {
     height: "100vh",
     width: "100%",
@@ -61,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   containerDer: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent:'space-around',
+    justifyContent: 'space-around',
     alignItems: 'center',
     width: "60%",
     height: '80%',
@@ -84,7 +89,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderDetail() {
   const classes = useStyles();
+
   const order = useSelector((state) => state.app.order); //me traigo el orderId generado en Order
+  const user = useSelector((state) => state.app.user);
+
   const [infoOrder, setInfoOrder] = useState({});
   const [orderUpdated, setOrderUpdated] = useState({})
  
@@ -92,47 +100,32 @@ export default function OrderDetail() {
 
   console.log(order);
   console.log(orderUpdated)
+
+  
+  const dispatch = useDispatch()
+  const { shoppingCart, setShoppingCart } = useContext(UserContext);
+  const { cartQuantity } = shoppingCart;
+
   
   const query = new URLSearchParams(useLocation().search);
-
- 
   const status = query.get("status");
-//status de MP:  hay que modificar el status de nuestra order en nuestra base de datos
 
-// const getOrderById = async () => {      //me traigo la info de la compra con el id que guarde en Redux
-//   try{
-//      const response = await axios.get(`${REACT_APP_SERVER}/orders/${orderId}`)
-//       setInfoOrder(response.data)
-//   }
-//   catch (error){
-//       console.log(error)
-//   }
-// }
-
-// useEffect(() => {
-//     // me traigo con redux el id de Order addOrder
-    
-//     getOrderById(orderId)
-// }, [])
   useEffect(() => {
     axios.put(`${REACT_APP_SERVER}/orders/stock/${order?._id}`, { status: status })
-    .then(response => axios.post(`${REACT_APP_SERVER}/users/${order.buyer?._id}/purchaseEmail`, response.data))
+    .then(response => axios.post(`${REACT_APP_SERVER}/users/${order.buyer?._id}/purchaseEmail`, response.data, {headers}))
     .catch(error => console.log(error))
+
+    if(status==='approved'){
+      let obj = {
+        user,
+        cart: [],
+      };
+      // user?.cart = [];
+      dispatch(linkUserCart(obj));
+      dispatch(cleanCart())
+
   }, [status])
 
-//--------------ACTUALIZAMOS LA ORDEN EN NUESTRA DB CON EL STATUS QUE DEVUELVE MP--------------//
-// useEffect(() => {
-//   axios.put(`${REACT_APP_SERVER}/orders/${orderId}`, {status: status}) 
-//   .then((response) => setOrderUpdated(response.data))
-//   .catch((err) => console.log(err))
-// }, [status])
-
-//aca dispara el mail de notificacion al usuario  
-// useEffect(() => {
-  
-//    axios.post(`${REACT_APP_SERVER}/users/${infoOrder.buyer?._id}/purchaseEmail`, { orderUpdated } ) 
-  
-// },[orderUpdated])
  
 
     return (
@@ -172,9 +165,6 @@ export default function OrderDetail() {
 
           </Container>  
           
-
-
-
           :
           null
        
@@ -204,7 +194,7 @@ export default function OrderDetail() {
                 </Container> 
                 </Link>
                 )
-              }) 
+              })
 
         }
               <Container>

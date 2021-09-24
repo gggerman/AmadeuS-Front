@@ -19,7 +19,8 @@ export const SORT_BY_PRICE_FAVORITES = "SORT_BY_PRICE_FAVORITES";
 export const FILTER_BY_CATEGORY_FAVORITES = "SORT_BY_PRICE_FAVORITES";
 export const SAVE_USER = "SAVE_USER";
 export const CLEAN_USER = "CLEAN_USER";
-
+export const CLEAN_USER_CART = "CLEAN_USER_CART";
+export const CLEAR_APP = "CLEAR_APP";
 
 //shoppingCartReducer
 export const LINK_USER_CART = 'LINK_USER_CART'

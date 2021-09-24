@@ -10,6 +10,8 @@ import {Button} from "@material-ui/core";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { numberWithCommas } from '../../utils';
+import NavSecondary from './../navsecondary/NavSecondary';
+import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
 
 
@@ -71,7 +73,7 @@ export default function Sales() {
 
     const getOrders = async () => {      //me traigo las compras
         try{
-           const response = await axios.get(`${REACT_APP_SERVER}/orders`)
+           const response = await axios.get(`${REACT_APP_SERVER}/orders`, { headers })
             setOrders(response.data)
         }
         catch (error){

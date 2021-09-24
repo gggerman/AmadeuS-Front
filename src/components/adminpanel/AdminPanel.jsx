@@ -79,7 +79,7 @@ export default function AdminPanel() {
         <Link to="/addcategory" className={classes.link}>
           <Card className={classes.root}>
             <Typography component="h1" variant="h5">
-              Crear Nueva Categoria
+              Crear Nueva Categoría
             </Typography>
           </Card>
         </Link>

@@ -25,8 +25,10 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../shoppingcart/UserContext";
 import LoginLogout from "../account/LoginLogout";
 import logo from "./logo.jpg";
+import axios from 'axios';
+import { headers } from "../../utils/GetHeaders"
+import { getUserById, saveUser } from "../../redux/actions/users";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -124,6 +126,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Nav() {
   const classes = useStyles();
   const userRedux = useSelector(({ app }) => app.user);
+  const shoppingCartProducts = useSelector((state) => state.cart.cart);
 
   const [userDb, setUserDb] = useState();
   console.log(userDb);
@@ -135,10 +138,10 @@ export default function Nav() {
   const users = useSelector(({ app }) => app.usersLoaded);
   const { isAuthenticated, user, isLoading } = useAuth0();
   // const userDB = useSelector((state) => state.app.user);
-  console.log("usuario DB", userDb);
+  // console.log("usuario DB", userDb);
   const dispatch = useDispatch();
   // console.log("nav", isAuthenticated);
-  console.log("auth0 user", user);
+  // console.log("auth0 user", user);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -286,14 +289,14 @@ export default function Nav() {
                 </Container>
               }
         <div className={classes.sectionDesktop}>
-          {user && (
+          {userDb && (
             <Container>
               <Typography
                 component="p"
                 variant="body2"
                 className={classes.welcome}
               >
-                Bienvenido {userDb?.name}
+                Bienvenido {userDb.name}
               </Typography>
             </Container>
           )}
@@ -303,7 +306,7 @@ export default function Nav() {
             component={Link}
             to="/cart"
           >
-            <Badge badgeContent={cartQuantity} color="secondary">
+            <Badge badgeContent={shoppingCartProducts?.reduce((acc, item) => (acc+item.quantity), 0)} color="secondary">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>

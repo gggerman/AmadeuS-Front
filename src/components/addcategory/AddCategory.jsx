@@ -101,7 +101,7 @@ export const AddCategory = ( { history} ) => {
             height='90vh'
             >
             <Typography  variant='h3' align='center' color='primary'>
-                Crear nueva categoria
+                Crear nueva categoría
             </Typography>
             <br />
 

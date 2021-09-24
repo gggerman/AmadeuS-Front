@@ -7,6 +7,7 @@ import { getAllUsers } from '../../redux/actions/users';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 import { Grid, Container, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, Modal, Snackbar } from '@material-ui/core';
+import { headers } from "../../utils/GetHeaders"
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -50,12 +51,12 @@ export default function UserManagement(){
 
     async function handlePrivileges(user){
         user.isAdmin = !user.isAdmin;
-        await axios.put(`${REACT_APP_SERVER}/users/${user._id}`, user);
+        await axios.put(`${REACT_APP_SERVER}/users/${user._id}`, user, { headers });
         dispatch(getAllUsers());
     }
 
     async function handleDelete(id){
-        await axios.delete(`${REACT_APP_SERVER}/users/${id}`);
+        await axios.delete(`${REACT_APP_SERVER}/users/${id}`, { headers });
         dispatch(getAllUsers());
         // setOpenModal(false);
         setOpen(true);
@@ -91,7 +92,7 @@ export default function UserManagement(){
                             <TableRow>
                                 <TableCell className={classes.tableCell} style={{ backgroundColor: '#000000', color: '#ffffff' }}>ID</TableCell>
                                 <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Usuario</TableCell>
-                                <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>E-mail</TableCell>
+                                <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>E-email</TableCell>
                                 <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Privilegios</TableCell>
                                 <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Eliminar</TableCell>
                             </TableRow>
