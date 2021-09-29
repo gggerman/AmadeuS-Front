@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "center",
-    textAlign: "center",
+    alignItems: "center",
     width: 200,
     height: 200,
     margin: "2vh",
@@ -59,16 +59,41 @@ export default function AdminPanel() {
   let { path, url } = useRouteMatch();
 
   return (
-    <div className={classes.body}>
+    <Container 
+    // className={classes.body}
+    >
       <NavSecondary />
+          <Typography variant='h4' align="center" style={{  marginTop: '14vh' }}>
+          Aquí puedes gestionar tu negocio
+        </Typography>
       <Grid
         container
         direction="row"
         alignItems="center"
         justifyContent="center"
         spacing={0}
-        style={{ minHeight: "65vh", marginTop: '10vh' }}
+        style={{ minHeight: "65vh", marginTop: '4vh' }}
       >
+  
+        <Link to="/addcategory" className={classes.link}>
+          <Card className={classes.root}>
+            <Typography component="h1" variant="h5">
+              {/* Crear Nueva  */}
+              Categorías
+            </Typography>
+          </Card>
+        </Link>
+    
+        <Link to="/addproduct" className={classes.link}>
+          <Card className={classes.root}>
+            <Typography component="h1" variant="h5">
+              {/* Cargar  */}
+              Productos
+            </Typography>
+          </Card>
+        </Link>
+
+          
         <Link to="/stock" className={classes.link}>
           <Card className={classes.root}>
             <Typography component="h1" variant="h5">
@@ -76,40 +101,33 @@ export default function AdminPanel() {
             </Typography>
           </Card>
         </Link>
-        <Link to="/addcategory" className={classes.link}>
+
+                <Link to="/sales" className={classes.link}>
           <Card className={classes.root}>
             <Typography component="h1" variant="h5">
-              Crear Nueva Categoría
+              {/* Historial de  */}
+              Ventas
             </Typography>
           </Card>
         </Link>
-        <Link to="/addproduct" className={classes.link}>
-          <Card className={classes.root}>
-            <Typography component="h1" variant="h5">
-              Cargar Producto
-            </Typography>
-          </Card>
-        </Link>
+  
         <Link to="/usermanagement" className={classes.link}>
           <Card className={classes.root}>
-            <Typography component="h1" variant='h5'>Administrar Usuarios</Typography>
+            <Typography component="h1" variant='h5'>
+              {/* Administrar  */}
+              Usuarios
+              </Typography>
           </Card>
         </Link>
-        <Link to="/sales" className={classes.link}>
-          <Card className={classes.root}>
-            <Typography component="h1" variant="h5">
-              Historial de Ventas
-            </Typography>
-          </Card>
-        </Link>
+
       </Grid>
-      <Container className={classes.backhome}>
+      {/* <Container className={classes.backhome}>
         <Link to="/" className={classes.link}>
           <Button variant="contained" className={classes.btn}>
             Home
           </Button>
         </Link>
-      </Container>
-    </div>
+      </Container> */}
+    </Container>
   );
 }
