@@ -228,7 +228,7 @@ function Stock() {
             </Grid>
             {currentProducts.map((product) => {
               return (
-                <Grid>
+                <Grid container justifyContent="center">
                   <Card className={classes.root}>
                     <div style={{ display: "flex" }}>
                       <div style={{ height: "220px", width: "240px" }}>

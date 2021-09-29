@@ -17,6 +17,7 @@ import axios from "axios";
 import addOrder from "./../../redux/actions/addOrder";
 import logo from "./logo.jpg";
 import { linkUserCart } from "../../redux/actions/linkUserCart";
+import Nav from '../nav/Nav';
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -93,7 +94,7 @@ const ShoppingCart = () => {
 
   return (
     <div>
-      <CssBaseline />
+      {/* <CssBaseline />
       <AppBar
         style={{
           backgroundColor: "rgb(0, 23, 20)",
@@ -104,7 +105,8 @@ const ShoppingCart = () => {
         <Link to="/" style={{ margin: "auto" }}>
           <img src={logo} className={classes.icon} />
         </Link>
-      </AppBar>
+      </AppBar> */}
+      <Nav />
       <Container
         maxWidth="xl"
         style={{
@@ -112,7 +114,7 @@ const ShoppingCart = () => {
           height: "150vh",
           border: "1px solid #E7E4E4",
         }}
-      >
+      > 
         <div className={classes.root}>
           <Box flexGrow={1} marginLeft={5}>
             <Typography variant="h2">carrito</Typography>
