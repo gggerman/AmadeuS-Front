@@ -16,7 +16,8 @@ import axios from "axios";
 import addOrder from "./../../redux/actions/addOrder";
 import logo from "./logo.jpg";
 import { linkUserCart } from "../../redux/actions/linkUserCart";
-import NavSecondary from './../navsecondary/NavSecondary';
+import NavSecondary from "../navsecondary/NavSecondary";
+
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -24,20 +25,21 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: 'space-between',
-    [theme.breakpoints.down('md')]:{
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'space-evenly'
     },
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('sm')]: {
       justifyContent: 'center',
       alignItems: "center",
       margin: theme.spacing(2)
     },
   },
   title: {
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
   },
+
     containerItems: {
     width: '100%',
     backgroundColor: "gray",
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #E7E4E4",
     display: 'flex',
     flexDirection: 'column',
-    [theme.breakpoints.down('lg')]:{
+    [theme.breakpoints.down('lg')]: {
       height: '100%'
     }
   },
@@ -64,12 +66,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "2vh",
     width: '10vw',
     marginBottom: 20,
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
   },
   btnVaciar: {
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('sm')]: {
       width: '100vw'
     }
   }
@@ -145,12 +147,14 @@ const ShoppingCart = () => {
       <Container className={classes.containerItems}        
       >
       <NavSecondary />
-   
+
         <div className={classes.root}>
+
           <Box marginLeft={5} className={classes.title}>
             <Typography variant="h2">carrito</Typography>
           </Box>
-          <Box className={classes.btnVaciar} style={{marginRight: 80}}>
+
+          <Box className={classes.btnVaciar} style={{ marginRight: 80 }}>
             <Button
               variant="contained"
               color="primary"
@@ -160,7 +164,9 @@ const ShoppingCart = () => {
               vaciar Carrito
             </Button>
           </Box>
+
         </div>
+        
         {shoppingCartProducts?.map((elem) => (
           <ShoppingCartItem key={elem._id} {...elem} />
         ))}
@@ -187,6 +193,7 @@ const ShoppingCart = () => {
         >
           Comprar
         </Button>
+
       </Container>
     </div>
   );
