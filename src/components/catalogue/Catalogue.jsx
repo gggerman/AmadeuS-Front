@@ -228,8 +228,8 @@ export default function Catalogue() {
                 Precio
               </InputLabel>
               <Select value={select.price} onChange={(e) => handleSortPrice(e)}>
-                <MenuItem value="Lower to Higher">Lower to Higher</MenuItem>
-                <MenuItem value="Higher to Lower">Higher to Lower</MenuItem>
+                <MenuItem value="Lower to Higher">Menor a Mayor</MenuItem>
+                <MenuItem value="Higher to Lower">Mayor a Menor</MenuItem>
               </Select>
             </FormControl>
           </Grid>
