@@ -12,7 +12,7 @@ export default function Slideshow() {
   const slideshowInterval = useRef(null)
 
   const next = () => {
-    if (slideshow.current.children.length > 0) {
+    if (slideshow?.current?.children?.length > 0) {
       const firstElement = slideshow.current.children[0];
 
       slideshow.current.style.transition = `300ms ease-out all`;

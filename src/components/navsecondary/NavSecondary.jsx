@@ -48,7 +48,7 @@ export default function NavSecondary({shipping, success}){
             <Box style={{marginLeft:'30%', width:'90%'}}>
               <Typography style={{fontSize:'1.1em'}} className={classes.text}>
 
-                Gracias por tu compra! Te queremos mucho! por favor vuelvas prontos
+                Gracias por tu compra! 
               </Typography>
             </Box>
 

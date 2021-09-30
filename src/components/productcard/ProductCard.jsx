@@ -41,8 +41,8 @@ const REACT_APP_SERVER = process.env;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: 425,
-    width: 270, // Para que las cards tengan el mismo ancho sin importar el tamaño de la imagen
+    height: '65vh',
+    width: '40vh', // Para que las cards tengan el mismo ancho sin importar el tamaño de la imagen
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
 
     "&:hover": {
@@ -50,7 +50,12 @@ const useStyles = makeStyles((theme) => ({
     },
     // marginRight: "2vh",
     // marginBottom:"2vh"
-    margin: "3vh",
+    margin: "2vh",
+    [theme.breakpoints.down('sm')]: {
+      width: '50vh',
+      height: '75vh'
+    },
+  
   },
   media: {
     width: "100%",
@@ -113,12 +118,9 @@ const useStyles = makeStyles((theme) => ({
     width: "60vh",
   },
   shareIcon: {
-    width: "5vh",
-    height: "5vh",
-    "&:hover": {
-      width: "5.2vh",
-      height: "5.2vh",
-    },
+    width: "4vh",
+    height: "4vh",
+    
   },
 }));
 
@@ -194,7 +196,7 @@ export default function ProductCard(product) {
             $ {numberWithCommas(price)}
           </Typography>
           <Typography variant="body2" component="h3">
-            {name.length > 29 ? name.substring(0, 30) + "..." : name}
+            {name.substring(0, 25) + "..."}
           </Typography>
           {stock <= 0 ? (
             <Typography variant="body2" color="error" component="p">
@@ -213,9 +215,9 @@ export default function ProductCard(product) {
         <Box
           style={{
             display: "flex",
-            justifyContent: "space-around",
-            width: "18vh",
-            marginTop: "-6vh",
+            justifyContent: "space-evenly",
+            width: "15vh",
+            marginTop: "-4.5vh",
             marginLeft: "25vh",
           }}
         >

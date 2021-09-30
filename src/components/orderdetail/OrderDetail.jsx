@@ -133,120 +133,144 @@ export default function OrderDetail() {
          <CssBaseline>
          <NavSecondary shipping ={order?.shipping} success={orderUpdated.status} />
 
-        <Container className={classes.containerDer} >
-        {
-          status === "approved" ? 
+        
 
-          <Container style={{marginBottom:'13vh', marginTop: '3vh'}} >
-            <Typography component ="h2" variant= "body" >
-              Tu compra fue un exito!
-            </Typography>
-            <InputLabel component = 'h3'>
-                  Entre 24 y 48hs va estar arribando a tu domicilio: 
-                  {/* <ArrowRightAltIcon style={{marginBottom: '-1vh', color: 'blue', marginLeft: '1vh'}} /> */}
+          {
+            status === "approved" && 
+            <Container className={classes.containerDer} >
+
+              <Container style={{marginBottom:'13vh', marginTop: '3vh'}} >
+              <Typography component ="h2" variant= "body" >
+                Tu compra fue un exito!
+                </Typography>
+                <InputLabel component = 'h3'>
+                      Entre 24 y 48hs va estar arribando a tu domicilio: 
+                      {/* <ArrowRightAltIcon style={{marginBottom: '-1vh', color: 'blue', marginLeft: '1vh'}} /> */}
+                      <Box style={{display: 'flex' , justifyContent:'row'}}>
+                      <LocationOnIcon className={classes.text} /> 
+                      <Typography className={classes.text} style={{fontSize:'0.8em', marginTop: '1vh',marginLeft: '1vh'}}>
+                        {order?.shipping?.street && `${order?.shipping?.street} ${order?.shipping?.number}, ${order?.shipping?.state}`}
+                      </Typography>
+                      </Box>
+                </InputLabel>
+                <InputLabel component = 'h3'>
+                  Te enviamos un mail con toda la informacion del envio a: 
+                  
                   <Box style={{display: 'flex' , justifyContent:'row'}}>
-                  <LocationOnIcon className={classes.text} /> 
+                  <MailIcon className={classes.text} /> 
                   <Typography className={classes.text} style={{fontSize:'0.8em', marginTop: '1vh',marginLeft: '1vh'}}>
-                    {order?.shipping?.street && `${order?.shipping?.street} ${order?.shipping?.number}, ${order?.shipping?.state}`}
+                    {order?.buyer.email}
                   </Typography>
                   </Box>
-             </InputLabel>
-             <InputLabel component = 'h3'>
-               Te enviamos un mail con toda la informacion del envio a: 
-               
-               <Box style={{display: 'flex' , justifyContent:'row'}}>
-               <MailIcon className={classes.text} /> 
-               <Typography className={classes.text} style={{fontSize:'0.8em', marginTop: '1vh',marginLeft: '1vh'}}>
-                 {order?.buyer.email}
-               </Typography>
-               </Box>
-              </InputLabel>
+                  </InputLabel>
+              </Container>  
+              <Container style={{marginTop:'-15vh'}}>
+              {    
+                order?.products &&
 
+                  order?.products?.map((product) => {
+                    return (
+                  
+                    <Link to={`/detail/${product._id}`}  className ={classes.link}> 
+                    <Container className={classes.rootProduct}>
+                      <Box >
+                        <Typography variant="p" color ="primary">
+                            {product.name}
+                        </Typography>
+                      </Box>
+                      <CardMedia style={{display:'flex', justifyContent:'flex-end'}} 
+                        image={product.image} 
+                        className = {classes.img2}>
+                    
+                      </CardMedia>
 
-          </Container>  
-          
-          :
-          null
-       
-        }
-       
-            <Container style={{marginTop:'-15vh'}}>
-  
-        {    
-             order?.products &&
+                    </Container> 
+                    </Link>
+                    )
+                  })
 
-              order?.products?.map((product) => {
-                return (
-               
-                <Link to={`/detail/${product._id}`}  className ={classes.link}> 
-                <Container className={classes.rootProduct}>
-                  <Box >
-                    <Typography variant="p" color ="primary">
-                        {product.name}
-                    </Typography>
-                  </Box>
-                  <CardMedia style={{display:'flex', justifyContent:'flex-end'}} 
-                    image={`${REACT_APP_SERVER}/products/images/${product.image}`} 
-                    className = {classes.img2}>
-                
-                  </CardMedia>
+              }
+                <Container>
+                  <Table>
 
-                </Container> 
-                </Link>
-                )
-              })
-
-        }
-              <Container>
-              <Table>
-
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Envio
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Total Compra
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                   <TableRow>
-                    <TableCell>
-                          <Typography variant ="body1">
-                              $ {order?.cost}
-                          </Typography>
-                        </TableCell>
-
+                  <TableHead>
+                    <TableRow>
                       <TableCell>
-                        
-                          {   order?.products && 
+                        <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Envio
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant ="overline" style={{textDecoration: 'underline', fontSize: '1.1em'}}>Total Compra
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>
                             <Typography variant ="body1">
-                            $ {numberWithCommas( order?.products?.reduce((acc, item) => {
-                              const quant = order.quantity ? order.quantity : item.quantity
-                              return (
-                              acc += item.price * quant //aca hay que agregarle * quantity
-                              )
-                            }, 0
-                            ) + order?.cost )
-                            }
-                              </Typography>
-                         
-                          } 
-                        
-                      </TableCell> 
-                      
-                   </TableRow>
-                </TableBody>             
-                </Table>
-              </Container>
+                                $ {order?.cost}
+                            </Typography>
+                          </TableCell>
 
-              </Container>
+                        <TableCell>
+                          
+                            {   order?.products && 
+                              <Typography variant ="body1">
+                              $ {numberWithCommas( order?.products?.reduce((acc, item) => {
+                                const quant = order.quantity ? order.quantity : item.quantity
+                                return (
+                                acc += item.price * quant //aca hay que agregarle * quantity
+                                )
+                              }, 0
+                              ) + order?.cost )
+                              }
+                                </Typography>
+                          
+                            } 
+                          
+                        </TableCell> 
+                        
+                    </TableRow>
+                  </TableBody>             
+                  </Table>
+                </Container>
               
 
-        </Container>
+              </Container>
+            </Container> // englobador---------------------------------------------------------
+          }
+
+          {
+            status !== "approved" && 
+            <Container className={classes.containerDer}> 
+                <Typography component ="h2" variant= "body" >
+                Algo paso con tu pago, por favor vuelve a intentar
+                </Typography>
+                {
+                  order?.products.lenght === 1 ? 
+                  //link a order/:id de un solo producto, o sea el id del product
+                  <Link to={`/order/${order?.products[0]?._id}`}  className ={classes.link}>  
+                  <Container className={classes.rootProduct}>
+                    hola
+                   </Container>
+                  </Link>
+                  :
+                  null //link a ordercart
+                }
+                
+
+            </Container>
+          }
+
+            
+       
+  
+              
+
+           
+
+       
 
 
       </CssBaseline>

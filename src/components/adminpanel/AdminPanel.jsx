@@ -2,12 +2,16 @@ import React from "react";
 import {
   Grid,
   Card,
+  CardActions,
+  Box,
   Typography,
   Button,
   Container,
+  Paper
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useRouteMatch } from "react-router-dom";
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import NavSecondary from "../navsecondary/NavSecondary";
 
 // idea: cards de cada funcionalidad
@@ -20,13 +24,13 @@ const useStyles = makeStyles((theme) => ({
   body: {
     margin: "0",
     height: "100%",
-    overflow: "hidden",
+    backgroundColor: 'RGB(238, 238, 238)'
   },
   root: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-    width: 200,
+    textAlign: "center",
+    width: 180,
     height: 200,
     margin: "2vh",
     padding: "1vh",
@@ -59,75 +63,82 @@ export default function AdminPanel() {
   let { path, url } = useRouteMatch();
 
   return (
-    <Container 
-    // className={classes.body}
-    >
+    <Container className={classes.body}>
       <NavSecondary />
-          <Typography variant='h4' align="center" style={{  marginTop: '14vh' }}>
-          Aquí puedes gestionar tu negocio
-        </Typography>
+
       <Grid
         container
         direction="row"
         alignItems="center"
         justifyContent="center"
         spacing={0}
-        style={{ minHeight: "65vh", marginTop: '4vh' }}
+        style={{ minHeight: "65vh", marginTop: '5vh' }}
       >
-  
-        <Link to="/addcategory" className={classes.link}>
-          <Card className={classes.root}>
-            <Typography component="h1" variant="h5">
-              {/* Crear Nueva  */}
-              Categorías
-            </Typography>
-          </Card>
-        </Link>
-    
-        <Link to="/addproduct" className={classes.link}>
-          <Card className={classes.root}>
-            <Typography component="h1" variant="h5">
-              {/* Cargar  */}
-              Productos
-            </Typography>
-          </Card>
-        </Link>
-
-          
+        <Paper elevation={4} style={{margin:'1vh'}}>
         <Link to="/stock" className={classes.link}>
           <Card className={classes.root}>
-            <Typography component="h1" variant="h5">
+            <Typography variant="h6">
               Stock
             </Typography>
           </Card>
         </Link>
+        </Paper>
 
-                <Link to="/sales" className={classes.link}>
+        <Paper elevation={4} style={{margin:'1vh'}}>
+        <Link to="/addcategory" className={classes.link}>
           <Card className={classes.root}>
-            <Typography component="h1" variant="h5">
-              {/* Historial de  */}
-              Ventas
+            <Typography variant="h6">
+              Crear Nueva Categoría
             </Typography>
           </Card>
         </Link>
-  
-        <Link to="/usermanagement" className={classes.link}>
+        </Paper>
+
+        <Paper elevation={4} style={{margin:'1vh'}}>
+        <Link to="/addproduct" className={classes.link}>
           <Card className={classes.root}>
-            <Typography component="h1" variant='h5'>
-              {/* Administrar  */}
-              Usuarios
-              </Typography>
+            <Typography variant="h6">
+              Cargar Producto
+            </Typography>
+            <Box>
+              <AddAPhotoIcon />
+            </Box>
           </Card>
         </Link>
+        </Paper>
+
+        <Paper elevation={4} style={{margin:'1vh'}}>
+        <Link to="/usermanagement" className={classes.link}>
+          <Card className={classes.root}>
+            <Typography variant='h6'>Administrar Usuarios</Typography>
+          </Card>
+        </Link>
+        </Paper>
+
+        <Paper elevation={4} style={{margin:'1vh'}}>
+        <Link to="/sales" className={classes.link}>
+          <Card className={classes.root}>
+            <Typography variant="h6">
+              Historial de Ventas
+            </Typography>
+          </Card>
+        </Link>
+        </Paper>
+
+        
+
+
 
       </Grid>
-      {/* <Container className={classes.backhome}>
+
+
+      <Container className={classes.backhome}>
         <Link to="/" className={classes.link}>
           <Button variant="contained" className={classes.btn}>
             Home
           </Button>
         </Link>
-      </Container> */}
+      </Container>
     </Container>
   );
 }
