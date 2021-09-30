@@ -46,7 +46,7 @@ export default function UserManagement(){
 
     useEffect(() => {
         dispatch(getAllUsers());
-    },[])
+    },[users])
     
 
     async function handlePrivileges(user){
@@ -91,7 +91,7 @@ export default function UserManagement(){
         <>
             <NavSecondary />
             <Grid container component="main" style={{marginTop:'12vh'}}>
-                <Container component={Paper} style={{ maxWidth: '90vw', minWidth: '60vw' }}>
+                <Container component={Paper} style={{ maxWidth: '95vw', minWidth: '65vw' }}>
                     {/* <Grid container justifyContent="center">
                         <Button onClick={() => (history.push('/'))}>Home</Button>
                     </Grid> */}
@@ -102,7 +102,7 @@ export default function UserManagement(){
                                 <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Usuario</TableCell>
                                 <TableCell className={classes.tableCell} align="left" style={{ backgroundColor: '#000000', color: '#ffffff' }}>E-email</TableCell>
                                 <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Privilegios</TableCell>
-                                <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Eliminar</TableCell>
+                                <TableCell className={classes.tableCell} align="center" style={{ backgroundColor: '#000000', color: '#ffffff' }}>Eliminar / Bloquear</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -123,17 +123,19 @@ export default function UserManagement(){
                                         }
                                     </TableCell>
                                     <TableCell className={classes.tableCell} align="center">
-                                        <Button variant="contained" className={classes.button} onClick={() => handleDelete(user._id)}>
+                                        <Button variant="contained" className={classes.button} style={{marginRight:'0.5vh'}} onClick={() => handleDelete(user._id)}>
                                             Eliminar
                                         </Button>
 
+                                        {user?.sub[0] === 'g'?
                                         <Button variant="contained" className={classes.button} onClick={() => handleBlock(user.sub)}>
                                             Bloquear
                                         </Button>
-                                        
+                                        :
                                         <Button variant="contained" color="primary" onClick={() => handleDesblock(user.sub)}>
                                             Desbloquear
                                         </Button>
+                                        }
                                         {/* <Modal
                                         open={openModal}
                                         onClose={handleCloseModal}
