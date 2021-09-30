@@ -22,6 +22,7 @@ import "../../App.css";
 import Detail from "../detail/Detail";
 import { useDispatch, useSelector } from "react-redux";
 import GetHeaders from "../../utils/GetHeaders"
+import LandingPage from '../landing/Landing';
 
 // import Account from "../account/Account";
 // import Profile from "../account/Profile";
@@ -71,6 +72,7 @@ const AppRouter = () => {
               {/* El catalogo se tiene que visualizar en la ruta /products
             Hay que poner otro home de inicio que no sea el catalogo */}
 
+              <Route exact path='/landing' component={LandingPage} />
               <Route exact path="/" component={Home} />
               <Route path="/detail/:id" component={Detail} />
               {userDB && userDB.isAdmin && (
