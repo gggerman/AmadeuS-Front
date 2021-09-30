@@ -6,6 +6,7 @@ import {
   Select,
   MenuItem,
   CircularProgress,
+  Container
 } from "@material-ui/core";
 
 import { Pagination } from "@material-ui/lab";
@@ -26,25 +27,38 @@ import { getCart } from "../../utils";
 import {getAllUsers} from '../../redux/actions/users'
 import { itemsDbToCart } from "../../redux/actions/itemsDbToCart";
 import { getAllFavorites } from "../../redux/actions/favorites";
+import Footer from "../footer/Footer";
 const { REACT_APP_SERVER } = process.env;
   
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    marginTop: "-8vh",
-    minWidth: 130,
+    minWidth: 100,
   },
   label: {
     fontSize: "12px",
   },
   gridContainer: {
     margin: "auto",
-    maxWidth: "200vh",
+    [theme.breakpoints.down('sm')]: {
+      margin: 'auto'
+    },
+    
+    
+  },
+  gridFilter: {
+    margin: "auto",
+    marginTop: "0vh",
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
+      width: '100vh'
+    }
+    
   },
   root: {
     "& > * + *": {
-      marginTop: theme.spacing(1),
+      marginTop: theme.spacing(0),
     },
   },
 }));
@@ -112,7 +126,7 @@ export default function Catalogue() {
   const indexLastProduct = page * productsPerPage;
   const indexFirstProduct = indexLastProduct - productsPerPage;
   const currentProducts = data.slice(indexFirstProduct, indexLastProduct);
-
+  console.log(currentProducts)
   const classes = useStyles();
 
   function handleSortName(e) {
@@ -166,7 +180,7 @@ export default function Catalogue() {
   }, [dispatch, search]);
 
   return (
-    <div style={{ marginTop: "3vh" }}>
+    <Container style={{ marginTop: "2vh", overflow: 'hidden' }}>
       {loading && (
         <div className="loading">
           <CircularProgress />
@@ -178,11 +192,13 @@ export default function Catalogue() {
             container
             direction="row"
             justifyContent="center"
-            style={{ marginTop: "5vh" }}
+            xs = {9}
+            sm = {12}
+            className={classes.gridFilter}
           >
             <FormControl className={classes.formControl}>
               <InputLabel className={classes.label}>
-                Filtrar por Categoria
+                Categoria
               </InputLabel>
               <Select
                 value={select.filter}
@@ -199,7 +215,7 @@ export default function Catalogue() {
 
             <FormControl className={classes.formControl}>
               <InputLabel className={classes.label}>
-                Ordenar por Nombre
+                Nombre
               </InputLabel>
               <Select value={select.name} onChange={(e) => handleSortName(e)}>
                 <MenuItem value="A - Z">A - Z</MenuItem>
@@ -209,7 +225,7 @@ export default function Catalogue() {
 
             <FormControl className={classes.formControl}>
               <InputLabel className={classes.label}>
-                Ordenar por Precio
+                Precio
               </InputLabel>
               <Select value={select.price} onChange={(e) => handleSortPrice(e)}>
                 <MenuItem value="Lower to Higher">Lower to Higher</MenuItem>
@@ -222,8 +238,8 @@ export default function Catalogue() {
             container
             direction="row"
             justifyContent="center"
-            alignItems="center"
             className={classes.gridContainer}
+            sm ={12}
           >
             {currentProducts?.map((product) => {
               return (
@@ -257,7 +273,9 @@ export default function Catalogue() {
             />
           </Grid>
         </>
+        
       )}
-    </div>
+     
+    </Container>
   );
 }

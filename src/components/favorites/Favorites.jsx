@@ -218,7 +218,7 @@ export default function Favorites() {
               justifyContent="center"
               lignItems="center"
             >
-              <Typography variant="h6">No tienes Favoritos!</Typography>
+              <Typography variant="h6">No tenés Favoritos!</Typography>
             </Grid>
           )}
         </>

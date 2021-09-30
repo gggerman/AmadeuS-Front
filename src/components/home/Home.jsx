@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Footer from "../footer/Footer";
 import Catalogue from "../catalogue/Catalogue";
 import { makeStyles } from "@material-ui/core/styles";
+import { Container, CssBaseline } from "@material-ui/core";
 import Nav from "../nav/Nav";
+import Slideshow from "../slideshow/Slideshow.jsx";
 import { saveUser } from "../../redux/actions/users";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -40,6 +42,7 @@ export default function Home() {
   return (
     <div className={classes.home}>
       <Nav />
+      <Slideshow />
       <Catalogue />
       <Footer />
     </div>
