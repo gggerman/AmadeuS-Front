@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container";
 import ShoppingCartItem from "./ShoppingCartItem";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { Box, Button, Divider } from "@material-ui/core";
+import { AppBar, Box, Button, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import DeleteForeverRoundedIcon from "@material-ui/icons/DeleteForeverRounded";
 import cleanCart from "../../redux/actions/cleanCart";
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
     containerItems: {
-    backgroundColor: "#B7B9C0",
+    backgroundColor: "#F0F0F0",
     height: "auto",
     border: "1px solid #E7E4E4",
     display: 'flex',

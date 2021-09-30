@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
     alignItems: "center",
-    background: "#E5DFDF",
+    background: "#FAFAFA",
     width: '83vw',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
