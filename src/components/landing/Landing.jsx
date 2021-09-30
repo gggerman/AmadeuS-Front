@@ -24,7 +24,7 @@ export default function LandingPage() {
   const classes = useStyles();
   return (
     <div className='Ini'>
-        <video className="video" src={videoHenry} autoPlay loop /* muted */ /* controls */ poster={fotoHenry} />
+        <video className="video" src={videoHenry} autoPlay loop muted /* controls */ poster={fotoHenry} />
       <Link to="/" style={{ margin: '1vh', textDecoration: "none" }}>
           {<Typography className={classes.logo}>Bienvenido a AmadeuS</Typography>}
       </Link>
