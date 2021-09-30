@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     background: "#FAFAFA",
-    width: '83vw',
+    width: '75vw',
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
     }

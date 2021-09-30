@@ -39,8 +39,9 @@ const useStyles = makeStyles((theme) => ({
     }
   },
     containerItems: {
-    backgroundColor: "#F0F0F0",
-    height: "auto",
+    width: '100%',
+    backgroundColor: "gray",
+    height: "100%",
     border: "1px solid #E7E4E4",
     display: 'flex',
     flexDirection: 'column',
@@ -62,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
   btnComprar: {
     marginTop: "2vh",
     width: '10vw',
+    marginBottom: 20,
     [theme.breakpoints.down('sm')]:{
       width: '100%'
     }
@@ -142,7 +144,7 @@ const ShoppingCart = () => {
       </AppBar>
       <Container className={classes.containerItems}        
       >
-//       <NavSecondary />
+      <NavSecondary />
    
         <div className={classes.root}>
           <Box marginLeft={5} className={classes.title}>
