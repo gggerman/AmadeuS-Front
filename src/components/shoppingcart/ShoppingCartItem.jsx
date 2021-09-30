@@ -28,14 +28,87 @@ const { REACT_APP_SERVER } = process.env;
 const useStyles = makeStyles((theme) => ({
   root: {
     marginBottom: "8px",
-    display: "flow-root",
+    display: "flex",
+    justifyContent: 'center',
+  },
+  card: {
+    display: "flex",
+    alignItems: "center",
+    background: "#E5DFDF",
+    width: '83vw',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+    }
+  },
+  counterBox: {
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      marginTop: '10px'
+    },
+    display: "flex",
+    alignItems: "center"
+  },
+  name:{
+    width: "400px",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",        
+    [theme.breakpoints.down('md')]:{
+      width: "300px"
+    },
+    [theme.breakpoints.down('sm')]:{
+      width: "200px"
+    }
+  },
+  units:{
+    [theme.breakpoints.down('sm')]:{
+      display: 'none'
+    }
+  },
+  boxImg: {
+    overflow: "hidden",
+    width: "100px",
+    height: "100px",
+    textAlign: "center",
+    overflow: "hidden",
+    [theme.breakpoints.down('xs')]: {
+      height: '200px',
+      width: 'max-content'
+    }
   },
   mediaimg: {
     maxWidth: "max-content",
     height: "100px",
     margin: "0 - 100%",
     objectFit: "contain",
+    [theme.breakpoints.down('xs')]: {
+      height: '100%'      
+    }
   },
+  counter: {
+    [theme.breakpoints.down('sm')]: {
+      marginRight: '0'
+    },
+    border: '2px solid #B7B9C0', 
+    borderRadius:'20px', 
+    color:'black', 
+    width: 'max-content', 
+    marginRight: '90px',
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'nowrap' 
+  },
+  description: {
+    display: "flex",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',    
+    },
+    alignItems: "center",
+    justifyContent: "space-between",
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'center'      
+    }
+  }
 }));
 
 const ShoppingCartItem = ({
@@ -88,23 +161,8 @@ const ShoppingCartItem = ({
   return (
     <Container className={classes.root}>
       <Grid>
-        <Card
-          style={{
-            display: "flex",
-            alignItems: "center",
-            background: "#E5DFDF",
-          }}
-        >
-          <Box
-            style={{
-              overflow: "hidden",
-              Width: "100px",
-              height: "100px",
-              textAlign: "center",
-              overflow: "hidden",
-            }}
-            width="100px"
-          >
+        <Card className={classes.card}>
+          <Box className={classes.boxImg} width="100px">
             <CardMedia
               className={classes.mediaimg}
               component="img"
@@ -113,26 +171,12 @@ const ShoppingCartItem = ({
             />
           </Box>
           <Container>
-            <Box
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography
-                variant="h6"
-                style={{
-                  width: "500px",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                }}
-              >
+            <Box className={classes.description}>
+              <Typography className={classes.name} variant="h6">
                 {name}
               </Typography>
-              <Box style={{ display: "flex", alignItems: "center" }}>
-                <Box style={{border: '2px solid #B7B9C0', borderRadius:'20px', color:'black', width: 'max-content', marginRight: '90px' }}>
+              <Box className={classes.counterBox}>
+                <Box className={classes.counter}>
                   <IconButton
                     aria-label="remove"
                     onClick={decrement}
@@ -150,7 +194,7 @@ const ShoppingCartItem = ({
                   </IconButton>
                 </Box>
                 <Box>
-                  <Typography variant="subtitle2" align="center">
+                  <Typography variant="subtitle2" align="center" className={classes.units}>
                     {stock} unidades
                   </Typography>
                 </Box>
