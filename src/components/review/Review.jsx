@@ -49,6 +49,7 @@ export default function Review({product}) {
     };
 
     useEffect(() => {
+        dispatch(getAllReviews());
         getUserById(currentUser?._id);
     }, [currentUser]);
 

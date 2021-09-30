@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import AppBar from "@material-ui/core/AppBar";
 import ShoppingCartItem from "./ShoppingCartItem";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -104,7 +103,7 @@ const ShoppingCart = () => {
           height: "150vh",
           border: "1px solid #E7E4E4",
         }}
-      >
+      > 
         <div className={classes.root}>
           <Box flexGrow={1} marginLeft={5}>
             <Typography variant="h2">carrito</Typography>

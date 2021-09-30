@@ -513,7 +513,7 @@ const useStyles = makeStyles((theme) => ({
 
 
             <Box style = {{display:'flex', justifyContent:'center', marginTop: '3vh'}}>
-                <CardMedia className={classes.media}> <img src={detail.image} className={classes.img} /> 
+                <CardMedia className={classes.media}> <img src={`${REACT_APP_SERVER}/products/images/${detail.image}`} className={classes.img} /> 
                 </CardMedia>
              </Box>
              <Typography variant="h6" color ="primary" style={{marginTop: '-3vh'}}>

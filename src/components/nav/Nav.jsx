@@ -7,11 +7,11 @@ import {
   Toolbar,
   Typography,
   IconButton,
-  InputBase,
+  Grid,
   Badge,
   MenuItem,
   Menu,
-  Button,
+  Box,
   Container,
   CssBaseline,
   Box, Grid
@@ -236,6 +236,7 @@ export default function Nav() {
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
+    <Grid>
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -275,6 +276,7 @@ export default function Nav() {
         <p>Profile</p>
       </MenuItem>
     </Menu>
+    </Grid>
   );
 
   return (
