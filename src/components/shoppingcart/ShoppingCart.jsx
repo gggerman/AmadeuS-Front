@@ -23,6 +23,30 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     alignItems: "center",
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('md')]:{
+      justifyContent: 'space-evenly'
+    },
+    [theme.breakpoints.down('sm')]:{
+      justifyContent: 'center',
+      alignItems: "center",
+      margin: theme.spacing(2)
+    },
+  },
+  title: {
+    [theme.breakpoints.down('sm')]:{
+      display: 'none'
+    }
+  },
+    containerItems: {
+    backgroundColor: "#B7B9C0",
+    height: "auto",
+    border: "1px solid #E7E4E4",
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.down('lg')]:{
+      height: '100%'
+    }
   },
   icon: {
     width: "8vh",
@@ -30,6 +54,23 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     offset: theme.mixins.toolbar,
   },
+  appBar: {
+    backgroundColor: "rgb(0, 23, 20)",
+    height: "10%",
+    position: "sticky",
+  },
+  btnComprar: {
+    marginTop: "2vh",
+    width: '10vw',
+    [theme.breakpoints.down('sm')]:{
+      width: '100%'
+    }
+  },
+  btnVaciar: {
+    [theme.breakpoints.down('sm')]:{
+      width: '100vw'
+    }
+  }
 }));
 
 const ShoppingCart = () => {
@@ -92,32 +133,20 @@ const ShoppingCart = () => {
   }, [cartQuantity]);
 
   return (
-    <div>
+    <div className={classes.princ}>
       <CssBaseline />
-      <AppBar
-        style={{
-          backgroundColor: "rgb(0, 23, 20)",
-          height: "10%",
-          position: "sticky",
-        }}
-      >
+      <AppBar className={classes.appBar}>
         <Link to="/" style={{ margin: "auto" }}>
           <img src={logo} className={classes.icon} />
         </Link>
       </AppBar>
-      <Container
-        maxWidth="xl"
-        style={{
-          backgroundColor: "#B7B9C0",
-          height: "150vh",
-          border: "1px solid #E7E4E4",
-        }}
+      <Container className={classes.containerItems}        
       >
         <div className={classes.root}>
-          <Box flexGrow={1} marginLeft={5}>
+          <Box marginLeft={5} className={classes.title}>
             <Typography variant="h2">carrito</Typography>
           </Box>
-          <Box>
+          <Box className={classes.btnVaciar} style={{marginRight: 80}}>
             <Button
               variant="contained"
               color="primary"
@@ -145,12 +174,12 @@ const ShoppingCart = () => {
         <Divider style={{ marginBottom: "9px" }} />
 
         <Button
+          className={classes.btnComprar}
           variant="contained"
           color="primary"
           disabled={shoppingCartProducts.length === 0}
           component={Link}
           to={`/ordercart`}
-          style={{ marginTop: "2vh" }}
         >
           Comprar
         </Button>
