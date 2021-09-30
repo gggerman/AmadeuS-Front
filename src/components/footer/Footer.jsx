@@ -18,7 +18,7 @@ export default function Footer(){
     const classes = useStyles()
     return (
       
-    <footer style={{width:'120%',marginLeft: '-5%'}}>
+    <footer style={{width:'100%'}}>
       <Box
       className={classes.footer}
       px={{ xs: 3, sm: 10}}

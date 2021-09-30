@@ -39,9 +39,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'none'
     }
   },
-  containerItems: {
-    backgroundColor: "#B7B9C0",
-    height: "auto",
+    containerItems: {
+    width: '100%',
+    backgroundColor: "#FAFAFA",
+    height: "100%",
     border: "1px solid #E7E4E4",
     display: 'flex',
     flexDirection: 'column',
@@ -63,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
   btnComprar: {
     marginTop: "2vh",
     width: '10vw',
+    marginBottom: 20,
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
