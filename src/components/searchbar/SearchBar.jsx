@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(4),
+    marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2),
     width: "80%",
     maxHeight: "6vh",
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   searchBox: {
     position: "relative",
     marginLeft: '10vh',
-    marginRight: '10vh'
+    marginRight: '10vh',
   },
   searchImage: {
     height: "50vh",
@@ -147,7 +147,7 @@ function SearchBar() {
   }, [name]);
 
   return (
-    <Container className={classes.searchBox}>
+    <Container align="center" className={classes.searchBox}>
       <form onSubmit={(e) => handleSubmit(e)}>
         <Box className={classes.search}>
           <Box className={classes.searchIcon}>

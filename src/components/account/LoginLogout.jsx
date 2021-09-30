@@ -28,9 +28,9 @@ export default function LoginLogout() {
   return (
     <div>
       {isAuthenticated  && userDB  ? (
-        <MenuItem onClick={handleChangeLogout}>Cerrar sesión</MenuItem>
+        <MenuItem onClick={handleChangeLogout}>Salir</MenuItem>
       ) : (
-        <MenuItem onClick={loginWithRedirect}>Acceder</MenuItem>
+        <MenuItem onClick={loginWithRedirect}>Ingresá</MenuItem>
       )}
     </div>
   );

@@ -125,20 +125,8 @@ export default function AdminPanel() {
         </Link>
         </Paper>
 
-        
-
-
-
       </Grid>
 
-
-      <Container className={classes.backhome}>
-        <Link to="/" className={classes.link}>
-          <Button variant="contained" className={classes.btn}>
-            Home
-          </Button>
-        </Link>
-      </Container>
     </Container>
   );
 }
