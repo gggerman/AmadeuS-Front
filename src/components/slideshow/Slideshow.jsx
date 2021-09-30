@@ -74,25 +74,19 @@ export default function Slideshow() {
     <PrincipalContainer>
       <SlideshowContainer ref={slideshow}>
         <Slide>
-          <a href="https://amadeus.vercel.app/">
             <img src={img1} alt="img1"/>
-          </a>
           <SlideText>
             <p>Guitarras</p>
           </SlideText>
         </Slide>
         <Slide>
-          <a href="https://amadeus.vercel.app/">
             <img src={img2} alt="img2"/>
-          </a>
           <SlideText>
             <p>Vientos</p>
           </SlideText>
         </Slide>
         <Slide>
-          <a href="https://amadeus.vercel.app/">
             <img src={img3} alt="img3"/>
-          </a>
           <SlideText>
             <p>Cuerdas Frotadas</p>
           </SlideText>
