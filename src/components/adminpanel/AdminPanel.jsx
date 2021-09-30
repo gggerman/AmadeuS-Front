@@ -103,13 +103,13 @@ export default function AdminPanel() {
           </Card>
         </Link>
       </Grid>
-      <Container className={classes.backhome}>
+      {/* <Container className={classes.backhome}>
         <Link to="/" className={classes.link}>
           <Button variant="contained" className={classes.btn}>
             Home
           </Button>
         </Link>
-      </Container>
+      </Container> */}
     </div>
   );
 }
