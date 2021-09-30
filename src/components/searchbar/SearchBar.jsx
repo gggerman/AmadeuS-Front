@@ -6,7 +6,7 @@ import { alpha, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { getByName } from "../../redux/actions/getByName";
 import { Link } from "react-router-dom";
-import { Card, CardMedia, Divider, Grid, Typography } from "@material-ui/core";
+import { Card, CardMedia, Divider, Grid, Typography, Container, Box } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { numberWithCommas } from "../../utils";
 import { useHistory } from "react-router";
@@ -21,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(3),
-    marginLeft: theme.spacing(7),
-    width: "80vh",
+    marginRight: theme.spacing(4),
+    marginLeft: theme.spacing(2),
+    width: "80%",
     maxHeight: "6vh",
   },
   searchIcon: {
@@ -88,11 +88,12 @@ const useStyles = makeStyles((theme) => ({
   },
   searchBox: {
     position: "relative",
-    marginLeft: '10vh'
+    marginLeft: '10vh',
+    marginRight: '10vh'
   },
   searchImage: {
-    height: "50px",
-    width: "70px",
+    height: "50vh",
+    width: "20vh",
     backgroundRepeat: "no-repeat",
     bacgroundSize: "contain",
     backgroundPosition: "center",
@@ -103,6 +104,8 @@ const useStyles = makeStyles((theme) => ({
 
 function SearchBar() {
   const classes = useStyles();
+
+  
   const search = useSelector(({ app }) => app.searchBar);
   const [name, setName] = useState(search);
   const [searchResults, setSearchResults] = useState([]);
@@ -144,12 +147,12 @@ function SearchBar() {
   }, [name]);
 
   return (
-    <div className={classes.searchBox}>
+    <Container className={classes.searchBox}>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
+        <Box className={classes.search}>
+          <Box className={classes.searchIcon}>
             <SearchIcon />
-          </div>
+          </Box>
           <InputBase
             placeholder="Busca tu instrumento…"
             classes={{
@@ -198,9 +201,9 @@ function SearchBar() {
               )}
             </Grid>
           )}
-        </div>
+        </Box>
       </form>
-    </div>
+    </Container>
   );
 }
 

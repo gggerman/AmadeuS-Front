@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     marginTop: "-8vh",
-    minWidth: 130,
+    minWidth: 100,
   },
   label: {
     fontSize: "12px",
@@ -149,7 +149,7 @@ export default function Favorites() {
 
                 <FormControl className={classes.formControl}>
                   <InputLabel className={classes.label}>
-                    Ordenar por Nombre
+                    Nombre
                   </InputLabel>
                   <Select
                     value={select.name}
@@ -162,14 +162,14 @@ export default function Favorites() {
 
                 <FormControl className={classes.formControl}>
                   <InputLabel className={classes.label}>
-                    Ordenar por Precio
+                    Precio
                   </InputLabel>
                   <Select
                     value={select.price}
                     onChange={(e) => handleSortPrice(e)}
                   >
-                    <MenuItem value="Lower to Higher">Lower to Higher</MenuItem>
-                    <MenuItem value="Higher to Lower">Higher to Lower</MenuItem>
+                    <MenuItem value="Lower to Higher">Menor a Mayor</MenuItem>
+                    <MenuItem value="Higher to Lower">Mayor a Menor</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -218,7 +218,7 @@ export default function Favorites() {
               justifyContent="center"
               lignItems="center"
             >
-              <Typography variant="h6">No tienes Favoritos!</Typography>
+              <Typography variant="h6">No tenés Favoritos!</Typography>
             </Grid>
           )}
         </>

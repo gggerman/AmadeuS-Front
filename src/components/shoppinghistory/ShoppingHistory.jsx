@@ -31,17 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     width: "10%",
+    height: '10vh',
     margin: "0vh",
     backgroundSize: "contain",
   },
   tableCell: {
     padding: "1vw",
-    height: "10%",
-    width: "10vh",
+   
   },
-  img: {
-    width: "15vh",
-    height: "15vh",
+  img: {   
     backgroundSize: "contain",
   },
 }));
@@ -51,6 +49,8 @@ export default function ShoppingHistory() {
   const userRedux = useSelector((state) => state.app.user);
 
   const [userDb, setUserDb] = useState();
+
+  console.log(userDb)
 
   const getUserById = async () => {
     try {
@@ -70,14 +70,14 @@ export default function ShoppingHistory() {
   return (
     <>
       <NavSecondary />
-      {/* <Typography align="center" style={{ marginTop: "12vh" }}>Hace click en el producto comprado y dejanos tu valoración</Typography> */}
-      <Grid container style={{ marginTop: "12vh" }}>
-        <Table style={{ marginLeft: "8vh" }}>
+      <Grid container style={{ marginTop: "15vh"}} sm={12}>
+
+        <Table style={{width:'80%', margin:'auto' }}>
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableCell}> Factura </TableCell>
+             
               <TableCell className={classes.tableCell}> Productos </TableCell>
-              <TableCell className={classes.tableCell}> Total </TableCell>
+              <TableCell className={classes.tableCell}> Total Compra </TableCell>
               <TableCell className={classes.tableCell}> Estado </TableCell>
               <TableCell className={classes.tableCell}> Ubicacion </TableCell>
             </TableRow>
@@ -86,23 +86,22 @@ export default function ShoppingHistory() {
             {userDb &&
               userDb.orders.map((order) => (
                 <TableRow>
-                  <TableCell className={classes.tableCell}> 0001 </TableCell>
+                  
                   <TableCell className={classes.tableCell}>
                     {order.products &&
                       order.products.map((product) => (
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <Link to={`detail/${product._id}`}>
-                            <CardMedia
-                              image={`${REACT_APP_SERVER}/products/images/${product.image}`}
-                              className={classes.img}
+                          <Container style ={{width:'10vh'}}>
+                          <CardMedia
+                            image={product.image}
+                            className={classes.img}
                             />
-                          </Link>
-                          <Typography>
+                          {/* <Typography>
                             ${numberWithCommas(product.price)}
-                          </Typography>
-                        </div>
+                          </Typography> */}
+                          </Container>
                       ))}
                   </TableCell>
+
                   <TableCell>
                     {" "}
                     $
