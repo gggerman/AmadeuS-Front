@@ -54,13 +54,17 @@ const useStyles = makeStyles((theme) => ({
     // // borderRadius: "6px",
     fontFamily: "Abadi MT Condensed Light",/*  "Garamond",  */
     fontSize: "40px",
-    color: "white", 
+    color: "white",
     // textDecoration: "underline white"
   },
   avatar: {
     width: "2vw",
     borderRadius: "15px",
     backgroundSize: "contain",
+  },
+  welcome: {
+    // marginTop: "2vh",
+    color: theme.palette.primary.light
   },
   text: {
     color: theme.palette.primary.light,
@@ -164,16 +168,19 @@ export default function NavSecondary({ shipping, success }) {
         <Link to="/adminpanel" className={classes.link}>
           <MenuItem>Administrar</MenuItem>
         </Link>
-      )}
+      )
+      }
 
-      {userDb && (
-        <Link to="/userprofile" className={classes.link}>
-          <MenuItem>Perfil</MenuItem>
-        </Link>
-      )}
-      
+      {
+        userDb && (
+          <Link to="/userprofile" className={classes.link}>
+            <MenuItem>Perfil</MenuItem>
+          </Link>
+        )
+      }
+
       <LoginLogout />
-    </Menu>
+    </Menu >
   );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
@@ -224,7 +231,7 @@ export default function NavSecondary({ shipping, success }) {
       width: "100%",
     }}>
       <Toolbar className={classes.navDisplay}>
-         {/* Propuesta de logo 1 */} 
+        {/* Propuesta de logo 1 */}
         {/* <Link to="/" style={{ margin: '1vh' }}>
           <img src={logo} className={classes.logo} />
         </Link> */}
@@ -249,8 +256,17 @@ export default function NavSecondary({ shipping, success }) {
         >
           Home
         </Button> */}
-        <Link to="/" style={{ margin: '1vh' }}>
-          <HomeRounded /* fontSize="extraLarge" */ style={{ color: "white", fontSize: "40" }} />
+        <Link to="/" style={{ margin: '1vh', textDecoration: "none" }}>
+          <Button
+            component={Link} to='/'
+            variant='contained'
+            endIcon={<HomeRounded />}
+            variant="outlined"
+            style={{color: "white", border: "1px solid white"}}
+            size="large"
+          >
+            HOME
+          </Button>
         </Link>
         {/* 
         {
@@ -280,9 +296,9 @@ export default function NavSecondary({ shipping, success }) {
         <div className={classes.sectionDesktop}>
           <Container className={classes.user}>
 
-            
+
             <OnlyLogin />
-            
+
             {userDb && (
               <Typography
                 component="p"

@@ -14,7 +14,6 @@ import {
   Box,
   Container,
   CssBaseline,
-  Box, Grid
 } from "@material-ui/core";
 import { LocationOn, ShoppingCart, AccountCircle, Favorite, Mail } from "@material-ui/icons";
 import SearchBar from "../searchbar/SearchBar";
@@ -95,11 +94,11 @@ const useStyles = makeStyles((theme) => ({
   navDisplay: {
     display: "flex",
     justifyContent: "space-between",
-  }, 
+  },
   logo: {
     fontFamily: "Abadi MT Condensed Light",
     fontSize: "40px",
-    color: "white", 
+    color: "white",
     // textDecoration: "underline white"
     textDecoration: "none"
 
@@ -237,45 +236,45 @@ export default function Nav() {
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Grid>
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <Mail />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={mobileMenuId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMobileMenuOpen}
+        onClose={handleMobileMenuClose}
+      >
+        <MenuItem>
+          <IconButton aria-label="show 4 new mails" color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <Mail />
+            </Badge>
+          </IconButton>
+          <p>Messages</p>
+        </MenuItem>
 
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <Favorite />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
+        <MenuItem>
+          <IconButton aria-label="show 11 new notifications" color="inherit">
+            <Badge badgeContent={11} color="secondary">
+              <Favorite />
+            </Badge>
+          </IconButton>
+          <p>Notifications</p>
+        </MenuItem>
 
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
+        <MenuItem onClick={handleProfileMenuOpen}>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      </Menu>
     </Grid>
   );
 
@@ -288,7 +287,6 @@ export default function Nav() {
           width: "100%",
         }}
       >
-
         <Toolbar className={classes.navDisplay}>
           {/* Propuesta de logo 1 */}
           {/* <Link to="/" style={{ textDecoration: "none", color: "white" }}>
