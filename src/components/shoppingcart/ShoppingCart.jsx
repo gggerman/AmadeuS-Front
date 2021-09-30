@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import AppBar from "@material-ui/core/AppBar";
 import ShoppingCartItem from "./ShoppingCartItem";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -17,6 +16,7 @@ import axios from "axios";
 import addOrder from "./../../redux/actions/addOrder";
 import logo from "./logo.jpg";
 import { linkUserCart } from "../../redux/actions/linkUserCart";
+import NavSecondary from './../navsecondary/NavSecondary';
 const { REACT_APP_SERVER } = process.env;
 
 const useStyles = makeStyles((theme) => ({
@@ -94,17 +94,7 @@ const ShoppingCart = () => {
   return (
     <div>
       <CssBaseline />
-      <AppBar
-        style={{
-          backgroundColor: "rgb(0, 23, 20)",
-          height: "10%",
-          position: "sticky",
-        }}
-      >
-        <Link to="/" style={{ margin: "auto" }}>
-          <img src={logo} className={classes.icon} />
-        </Link>
-      </AppBar>
+      <NavSecondary />
       <Container
         maxWidth="xl"
         style={{

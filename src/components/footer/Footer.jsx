@@ -16,7 +16,9 @@ const useStyles = makeStyles( (theme) => ({
 
 export default function Footer(){
     const classes = useStyles()
-    return <footer>
+    return (
+      
+    <footer style={{width:'120%',marginLeft: '-5%'}}>
       <Box
       className={classes.footer}
       px={{ xs: 3, sm: 10}}
@@ -95,4 +97,5 @@ export default function Footer(){
         </Container>
       </Box>
     </footer>
+    )
 }

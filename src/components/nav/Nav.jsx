@@ -6,11 +6,11 @@ import {
   Toolbar,
   Typography,
   IconButton,
-  InputBase,
+  Grid,
   Badge,
   MenuItem,
   Menu,
-  Button,
+  Box,
   Container,
   CssBaseline,
 } from "@material-ui/core";
@@ -224,6 +224,7 @@ export default function Nav() {
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
+    <Grid>
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -261,6 +262,7 @@ export default function Nav() {
         <p>Profile</p>
       </MenuItem>
     </Menu>
+    </Grid>
   );
 
   return (
@@ -269,7 +271,9 @@ export default function Nav() {
         position: "relative",
         backgroundColor: "rgb(0, 23, 20)",
         width: "100%",
+        
       }}
+    
     >
       <Toolbar className={classes.navDisplay}>
         <Link to="/" style={{ textDecoration: "none", color: "white" }}>
@@ -277,7 +281,8 @@ export default function Nav() {
         </Link>
         <SearchBar />
 
-        <div className={classes.grow} />
+        <Box />
+             <Box style={{width:'20%'}}> 
              {userDb?.shipping[0] && user && 
                 <Container>
                   
@@ -288,7 +293,8 @@ export default function Nav() {
                   </Typography>
                 </Container>
               }
-        <div className={classes.sectionDesktop}>
+              </Box>
+        <Box className={classes.sectionDesktop}>
           {userDb && (
             <Container>
               <Typography
@@ -341,7 +347,7 @@ export default function Nav() {
               <AccountCircle />
             )}
           </IconButton>
-        </div>
+        </Box>
       </Toolbar>
       {/* <div style={{display:'flex', justifyContent:'flex-end', marginRight:'2vw'}}>
           <Link to='/adduser' style={{ textDecoration: "none", color:"#ffffff" }}>
