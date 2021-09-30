@@ -141,7 +141,7 @@ const ShoppingCart = () => {
         <div className={classes.root}>
 
           <Box marginLeft={5} className={classes.title}>
-            <Typography variant="h2">carrito</Typography>
+            <Typography variant="h2">Carrito</Typography>
           </Box>
 
           <Box className={classes.btnVaciar} style={{ marginRight: 80 }}>
@@ -151,7 +151,7 @@ const ShoppingCart = () => {
               endIcon={<DeleteForeverRoundedIcon />}
               onClick={handleDeleteAll}
             >
-              vaciar Carrito
+              Vaciar Carrito
             </Button>
           </Box>
 
