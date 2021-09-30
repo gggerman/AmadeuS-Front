@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
     containerItems: {
     width: '100%',
-    backgroundColor: "gray",
+    backgroundColor: "#FAFAFA",
     height: "100%",
     border: "1px solid #E7E4E4",
     display: 'flex',
@@ -137,11 +137,11 @@ const ShoppingCart = () => {
   return (
     <div className={classes.princ}>
       <CssBaseline />
-      <AppBar className={classes.appBar}>
-        <Link to="/" style={{ margin: "auto" }}>
+      {/* <AppBar className={classes.appBar}> */}
+        {/* <Link to="/" style={{ margin: "auto" }}>
           <img src={logo} className={classes.icon} />
-        </Link>
-      </AppBar>
+        </Link> */}
+      {/* </AppBar> */}
       <Container className={classes.containerItems}        
       >
       <NavSecondary />
