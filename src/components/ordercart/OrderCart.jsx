@@ -233,9 +233,13 @@ const useStyles = makeStyles((theme) => ({
     useEffect(() => {
       getUserById(userRedux?._id) 
     }, [userRedux])
+
+
     useEffect(() => {            
       dispatch(addOrder(idOrder))
     },[idOrder])
+
+
     const handleCheckout = () => {
      
       axios.post(`${REACT_APP_SERVER}/orders`, { products: cartProducts, user: user, shipping:  shippingAddress, cost: shipping   })
@@ -466,7 +470,7 @@ const useStyles = makeStyles((theme) => ({
                   </Box>
                   
                   <CardMedia style={{display:'flex', justifyContent:'flex-end'}} 
-                    image={product.image} 
+                    image={`${REACT_APP_SERVER}/products/images/${product.image}`} 
                     className = {classes.img2}>
                 
                   </CardMedia>

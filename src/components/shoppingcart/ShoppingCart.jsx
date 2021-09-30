@@ -98,11 +98,11 @@ const ShoppingCart = () => {
       <Container
         maxWidth="xl"
         style={{
-          backgroundColor: "#EEEBEB",
+          backgroundColor: "#B7B9C0",
           height: "150vh",
           border: "1px solid #E7E4E4",
         }}
-      >
+      > 
         <div className={classes.root}>
           <Box flexGrow={1} marginLeft={5}>
             <Typography variant="h2">carrito</Typography>
@@ -123,16 +123,16 @@ const ShoppingCart = () => {
         ))}
 
         <Divider />
-        <Box>
+        <Box style={{ marginTop: "9px", marginBottom: "9px" }}>
           <Typography variant="h4">
-            Total de la compra:{" "}
+            Total de la compra: $
             {shoppingCartProducts.reduce((acc, item) => {
               return (acc += item.price * item.quantity);
             }, 0)}
           </Typography>
         </Box>
 
-        <Divider />
+        <Divider style={{ marginBottom: "9px" }} />
 
         <Button
           variant="contained"

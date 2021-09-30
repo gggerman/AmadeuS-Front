@@ -37,6 +37,7 @@ import {
   removeAllFavorites,
 } from "../../redux/actions/favorites";
 import { useAuth0 } from "@auth0/auth0-react";
+const REACT_APP_SERVER = process.env;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -137,7 +138,6 @@ export default function ProductCard(product) {
   const currentUser = useSelector(({ app }) => app.user);
 
   const { user } = useAuth0();
-  const REACT_APP_SERVER = process.env;
 
   let flag = false;
 

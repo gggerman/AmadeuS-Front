@@ -70,6 +70,14 @@ export default function UserManagement(){
         setOpen(false);
     };
 
+    const handleBlock = (sub) => {
+        axios.get(`${REACT_APP_SERVER}/users/block/${sub}`, {headers})
+    };
+
+    const handleDesblock = (sub) => {
+        axios.get(`${REACT_APP_SERVER}/users/desblock/${sub}`, {headers})
+    };
+
     // function handleOpenModal(){
     //     setOpenModal(true);
     // }
@@ -81,12 +89,12 @@ export default function UserManagement(){
 
     return (
         <>
-            {/* <NavSecondary /> */}
-            <Grid container component="main">
-                <Container component={Paper} style={{ maxWidth: '80vw', minWidth: '50vw' }}>
-                    <Grid container justifyContent="center">
+            <NavSecondary />
+            <Grid container component="main" style={{marginTop:'12vh'}}>
+                <Container component={Paper} style={{ maxWidth: '90vw', minWidth: '60vw' }}>
+                    {/* <Grid container justifyContent="center">
                         <Button onClick={() => (history.push('/'))}>Home</Button>
-                    </Grid>
+                    </Grid> */}
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -117,6 +125,14 @@ export default function UserManagement(){
                                     <TableCell className={classes.tableCell} align="center">
                                         <Button variant="contained" className={classes.button} onClick={() => handleDelete(user._id)}>
                                             Eliminar
+                                        </Button>
+
+                                        <Button variant="contained" className={classes.button} onClick={() => handleBlock(user.sub)}>
+                                            Bloquear
+                                        </Button>
+                                        
+                                        <Button variant="contained" color="primary" onClick={() => handleDesblock(user.sub)}>
+                                            Desbloquear
                                         </Button>
                                         {/* <Modal
                                         open={openModal}

@@ -100,7 +100,7 @@ export default function AdminPanel() {
             <Typography variant="h6">
               Cargar Producto
             </Typography>
-            <Box style={{display:'flex', justifyContent:'column'}}>
+            <Box>
               <AddAPhotoIcon />
             </Box>
           </Card>

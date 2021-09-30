@@ -25,7 +25,8 @@ import { numberWithCommas } from "../../utils";
 import axios from "axios";
 import NavSecondary from "../navsecondary/NavSecondary";
 import { Pagination } from "@material-ui/lab";
-import ClearIcon from '@material-ui/icons/Clear';
+import ClearIcon from "@material-ui/icons/Clear";
+import { getAllCategories } from "../../redux/actions/getAllCategories";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,9 +87,9 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(1),
     },
   },
-  clearButton:{
-    marginTop:'-6vh',
-  }
+  clearButton: {
+    marginTop: "-6vh",
+  },
 }));
 
 function Stock() {
@@ -147,6 +148,7 @@ function Stock() {
 
   useEffect(() => {
     dispatch(getAllProducts());
+    dispatch(getAllCategories());
   }, [dispatch]);
 
   const handleDelete = (id) => {
@@ -154,8 +156,8 @@ function Stock() {
   };
 
   const clearFilters = () => {
-    setSelect({})
-    dispatch(getAllProducts())
+    setSelect({});
+    dispatch(getAllProducts());
   };
 
   return (
@@ -219,19 +221,20 @@ function Stock() {
               </FormControl>
 
               <FormControl className={classes.clearButton}>
-                <Button onClick={clearFilters}><ClearIcon/></Button>
+                <Button onClick={clearFilters}>
+                  <ClearIcon />
+                </Button>
               </FormControl>
-
             </Grid>
             {currentProducts.map((product) => {
               return (
-                <Grid>
+                <Grid container justifyContent="center">
                   <Card className={classes.root}>
                     <div style={{ display: "flex" }}>
                       <div style={{ height: "220px", width: "240px" }}>
                         <CardMedia
                           className={classes.media}
-                          image={product.image}
+                          image={`${REACT_APP_SERVER}/products/images/${product.image}`}
                         />
                       </div>
                       <div style={{ display: "flex", alignItems: "center" }}>

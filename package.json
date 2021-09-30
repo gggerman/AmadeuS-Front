@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
+    "material-table": "^1.69.3",
     "mercadopago": "^1.5.8",
     "mui-datatables": "^3.7.8",
     "react": "^17.0.2",
@@ -24,6 +25,7 @@
     "redux": "^4.1.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
+    "styled-components": "^5.3.1",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

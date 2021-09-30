@@ -178,7 +178,7 @@ export default function Sales() {
    
     const arr = orders.map((order) => ({
         "Orden": order._id,
-        "Productos": order.products?.map((product) => <img src ={product.image} className={classes.media}/>),
+        "Productos": order.products?.map((product) => <img src ={`${REACT_APP_SERVER}/products/images/${product.image}`} className={classes.media}/>),
         "Ingreso": order.products?.reduce((acc, item) => {
             return (
                 acc += item.price
