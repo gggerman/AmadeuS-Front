@@ -275,7 +275,7 @@ export default function Catalogue() {
         </>
         
       )}
-      <Footer />
+     
     </Container>
   );
 }
