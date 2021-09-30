@@ -44,8 +44,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       margin: 'auto'
     },
-    
-    
   },
   gridFilter: {
     margin: "auto",
