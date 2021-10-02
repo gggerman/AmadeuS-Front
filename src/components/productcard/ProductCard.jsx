@@ -41,7 +41,7 @@ const REACT_APP_SERVER = process.env;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '65vh',
+    height: '67vh',
     width: '40vh', // Para que las cards tengan el mismo ancho sin importar el tamaño de la imagen
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
 

@@ -193,7 +193,7 @@ export default function Review({product}) {
                 {Array.isArray(reviews) && reviews?.length > 0 ?
                     (reviews?.map(review => {
                         return review?.product?._id === product?._id ?
-                            <Box key={review?._id} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
+                            <Box key={review?._id} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw', padding:'2vh' }}>
                                 <Typography component="legend">{review?.date}</Typography>
                                 <Grid container justifyContent="space-between">
                                     <Avatar alt={review?.user?.name} src={review?.user?.picture} />
