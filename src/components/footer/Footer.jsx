@@ -92,7 +92,7 @@ export default function Footer(){
             </Grid>
           </Grid>
           <Box textAlign="center" pt={{xs: 5, sm: 10}} pb={{xs: 5, sm:0}}>
-            Musical E-Commerce &reg; {new Date().getFullYear()}
+          <Typography style={{fontFamily: "Abadi MT Condensed Light"}}>AmadeuS &reg; {new Date().getFullYear()}</Typography>
           </Box>
         </Container>
       </Box>
