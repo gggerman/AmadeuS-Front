@@ -131,7 +131,7 @@ export default function Review({product}) {
                 }
             })}
             <Grid container component="main" direction="column" alignItems="center">
-                <Box component="fieldset" mb={3} borderColor="primary" style={{width: '33vw'}}>
+                <Box component="fieldset" mb={3} borderColor="primary" style={{width: '33vw', padding:'2vh'}}>
                     <Typography variant='h6' align="center">Calificación General</Typography>
                     <Grid container justifyContent="center" style={{marginTop:'2vh', marginBottom:'2vh'}}>
                         {suma / cant >= 0 &&
@@ -155,7 +155,7 @@ export default function Review({product}) {
                 }
                 { ((flag && repeat === false ) || edit === true) &&
 
-                    <Box component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
+                    <Box component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw', padding:'2vh' }}>
                         <Typography component="legend">Califica el producto que compraste</Typography>
                         <Grid container justifyContent="space-around" style={{marginTop:'1vh'}}>
                             <Typography component="legend">Puntuación</Typography>
@@ -193,7 +193,7 @@ export default function Review({product}) {
                 {Array.isArray(reviews) && reviews?.length > 0 ?
                     (reviews?.map(review => {
                         return review?.product?._id === product?._id ?
-                            <Box key={review?._id} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw' }}>
+                            <Box key={review?._id} component="fieldset" mb={3} borderColor="primary" style={{ width: '33vw', padding:'2vh' }}>
                                 <Typography component="legend">{review?.date}</Typography>
                                 <Grid container justifyContent="space-between">
                                     <Avatar alt={review?.user?.name} src={review?.user?.picture} />
