@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Nav from "../nav/Nav";
+import NavSecondary from "../navsecondary/NavSecondary";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   Button,
@@ -89,7 +89,7 @@ function UserProfile() {
             height: "100%",
           }}
         >
-          <Nav />
+          <NavSecondary />
           <Container className={classes.container}>
             <img className={classes.media} src={userDb.picture} />
             <CardContent>

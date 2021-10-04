@@ -103,14 +103,6 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none"
 
   },
-  logo1: {
-    // marginTop: "2vh",
-    height: "95%",
-    width: "25vh",
-    backgroundSize: "contain",
-    // margin: "auto",
-    // borderRadius: "6px",
-  },
   avatar: {
     width: "2vw",
     borderRadius: "15px",
@@ -288,28 +280,11 @@ export default function Nav() {
         }}
       >
         <Toolbar className={classes.navDisplay}>
-          {/* Propuesta de logo 1 */}
-          {/* <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            <img src={logo} className={classes.logo} />
-          </Link> */}
-
-          {/* Propuesta de logo 2 */}
           <Link to="/" style={{ margin: '1vh', textDecoration: "none" }}>
             {<Typography className={classes.logo}>AmadeuS </Typography>}
           </Link>
 
           <SearchBar />
-
-          {/* <div className={classes.grow} />
-          {
-            userDb?.shipping[0] && user &&
-            <Container className={classes.user}>
-            <LocationOn />
-            <Typography className={classes.text} component="p" variant="body2">
-                Envíos a {userDb.shipping && `${userDb?.shipping[0]?.street} ${userDb?.shipping[0]?.number} `}
-                </Typography>
-            </Container>
-          } */}
 
           <div className={classes.sectionDesktop}>
 
