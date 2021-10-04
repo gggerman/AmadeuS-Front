@@ -92,8 +92,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '10vh',
   },
   searchImage: {
-    height: "50vh",
-    width: "20vh",
+    height: "50px",
+    width: "50px",
     backgroundRepeat: "no-repeat",
     bacgroundSize: "contain",
     backgroundPosition: "center",

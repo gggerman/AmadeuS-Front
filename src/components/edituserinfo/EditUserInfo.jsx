@@ -5,7 +5,7 @@ import { makeStyles, styled } from '@material-ui/styles';
 import { FormHelperText, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Typography, Container, Paper, Grid, TextField, Button, Snackbar, Avatar } from '@material-ui/core';
 import { Visibility, VisibilityOff, Check, Close } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
-import Nav from '../nav/Nav'
+import NavSecondary from "../navsecondary/NavSecondary";
 import axios from 'axios';
 import { headers } from "../../utils/GetHeaders";
 const { REACT_APP_SERVER } = process.env
@@ -219,7 +219,7 @@ export default function EditUserInfo(){
 
     return (
         <>
-        <Nav/>
+        <NavSecondary />
     <Grid container component="main" direction="row" className={classes.gridContainer}>
         <Container component={Paper} elevation={24} style={{ padding: '2vh', maxWidth: '26vw' }}>
             <Typography align='center' variant='h6' color='primary' style={{ marginBottom: '1vh' }}>Editar info básica</Typography>

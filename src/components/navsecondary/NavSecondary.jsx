@@ -259,10 +259,9 @@ export default function NavSecondary({ shipping, success }) {
         <Link to="/" style={{ margin: '1vh', textDecoration: "none" }}>
           <Button
             component={Link} to='/'
-            variant='contained'
             endIcon={<HomeRounded />}
-            variant="outlined"
-            style={{color: "white", border: "1px solid white"}}
+            variant="text"
+            style={{color: "white", fontSize: "vh"}}
             size="large"
           >
             HOME
