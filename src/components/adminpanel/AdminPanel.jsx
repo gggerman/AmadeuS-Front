@@ -51,9 +51,9 @@ export default function AdminPanel() {
   let { path, url } = useRouteMatch();
 
   const arrayItems = [
-    { "name": "Stock", "route": "/addcategory" },
-    { "name": "Crear Nueva Categoría", "route": "/stock" },
-    { "name": "Cargar Producto", "route": "/addcategory" },
+    { "name": "Stock", "route": "/stock" },
+    { "name": "Crear Nueva Categoría", "route": "/addcategory" },
+    { "name": "Cargar Producto", "route": "/addproduct" },
     { "name": "Administrar Usuarios", "route": "/usermanagement" },
     { "name": "Historial de Ventas", "route": "/sales" }
   ]
