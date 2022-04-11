@@ -1,11 +1,23 @@
 # AmadeuS
 
-## Instruccions to run this project.
+<p>
+  <img src="https://german-garcia-portfolio.vercel.app/static/media/AmadeuS.b52643cc.png" />
+</p>
 
-```javascript
-npm install
-```
+## Technologies used:
 
-```javascript
-npm start
-```
+- Javascript
+- React
+- Redux
+- Material UI
+- Styled Components
+- Mercado Pago
+- Axios
+- Express
+- Auth0
+- MongoDB
+- Mongoose
+
+## Deploy:
+
+https://amadeus.vercel.app/
