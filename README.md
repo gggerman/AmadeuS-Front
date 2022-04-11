@@ -1,4 +1,4 @@
-# AmadeuS
+# AmadeuS: Frontend
 
 <p>
   <img src="https://german-garcia-portfolio.vercel.app/static/media/AmadeuS.b52643cc.png" />
